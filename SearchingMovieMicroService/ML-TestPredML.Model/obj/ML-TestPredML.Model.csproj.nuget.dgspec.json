@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {}
+    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
         "projectName": "ML-TestPredML.Model",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
-        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\obj\\",
+        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],

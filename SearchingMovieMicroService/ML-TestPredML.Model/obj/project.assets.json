@@ -1014,7 +1014,7 @@
       ]
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "sha512": "bLpT1f/SFlO1CzqXG12KnJzpZs6lv24uX2Rzi4Fmm0noJpNlnWRVryuO3yK18Ca04t/YHcO1e1Z0WDfjseqNzw==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
@@ -1314,7 +1314,7 @@
       ]
     },
     "System.Collections.Immutable/1.5.0": {
-      "sha512": "EXKiDFsChZW0RjrZ4FYHu9aW6+P4MCgEDCklsVseRfhoO0F+dXeMSsMRAlVXIo06kGJ/zv+2w1a2uc2+kxxSaQ==",
+      "sha512": "RGxi2aQoXgZ5ge0zxrKqI4PU9LrYYoLC+cnEnWXKsSduCOUhE1GEAAoTexUVT8RZOILQyy1B27HC8Xw/XLGzdQ==",
       "type": "package",
       "path": "system.collections.immutable/1.5.0",
       "files": [
@@ -2114,7 +2114,7 @@
       ]
     },
     "System.Memory/4.5.1": {
-      "sha512": "sDJYJpGtTgx+23Ayu5euxG5mAXWdkDb4+b0rD0Cab0M1oQS9H0HXGPriKcqpXuiJDTV7fTp/d+fMDJmnr6sNvA==",
+      "sha512": "vcG3/MbfpxznMkkkaAblJi7RHOmuP7kawQMhDgLSuA1tRpRQYsFSCTxRSINDUgn2QNn2jWeLxv8er5BXbyACkw==",
       "type": "package",
       "path": "system.memory/4.5.1",
       "files": [
@@ -3640,25 +3640,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alexg\\.nuget\\packages\\": {},
+    "C:\\Users\\Robert\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+      "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
       "projectName": "ML-TestPredML.Model",
-      "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
-      "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\obj\\",
+      "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+      "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],

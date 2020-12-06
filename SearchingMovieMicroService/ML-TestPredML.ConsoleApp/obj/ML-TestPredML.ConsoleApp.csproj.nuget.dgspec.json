@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {}
+    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
+    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
         "projectName": "ML-TestPredML.ConsoleApp",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
-        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\obj\\",
+        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -33,11 +33,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
-                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
-              },
-              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
-                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj"
+              "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+                "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
               }
             }
           }
@@ -59,6 +56,10 @@
             "Microsoft.ML.Recommender": {
               "target": "Package",
               "version": "[0.17.2, )"
+            },
+            "TinyCsvParser": {
+              "target": "Package",
+              "version": "[2.6.0, )"
             }
           },
           "imports": [
@@ -72,9 +73,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -83,21 +81,21 @@
         }
       }
     },
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
         "projectName": "ML-TestPredML.Model",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
-        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\obj\\",
+        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -149,92 +147,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
-        "projectName": "SearchingMovieMicroservice",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
-        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net5.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[5.0.0, )",
-              "noWarn": [
-                "NU1605"
-              ]
-            },
-            "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
-              "target": "Package",
-              "version": "[5.0.0, )",
-              "noWarn": [
-                "NU1605"
-              ]
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[5.6.3, )"
-            },
-            "TinyCsvParser": {
-              "target": "Package",
-              "version": "[2.6.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }

@@ -13,5 +13,8 @@
 	<ItemGroup>
 		<PackageReference Include="TinyCsvParser" Version="2.6.0" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\ML-TestPredML.ConsoleApp\ML-TestPredML.ConsoleApp.csproj" />
+	</ItemGroup>
 
 </Project>
