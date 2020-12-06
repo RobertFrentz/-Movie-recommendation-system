@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ML-TestPredML.Model", "ML-T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ML-TestPredML.ConsoleApp", "ML-TestPredML.ConsoleApp\ML-TestPredML.ConsoleApp.csproj", "{13165293-6BBF-4C25-BADA-10338DA03EA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchingMovieMicroService", "SearchingMovieMicroService\SearchingMovieMicroService.csproj", "{0EE6F40F-1C3A-40B3-B08B-8C3DF1E4AF40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchingMovieMicroservice", "SearchingMovieMicroService\SearchingMovieMicroservice.csproj", "{0EE6F40F-1C3A-40B3-B08B-8C3DF1E4AF40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

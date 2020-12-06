@@ -618,11 +618,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj",
-      "projectName": "SearchingMovieMicroService",
-      "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj",
+      "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+      "projectName": "SearchingMovieMicroservice",
+      "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
       "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\obj\\",
+      "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

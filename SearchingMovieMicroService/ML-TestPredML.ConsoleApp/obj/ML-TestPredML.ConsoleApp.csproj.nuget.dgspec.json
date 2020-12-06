@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {}
+    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
+    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
         "projectName": "ML-TestPredML.ConsoleApp",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
         "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\obj\\",
+        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -33,11 +33,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
-                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
+              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
               },
-              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj": {
-                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj"
+              "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
+                "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj"
               }
             }
           }
@@ -54,11 +54,11 @@
           "dependencies": {
             "Microsoft.ML": {
               "target": "Package",
-              "version": "[1.5.0-preview2, )"
+              "version": "[1.5.2, )"
             },
             "Microsoft.ML.Recommender": {
               "target": "Package",
-              "version": "[0.17.0-preview2, )"
+              "version": "[0.17.2, )"
             }
           },
           "imports": [
@@ -83,14 +83,14 @@
         }
       }
     },
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
         "projectName": "ML-TestPredML.Model",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
         "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\ML-TestPredML.Model\\obj\\",
+        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\ML-TestPredML.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -126,11 +126,11 @@
           "dependencies": {
             "Microsoft.ML": {
               "target": "Package",
-              "version": "[1.5.0-preview2, )"
+              "version": "[1.5.2, )"
             },
             "Microsoft.ML.Recommender": {
               "target": "Package",
-              "version": "[0.17.0-preview2, )"
+              "version": "[0.17.2, )"
             },
             "NETStandard.Library": {
               "suppressParent": "All",
@@ -153,14 +153,14 @@
         }
       }
     },
-    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj": {
+    "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj",
-        "projectName": "SearchingMovieMicroService",
-        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+        "projectName": "SearchingMovieMicroservice",
+        "projectPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
         "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\obj\\",
+        "outputPath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

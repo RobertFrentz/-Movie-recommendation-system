@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MrRBdy5us/Dep10dEByohLOHeTqpTQk3cuKNbZ3GkYeTogaOSfsT3rTPVISxH4Xkt5c4TDmCmbuf2eQvVjnfMg==",
+  "dgSpecHash": "6OuMArRS4Vkr+I4TwT3vdatNBbNoZ59mJjVKiajq2XJzRo7oImry3n3NeaObQ7slUdTNXAayG4x32bMSsbacXA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroService.csproj",
+  "projectFilePath": "C:\\Users\\alexg\\Source\\Repos\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alexg\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.0\\microsoft.aspnetcore.authentication.jwtbearer.5.0.0.nupkg.sha512",
     "C:\\Users\\alexg\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\5.0.0\\microsoft.aspnetcore.authentication.openidconnect.5.0.0.nupkg.sha512",

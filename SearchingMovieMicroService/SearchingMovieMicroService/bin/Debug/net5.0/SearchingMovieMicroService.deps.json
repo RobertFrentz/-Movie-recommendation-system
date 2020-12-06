@@ -23,7 +23,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "SearchingMovieMicroService/1.0.0": {
+      "SearchingMovieMicroservice/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "5.0.0",
@@ -314,10 +314,10 @@
           "WindowsBase": "4.0.0.0"
         },
         "runtime": {
-          "SearchingMovieMicroService.dll": {}
+          "SearchingMovieMicroservice.dll": {}
         },
         "compile": {
-          "SearchingMovieMicroService.dll": {}
+          "SearchingMovieMicroservice.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/5.0.0": {
@@ -2207,7 +2207,7 @@
     }
   },
   "libraries": {
-    "SearchingMovieMicroService/1.0.0": {
+    "SearchingMovieMicroservice/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

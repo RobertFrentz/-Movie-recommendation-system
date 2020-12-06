@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ML_TestPredML.Model;
 using SearchingMovieMicroService;
 
@@ -12,7 +13,7 @@ namespace ML_TestPredML.ConsoleApp
         static void Main(string[] args)
         {
             // Create single instance of sample data from first line of dataset for model input
-            ModelInput sampleData = new ModelInput()
+            /*ModelInput sampleData = new ModelInput()
             {
                 UserId = 1F,
                 MovieId = 2F,
@@ -26,9 +27,13 @@ namespace ML_TestPredML.ConsoleApp
             Console.WriteLine($"MovieId: {sampleData.MovieId}");
             Console.WriteLine($"\n\nPredicted Rating: {predictionResult.Score}\n\n");
             Console.WriteLine("=============== End of process, hit any key to finish ===============");
-            Console.ReadKey();
+            Console.ReadKey();*/
 
-            RecommendedMoviesIdByCategory(5, "Drama");
+           /* RecommendedMoviesIdByCategory(1, "Drama");
+            Console.WriteLine("=============== End of process, hit any key to finish ===============");
+            Console.ReadKey();*/
+            //RecommendedMoviesIdByTag(18, "dark");
+            RecommendedMoviesIdByTitle(2, "Toy");
         }
         public static float Prediction(ModelInput data)
         {
@@ -40,6 +45,30 @@ namespace ML_TestPredML.ConsoleApp
         {
 
             List<float> moviesId = CSVParser.ImportMovieFromCategorySpecified(category);
+            SortedList<float,float> predictions = new SortedList<float, float>();
+            for (int i = 0; i < 15; i++)
+            {
+                ModelInput data = new ModelInput()
+                {
+                    UserId = userId,
+                    MovieId = moviesId[i],
+                };
+                float predict = Prediction(data);
+                if (!predictions.ContainsKey(moviesId[i]))
+                {
+                    predictions.Add(moviesId[i], predict);
+                }
+            }
+            foreach (KeyValuePair<float, float> prediction in predictions)
+            {
+                Console.WriteLine("User: " + userId + " MovieId: " + prediction.Value + " Rating: " + prediction.Key);
+            }
+        }
+
+        public static void RecommendedMoviesIdByTag(float userId, string tag)
+        {
+
+            List<float> moviesId = CSVParser.ImportMovieFromTagSpecified(tag);
             SortedList<float, float> predictions = new SortedList<float, float>();
             for (int i = 0; i < 15; i++)
             {
@@ -49,11 +78,39 @@ namespace ML_TestPredML.ConsoleApp
                     MovieId = moviesId[i],
                 };
                 float predict = Prediction(data);
-                predictions.Add(predict, moviesId[i]);
+                if (!predictions.ContainsKey(moviesId[i]))
+                {
+                    predictions.Add(moviesId[i], predict);
+                }
             }
-            foreach (KeyValuePair<float, float> prediction in predictions)
+            var predictionsOrderedRating = predictions.OrderBy(r => r.Value);
+            foreach (KeyValuePair<float, float> prediction in predictionsOrderedRating)
             {
-                Console.WriteLine("User: " + userId + " MovieId: " + prediction.Value + " Rating: " + prediction.Key);
+                Console.WriteLine("User: " + userId + " MovieId: " + prediction.Key + " Rating: " + prediction.Value);
+            }
+        }
+        public static void RecommendedMoviesIdByTitle(float userId, string title)
+        {
+
+            List<float> moviesId = CSVParser.ImportMovieFromTitleSpecified(title);
+            SortedList<float, float> predictions = new SortedList<float, float>();
+            for (int i = 0; i < 15; i++)
+            {
+                ModelInput data = new ModelInput()
+                {
+                    UserId = userId,
+                    MovieId = moviesId[i],
+                };
+                float predict = Prediction(data);
+                if (!predictions.ContainsKey(moviesId[i]))
+                {
+                    predictions.Add(moviesId[i], predict);
+                }
+            }
+            var predictionsOrderedRating = predictions.OrderBy(r => r.Value);
+            foreach (KeyValuePair<float, float> prediction in predictionsOrderedRating)
+            {
+                Console.WriteLine("User: " + userId + " MovieId: " + prediction.Key + " Rating: " + prediction.Value);
             }
         }
     }
