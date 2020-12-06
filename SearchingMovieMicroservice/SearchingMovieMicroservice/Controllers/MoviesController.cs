@@ -14,7 +14,7 @@ namespace SearchingMovieMicroService.Controllers
         public ActionResult<IEnumerable<float>> RecommendMoviesIdByCategory(float userId, string category)
         {
             List<float> recommendations = SearchOperations.RecommendedMoviesIdByCategory(userId, category);
-            if (recommendations.Capacity == 0)
+            if (recommendations.Count == 0)
             {
                 return NoContent();
             }
@@ -25,27 +25,12 @@ namespace SearchingMovieMicroService.Controllers
 
         }
 
-        [Route("tag")]
+        [Route("keyword")]
         [HttpGet]
-        public ActionResult<IEnumerable<float>> RecommendMoviesIdByTag(float userId, string tag)
+        public ActionResult<IEnumerable<float>> RecommendMoviesIdByKeyword(float userId, string keyword)
         {
-            List<float> recommendations = SearchOperations.RecommendedMoviesIdByTag(userId, tag);
-            if (recommendations.Capacity == 0)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return recommendations.ToArray();
-            }
-        }
-
-        [Route("title")]
-        [HttpGet]
-        public ActionResult<IEnumerable<float>> RecommendMoviesIdByTitle(float userId, string title)
-        {
-            List<float> recommendations = SearchOperations.RecommendedMoviesIdByTitle(userId, title);
-            if(recommendations.Capacity == 0)
+            List<float> recommendations = SearchOperations.RecommendMoviesIdByKeyword(userId, keyword);
+            if(recommendations.Count == 0)
             {
                 return NoContent();
             } else

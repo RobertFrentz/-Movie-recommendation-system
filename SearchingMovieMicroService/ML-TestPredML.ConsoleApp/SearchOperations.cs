@@ -33,17 +33,65 @@ namespace ML_TestPredML.ConsoleApp
             }
             var sortedPredictions = predictions.OrderBy(r => r.Value);
             moviesId.Clear();
-            foreach(KeyValuePair<float,float> prediction in sortedPredictions)
+            foreach (KeyValuePair<float, float> prediction in sortedPredictions)
             {
                 moviesId.Add(prediction.Key);
             }
             return moviesId;
         }
 
+        public static List<float> RecommendMoviesIdByKeyword(float userId, string keyword)
+        {
+            List<float> moviesIdRecommendedUsingTag = RecommendedMoviesIdByTag(userId, keyword);
+            List<float> moviesIdRecommendedUsingTitle = RecommendedMoviesIdByTitle(userId, keyword);
+            List<float> finalMoviesId = new List<float>();
+            Random random = new Random();
+            for(int i = 0; i < 15; i++)
+            {
+                int randomNumber = random.Next(2);
+                if(randomNumber == 0)
+                {
+                    if(moviesIdRecommendedUsingTag != null && moviesIdRecommendedUsingTag.Count > i)
+                    {
+                        finalMoviesId.Add(moviesIdRecommendedUsingTag[i]);
+                    }
+                    else
+                    {
+                        if(moviesIdRecommendedUsingTitle != null && moviesIdRecommendedUsingTitle.Count > i)
+                        {
+                            finalMoviesId.Add(moviesIdRecommendedUsingTitle[i]);
+                        }
+            
+                    }
+                    
+                } else
+                {
+                    if(moviesIdRecommendedUsingTitle != null && moviesIdRecommendedUsingTitle.Count > i)
+                    {
+                        finalMoviesId.Add(moviesIdRecommendedUsingTitle[i]);
+                    }
+                    else
+                    {
+                        if(moviesIdRecommendedUsingTag != null && moviesIdRecommendedUsingTag.Count > i)
+                        {
+                            finalMoviesId.Add(moviesIdRecommendedUsingTag[i]);
+                        }
+                        
+                    }
+
+                }
+            }
+            return finalMoviesId;
+        }
+
         public static List<float> RecommendedMoviesIdByTag(float userId, string tag)
         {
 
             List<float> moviesId = CSVParser.ImportMovieFromTagSpecified(tag);
+            if(moviesId.Count < 15)
+            {
+                return null;
+            }
             SortedList<float, float> predictions = new SortedList<float, float>();
             for (int i = 0; i < 15; i++)
             {
@@ -71,6 +119,10 @@ namespace ML_TestPredML.ConsoleApp
         {
 
             List<float> moviesId = CSVParser.ImportMovieFromTitleSpecified(title);
+            if(moviesId.Count < 15)
+            {
+                return null;
+            }
             SortedList<float, float> predictions = new SortedList<float, float>();
             for (int i = 0; i < 15; i++)
             {

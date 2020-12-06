@@ -69,7 +69,8 @@ namespace ML_TestPredML.ConsoleApp
                          .ToList();
             foreach (var details in movies)
             {
-                if (details.Tag.Contains(tag) || tag.Contains(details.Tag))
+                if (details.Tag.Contains(tag) || tag.Contains(details.Tag) || details.Tag.Contains(tag.ToUpper()) 
+                    || details.Tag.Contains(tag.ToLower()) || tag.Contains(details.Tag.ToLower()) || tag.Contains(details.Tag.ToUpper()))
                 {
                     //Console.WriteLine("MovieId: " + details.Id);
                     moviesId.Add(details.Id);
@@ -90,7 +91,7 @@ namespace ML_TestPredML.ConsoleApp
             foreach (var details in movies)
             {
 
-                if (details.Title.Contains(title))
+                if (details.Title.Contains(title) || details.Title.Contains(title.ToLower()) || details.Title.Contains(title.ToUpper()))
                 {
                     moviesId.Add(details.Id);
                 }
