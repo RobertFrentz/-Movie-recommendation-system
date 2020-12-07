@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SearchingMovieMicroService.Controllers
+namespace SearchingMovieMicroservice.Controllers
 {
     [ApiController]
     [Route("[controller]")]

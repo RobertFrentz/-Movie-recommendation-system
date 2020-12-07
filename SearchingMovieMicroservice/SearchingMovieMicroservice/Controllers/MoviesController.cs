@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using ML_TestPredML.ConsoleApp;
 
-namespace SearchingMovieMicroService.Controllers
+namespace SearchingMovieMicroservice.Controllers
 {
     [Route("api/v1/search")]
     [ApiController]

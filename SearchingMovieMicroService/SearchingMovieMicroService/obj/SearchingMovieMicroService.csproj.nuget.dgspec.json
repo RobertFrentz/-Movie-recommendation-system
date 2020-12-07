@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {}
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
         "projectName": "ML-TestPredML.ConsoleApp",
-        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
-        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\obj\\",
+        "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj",
+        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -33,8 +33,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
-                "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
+              "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+                "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj"
               }
             }
           }
@@ -49,6 +49,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.Data.Sqlite.Core": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite.Design": {
+              "target": "Package",
+              "version": "[2.0.0-preview1-final, )"
+            },
             "Microsoft.ML": {
               "target": "Package",
               "version": "[1.5.2, )"
@@ -81,21 +89,21 @@
         }
       }
     },
-    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
         "projectName": "ML-TestPredML.Model",
-        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
-        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.Model\\obj\\",
+        "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\ML-TestPredML.Model.csproj",
+        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -122,6 +130,14 @@
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "dependencies": {
+            "Microsoft.Data.Sqlite.Core": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite.Design": {
+              "target": "Package",
+              "version": "[2.0.0-preview1-final, )"
+            },
             "Microsoft.ML": {
               "target": "Package",
               "version": "[1.5.2, )"
@@ -151,21 +167,21 @@
         }
       }
     },
-    "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
         "projectName": "SearchingMovieMicroservice",
-        "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
-        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\obj\\",
+        "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -180,8 +196,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
-                "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj"
+              "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
+                "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj"
               }
             }
           }
@@ -196,6 +212,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[5.0.0, )",
@@ -209,6 +229,28 @@
               "noWarn": [
                 "NU1605"
               ]
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite.Design": {
+              "target": "Package",
+              "version": "[2.0.0-preview1-final, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

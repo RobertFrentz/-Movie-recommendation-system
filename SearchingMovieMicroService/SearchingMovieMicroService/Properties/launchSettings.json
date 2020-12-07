@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SearchingMovieMicroService": {
+    "SearchingMovieMicroservice": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

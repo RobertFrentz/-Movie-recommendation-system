@@ -1,6 +1,6 @@
 using System;
 
-namespace SearchingMovieMicroService
+namespace SearchingMovieMicroservice
 {
     public class WeatherForecast
     {
