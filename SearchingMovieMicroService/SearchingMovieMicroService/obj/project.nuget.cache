@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xRXL/DAqqKJST7AAddQLaEoWbw0ZZxtflom6+hhEHukbhX1FVNxXj7jO379juqIU5l37s5D4WxyxQEjib68mxg==",
+  "dgSpecHash": "4HslKaaiCO//Z+E0HG1KBI447Q46gJH4ARCQHXWAE4HaXR5YM3ChuTiKqVRSh3B74+63qL/RNuQhlFCr1sdgTA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+  "projectFilePath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\SearchingMovieMicroservice.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alexg\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\alexg\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
