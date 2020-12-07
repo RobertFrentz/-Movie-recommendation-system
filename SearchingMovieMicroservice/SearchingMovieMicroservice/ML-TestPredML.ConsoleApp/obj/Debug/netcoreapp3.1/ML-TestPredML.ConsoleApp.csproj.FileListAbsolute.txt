@@ -1,4 +1,0 @@
-C:\Users\alexg\Source\Repos\ML-TestPred\ML-TestPredML.ConsoleApp\obj\Debug\netcoreapp3.1\ML-TestPredML.ConsoleApp.csprojAssemblyReference.cache
-C:\Users\alexg\Source\Repos\ML-TestPred\ML-TestPredML.ConsoleApp\obj\Debug\netcoreapp3.1\ML-TestPredML.ConsoleApp.AssemblyInfoInputs.cache
-C:\Users\alexg\Source\Repos\ML-TestPred\ML-TestPredML.ConsoleApp\obj\Debug\netcoreapp3.1\ML-TestPredML.ConsoleApp.AssemblyInfo.cs
-C:\Users\alexg\Source\Repos\ML-TestPred\ML-TestPredML.ConsoleApp\obj\Debug\netcoreapp3.1\ML-TestPredML.ConsoleApp.csproj.CoreCompileInputs.cache
