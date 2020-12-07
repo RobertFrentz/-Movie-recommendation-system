@@ -7,16 +7,17 @@ namespace ML_TestPredML.ConsoleApp
 {
     public class SearchOperations
     {
+
+      
+
         public static float Prediction(ModelInput data)
         {
             var predictionResult = ConsumeModel.Predict(data);
             return predictionResult.Score;
         }
 
-        public static List<float> RecommendedMoviesIdByCategory(float userId, string category)
+        public static List<int> RecommendedMoviesIdByCategory(float userId, List<int> moviesId)
         {
-
-            List<float> moviesId = CSVParser.ImportMovieFromCategorySpecified(category);
             SortedList<float, float> predictions = new SortedList<float, float>();
             for (int i = 0; i < 15; i++)
             {
@@ -31,20 +32,20 @@ namespace ML_TestPredML.ConsoleApp
                     predictions.Add(moviesId[i], predict);
                 }
             }
-            var sortedPredictions = predictions.OrderBy(r => r.Value);
+            var sortedPredictions = predictions.OrderByDescending(r => r.Value);
             moviesId.Clear();
             foreach (KeyValuePair<float, float> prediction in sortedPredictions)
             {
-                moviesId.Add(prediction.Key);
+                moviesId.Add((int)prediction.Key);
             }
             return moviesId;
         }
 
-        public static List<float> RecommendMoviesIdByKeyword(float userId, string keyword)
+        public static List<int> RecommendMoviesIdByKeyword(float userId, List<int> moviesIdTag, List<int> moviesIdTitle)
         {
-            List<float> moviesIdRecommendedUsingTag = RecommendedMoviesIdByTag(userId, keyword);
-            List<float> moviesIdRecommendedUsingTitle = RecommendedMoviesIdByTitle(userId, keyword);
-            List<float> finalMoviesId = new List<float>();
+            List<int> moviesIdRecommendedUsingTag = RecommendedMoviesIdByTag(userId, moviesIdTag);
+            List<int> moviesIdRecommendedUsingTitle = RecommendedMoviesIdByTitle(userId,  moviesIdTitle);
+            List<int> finalMoviesId = new List<int>();
             Random random = new Random();
             for(int i = 0; i < 15; i++)
             {
@@ -84,16 +85,11 @@ namespace ML_TestPredML.ConsoleApp
             return finalMoviesId;
         }
 
-        public static List<float> RecommendedMoviesIdByTag(float userId, string tag)
+        public static List<int> RecommendedMoviesIdByTag(float userId, List<int> moviesId)
         {
 
-            List<float> moviesId = CSVParser.ImportMovieFromTagSpecified(tag);
-            if(moviesId.Count < 15)
-            {
-                return null;
-            }
             SortedList<float, float> predictions = new SortedList<float, float>();
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < moviesId.Count/2; i++)
             {
                 ModelInput data = new ModelInput()
                 {
@@ -106,25 +102,20 @@ namespace ML_TestPredML.ConsoleApp
                     predictions.Add(moviesId[i], predict);
                 }
             }
-            var sortedPredictions = predictions.OrderBy(r => r.Value);
+            var sortedPredictions = predictions.OrderByDescending(r => r.Value);
             moviesId.Clear();
             foreach (KeyValuePair<float, float> prediction in sortedPredictions)
             {
-                moviesId.Add(prediction.Key);
+                moviesId.Add((int)prediction.Key);
             }
             return moviesId;
 
         }
-        public static List<float> RecommendedMoviesIdByTitle(float userId, string title)
+        public static List<int> RecommendedMoviesIdByTitle(float userId, List<int> moviesId)
         {
 
-            List<float> moviesId = CSVParser.ImportMovieFromTitleSpecified(title);
-            if(moviesId.Count < 15)
-            {
-                return null;
-            }
             SortedList<float, float> predictions = new SortedList<float, float>();
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < moviesId.Count/2; i++)
             {
                 ModelInput data = new ModelInput()
                 {
@@ -141,7 +132,7 @@ namespace ML_TestPredML.ConsoleApp
             moviesId.Clear();
             foreach (KeyValuePair<float, float> prediction in sortedPredictions)
             {
-                moviesId.Add(prediction.Key);
+                moviesId.Add((int)prediction.Key);
             }
             return moviesId;
         }

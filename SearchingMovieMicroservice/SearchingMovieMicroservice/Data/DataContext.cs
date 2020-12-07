@@ -17,11 +17,16 @@ namespace SearchingMovieMicroservice.Data
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<MovieWithTag> MovieWithTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(
                 ImportMovieDataFromCsv().Take(1000)
+            );
+
+            modelBuilder.Entity<MovieWithTag>().HasData(
+                ImportMovieTagsDataFromCsv().Take(1000)
             );
 
             base.OnModelCreating(modelBuilder);
@@ -36,8 +41,26 @@ namespace SearchingMovieMicroservice.Data
                          .ReadFromFile("../ML-TestPredML.ConsoleApp/Resources/movie.csv", Encoding.UTF8)
                          .Select(x => x.Result)
                          .ToList();
+        
             return result;
         }
+
+        public static List<MovieWithTag> ImportMovieTagsDataFromCsv()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ',');
+            CsvMovieDetailsMappingTag csvMapper = new CsvMovieDetailsMappingTag();
+            CsvParser<MovieWithTag> csvParser = new CsvParser<MovieWithTag>(csvParserOptions, csvMapper);
+            var result = csvParser
+                         .ReadFromFile("../ML-TestPredML.ConsoleApp/Resources/tag.csv", Encoding.UTF8)
+                         .Select(x => x.Result)
+                         .ToList();
+            for (int i = 1; i <= result.Count; i++)
+            {
+                result[i - 1].Id = i;
+            }
+            return result;
+        }
+
         private class CsvMovieDetailsMapping : CsvMapping<Movie>
         {
             public CsvMovieDetailsMapping() : base()
@@ -45,6 +68,15 @@ namespace SearchingMovieMicroservice.Data
                 MapProperty(0, x => x.Id);
                 MapProperty(1, x => x.Title);
                 MapProperty(2, x => x.Genres);
+            }
+        }
+
+        private class CsvMovieDetailsMappingTag : CsvMapping<MovieWithTag>
+        {
+            public CsvMovieDetailsMappingTag() : base()
+            {
+                MapProperty(1, x => x.MovieId);
+                MapProperty(2, x => x.Tag);
             }
         }
     }
