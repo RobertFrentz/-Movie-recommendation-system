@@ -32,9 +32,9 @@ C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\bin\Debug\
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.deps.json
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.dll
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.pdb
+C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csprojAssemblyReference.cache
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.AssemblyInfoInputs.cache
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.AssemblyInfo.cs
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csproj.CoreCompileInputs.cache
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.dll
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.pdb
-C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csprojAssemblyReference.cache

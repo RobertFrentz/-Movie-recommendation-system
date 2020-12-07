@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\SearchingMovieMicroservice.csproj": {}
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {}
   },
   "projects": {
     "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
@@ -167,14 +167,14 @@
         }
       }
     },
-    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\SearchingMovieMicroservice.csproj": {
+    "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\SearchingMovieMicroservice.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
         "projectName": "SearchingMovieMicroservice",
-        "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\SearchingMovieMicroservice.csproj",
+        "projectPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
         "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroservice\\obj\\",
+        "outputPath": "C:\\Users\\alexg\\Desktop\\SearchingMovieMicroservice\\SearchingMovieMicroService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
