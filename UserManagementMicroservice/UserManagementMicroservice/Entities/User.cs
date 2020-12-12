@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
 namespace UserManagementMicroservice.Entities
 {
@@ -15,5 +12,8 @@ namespace UserManagementMicroservice.Entities
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public bool Administrator { get; set; }
+
     }
 }
