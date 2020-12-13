@@ -10,6 +10,9 @@ using System;
 using JWT;
 using JWT.Serializers;
 using JWT.Exceptions;
+using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace UserManagementMicroservice.Controllers
 {
@@ -26,36 +29,80 @@ namespace UserManagementMicroservice.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetUsers()
+        public ActionResult<List<User>> GetUsers([FromHeader] string jwt)
         {
-            return _context.Users.ToList();
+            string auth = CheckJWT(jwt);
+            if(auth=="Token has expired" || auth=="Token has invalid signature")
+            {
+                return BadRequest();
+            }
+            else
+            {
+                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string el = elements.Remove(elements.Length - 1);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id== Convert.ToInt32(el))).ToList();
+                if(userApproved.Count==0)
+                {
+                    return BadRequest();  
+                }
+                else
+                {
+                    return _context.Users.ToList();
+                }
+            }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<User> GetUser(int id)
+        public ActionResult<User> GetUser(int id, [FromHeader] string jwt)
         {
-            var user = _context.Users.Where(u => u.Id == id).ToList();
-
-            if (user == null)
+            string auth = CheckJWT(jwt);
+            List<User> user=new List<User>();
+            if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return NotFound();
+                return BadRequest();
+            }
+            else
+            {
+                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string el = elements.Remove(elements.Length - 1);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                if (userApproved.Count == 0)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    user = _context.Users.Where(u => u.Id == id).ToList();
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return user[0];
+                }
             }
 
-            return user[0];
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutUser([FromBody]User user)
+        public IActionResult PutUser([FromBody]User user,[FromHeader] string jwt)
         {
-            if (!UserExists(user.Id))
+            string auth = CheckJWT(jwt);
+            if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return NotFound();
+                return BadRequest();
             }
+            else
+            {
+                if (!UserExists(user.Id))
+                {
+                    return NotFound();
+                }
 
-            _context.Update(user);
-            _context.SaveChanges();
-
+                _context.Update(user);
+                _context.SaveChanges();
+            }
             return NoContent();
         }
 
@@ -86,17 +133,35 @@ namespace UserManagementMicroservice.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(int id,[FromHeader] string jwt)
         {
-            var user = _context.Users.Where(u => u.Id == id).ToList();
-            if (user == null)
+            string auth = CheckJWT(jwt);
+            List<User> user = new List<User>();
+            if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return NotFound();
+                return BadRequest();
             }
+            else
+            {
+                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string el = elements.Remove(elements.Length - 1);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                if (userApproved.Count == 0)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    user = _context.Users.Where(u => u.Id == id).ToList();
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
 
-            _context.Users.Remove(user[0]);
-            _context.SaveChanges();
-
+                    _context.Users.Remove(user[0]);
+                    _context.SaveChanges();
+                }
+            }
             return NoContent();
         }
         private bool UserExists(int id)
@@ -117,6 +182,7 @@ namespace UserManagementMicroservice.Controllers
 
         private string CheckJWT(string jwtToken)
         {
+            string json;
             try
             {
                 IJsonSerializer serializer = new JsonNetSerializer();
@@ -126,8 +192,7 @@ namespace UserManagementMicroservice.Controllers
                 IJwtAlgorithm algorithm = new HMACSHA256Algorithm(); // symmetric
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, algorithm);
 
-                var json = decoder.Decode(jwtToken, "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk", verify: true);
-                Console.WriteLine(json);
+                json = decoder.Decode(jwtToken, "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk", verify: true);
             }
             catch (TokenExpiredException)
             {
@@ -137,7 +202,7 @@ namespace UserManagementMicroservice.Controllers
             {
                 return "Token has invalid signature";
             }
-            return "Token Valid";
+            return json;
         }
     }
 }

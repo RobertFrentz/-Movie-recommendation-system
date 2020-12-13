@@ -1,26 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Robert\\source\\repos\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj": {}
+    "C:\\Users\\alexg\\Documents\\GitHub\\-Movie-recommendation-system\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Robert\\source\\repos\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj": {
+    "C:\\Users\\alexg\\Documents\\GitHub\\-Movie-recommendation-system\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Robert\\source\\repos\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj",
+        "projectUniqueName": "C:\\Users\\alexg\\Documents\\GitHub\\-Movie-recommendation-system\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj",
         "projectName": "UserManagementMicroservice",
-        "projectPath": "C:\\Users\\Robert\\source\\repos\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj",
-        "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Robert\\source\\repos\\UserManagementMicroservice\\UserManagementMicroservice\\obj\\",
+        "projectPath": "C:\\Users\\alexg\\Documents\\GitHub\\-Movie-recommendation-system\\UserManagementMicroservice\\UserManagementMicroservice\\UserManagementMicroservice.csproj",
+        "packagesPath": "C:\\Users\\alexg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexg\\Documents\\GitHub\\-Movie-recommendation-system\\UserManagementMicroservice\\UserManagementMicroservice\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\alexg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -114,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20601.7\\RuntimeIdentifierGraph.json"
         }
       }
     }
