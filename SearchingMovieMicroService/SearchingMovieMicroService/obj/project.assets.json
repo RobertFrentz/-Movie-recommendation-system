@@ -5778,7 +5778,7 @@
       ]
     },
     "System.Security.Cryptography.Cng/4.5.0": {
-      "sha512": "O4tqXxWCD8y1IU1VTgzbuBFwoRahrADhDUxHjwezhHCsqyFNyQ5EytjWBxu0EsZuH14b4UO2pFkG063K2h/9Ug==",
+      "sha512": "WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
       "type": "package",
       "path": "system.security.cryptography.cng/4.5.0",
       "files": [
@@ -6780,27 +6780,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Robert\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\User03\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+      "projectUniqueName": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
       "projectName": "SearchingMovieMicroservice",
-      "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
-      "packagesPath": "C:\\Users\\Robert\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\SearchingMovieMicroService\\obj\\",
+      "projectPath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\SearchingMovieMicroService\\SearchingMovieMicroService\\SearchingMovieMicroservice.csproj",
+      "packagesPath": "C:\\Users\\User03\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\SearchingMovieMicroService\\SearchingMovieMicroService\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Robert\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\User03\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -6813,8 +6806,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
-              "projectPath": "C:\\Users\\Robert\\-Movie-recommendation-system\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj"
+            "C:\\Users\\User03\\Desktop\\Proiect Netflix\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj": {
+              "projectPath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\SearchingMovieMicroService\\ML-TestPredML.ConsoleApp\\ML-TestPredML.ConsoleApp.csproj"
             }
           }
         }
@@ -6896,7 +6889,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

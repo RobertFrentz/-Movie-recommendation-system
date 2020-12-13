@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "i6rXIzAlDy4CUoK+jXiBVR9q1rwn+xwQD8Hc56+wdBsRr/yhs5lM8DLOazOnPVM8oUqTLQViIimr1/DwrdC74A==",
+  "dgSpecHash": "DJv2A+CkUH55IqsPfuUHtBOC/PK/4dF3hv9ymy9hDnVJkMIylYwETFHTbHO75LCSMQkV0g65o2eEbyi336pomQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\BlazorMovieRecommendationApp\\BlazorMovieRecommendationApp\\BlazorMovieRecommendationApp.csproj",
+  "projectFilePath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\BlazorMovieRecommendationApp\\BlazorMovieRecommendationApp\\BlazorMovieRecommendationApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User03\\.nuget\\packages\\microsoft.aspnetcore.authorization\\5.0.0\\microsoft.aspnetcore.authorization.5.0.0.nupkg.sha512",
     "C:\\Users\\User03\\.nuget\\packages\\microsoft.aspnetcore.components\\5.0.0\\microsoft.aspnetcore.components.5.0.0.nupkg.sha512",
@@ -30,7 +30,7 @@
     "C:\\Users\\User03\\.nuget\\packages\\microsoft.jsinterop.webassembly\\5.0.0\\microsoft.jsinterop.webassembly.5.0.0.nupkg.sha512",
     "C:\\Users\\User03\\.nuget\\packages\\system.io.pipelines\\5.0.0\\system.io.pipelines.5.0.0.nupkg.sha512",
     "C:\\Users\\User03\\.nuget\\packages\\system.net.http.json\\5.0.0\\system.net.http.json.5.0.0.nupkg.sha512",
-    "C:\\Users\\User03\\.nuget\\packages\\microsoft.netcore.app.runtime.browser-wasm\\5.0.0\\microsoft.netcore.app.runtime.browser-wasm.5.0.0.nupkg.sha512"
+    "C:\\Users\\User03\\.nuget\\packages\\microsoft.netcore.app.runtime.browser-wasm\\5.0.1\\microsoft.netcore.app.runtime.browser-wasm.5.0.1.nupkg.sha512"
   ],
   "logs": []
 }

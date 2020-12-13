@@ -1,4 +1,4 @@
 ﻿<StaticWebAssets Version="1.0">
-  <ContentRoot BasePath="/" Path="C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\bin\Debug\net5.0\wwwroot\" />
-  <ContentRoot BasePath="/" Path="C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="/" Path="C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\bin\Debug\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\obj\Debug\net5.0\scopedcss\bundle\" />
 </StaticWebAssets>

@@ -38,3 +38,13 @@ C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csproj.CoreCompileInputs.cache
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.dll
 C:\Users\alexg\Desktop\SearchingMovieMicroservice\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.pdb
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\bin\Debug\netstandard2.0\MLModel.zip
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.deps.json
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.dll
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\bin\Debug\netstandard2.0\ML-TestPredML.Model.pdb
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csprojAssemblyReference.cache
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.AssemblyInfoInputs.cache
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.AssemblyInfo.cs
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.csproj.CoreCompileInputs.cache
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.dll
+C:\Users\User03\Desktop\Proiect Netflix\SearchingMovieMicroService\ML-TestPredML.Model\obj\Debug\netstandard2.0\ML-TestPredML.Model.pdb

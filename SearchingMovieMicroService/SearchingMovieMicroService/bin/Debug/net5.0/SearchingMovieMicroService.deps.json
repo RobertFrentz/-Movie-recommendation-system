@@ -23,7 +23,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "SearchingMovieMicroService/1.0.0": {
+      "SearchingMovieMicroservice/1.0.0": {
         "dependencies": {
           "EntityFramework": "6.4.4",
           "ML-TestPredML.ConsoleApp": "1.0.0",
@@ -321,10 +321,10 @@
           "WindowsBase": "4.0.0.0"
         },
         "runtime": {
-          "SearchingMovieMicroService.dll": {}
+          "SearchingMovieMicroservice.dll": {}
         },
         "compile": {
-          "SearchingMovieMicroService.dll": {}
+          "SearchingMovieMicroservice.dll": {}
         }
       },
       "EntityFramework/6.4.4": {
@@ -3501,7 +3501,7 @@
     }
   },
   "libraries": {
-    "SearchingMovieMicroService/1.0.0": {
+    "SearchingMovieMicroservice/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -4258,7 +4258,7 @@
     "System.Security.Cryptography.Cng/4.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-O4tqXxWCD8y1IU1VTgzbuBFwoRahrADhDUxHjwezhHCsqyFNyQ5EytjWBxu0EsZuH14b4UO2pFkG063K2h/9Ug==",
+      "sha512": "sha512-WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
       "path": "system.security.cryptography.cng/4.5.0",
       "hashPath": "system.security.cryptography.cng.4.5.0.nupkg.sha512"
     },

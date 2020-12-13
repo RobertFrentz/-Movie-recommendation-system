@@ -27,12 +27,6 @@ namespace MoviesManagementMicroservice.Controllers
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             var movies = await _context.Movies.Take(15).ToListAsync();
-            //var allLinks = await _context.Links.ToListAsync();
-            //var links = new List<Link>();
-            //movies.ForEach(movie =>
-            //{
-            //    links.Add(allLinks.Where(l => l.MovieId == movie.Id).ToList());
-            //});
             return await _context.Movies.Take(15).ToListAsync();
         }
 
@@ -41,7 +35,7 @@ namespace MoviesManagementMicroservice.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieDetails>>> GetMoviesDetailsAsync()
         {
-            List<Movie> movies = _context.Movies.Take(15).ToList();
+            List<Movie> movies = _context.Movies.Take(20).ToList();
             List<MovieDetails> moviesDetails = new List<MovieDetails>();
 
             for (int i=0; i<movies.Count; i++)
@@ -62,6 +56,38 @@ namespace MoviesManagementMicroservice.Controllers
             await _context.SaveChangesAsync(); // pentru salvarea link-urilor in database
 
             return Ok(moviesDetails);
+        }
+
+        [Route("MoviesDetails/{movieId}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetMovieDetailsById(int movieId)
+        {
+            Movie movie = movie = await _context.Movies.FindAsync(movieId);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            Link link = await _context.Links.FindAsync(movieId);
+
+            if (link == null)
+            {
+                Console.WriteLine("Link NOT FOUND");
+                return NotFound();
+            }
+
+            if (link.ImdbPosterUrl == null)
+            {
+                link.ImdbPosterUrl = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
+            }
+            else
+            {
+                link.ImdbPosterUrl = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
+            }
+            MovieDetails movieDetails = new MovieDetails { Id = movie.Id, Title = movie.Title, Genres = movie.Genres, PosterUrl = link.ImdbPosterUrl };
+
+            await _context.SaveChangesAsync(); // pentru salvarea link-urilor in database
+
+            return Ok(movieDetails);
         }
 
         // GET: api/Movies/5

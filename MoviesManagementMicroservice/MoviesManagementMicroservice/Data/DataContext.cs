@@ -22,10 +22,10 @@ namespace MoviesManagementMicroservice.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(
-                ImportMovieDataFromCsv().Take(1000)     // atentie, limitarea numarului de intrari
+                ImportMovieDataFromCsv().Take(10000)     // atentie, limitarea numarului de intrari
             );
 
-            var links = ImportLinkDataFromCsv().Take(1000);     // same
+            var links = ImportLinkDataFromCsv().Take(10000);     // same
             links.ToList().ForEach(l => l.Id = l.MovieId);
 
             modelBuilder.Entity<Link>().HasData(

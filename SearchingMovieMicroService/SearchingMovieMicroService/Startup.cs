@@ -17,6 +17,8 @@ namespace SearchingMovieMicroservice
 {
     public class Startup
     {
+        readonly string MyAllowedSpecificOrigins = "_AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +33,17 @@ namespace SearchingMovieMicroservice
             {
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowedSpecificOrigins, builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,6 +60,8 @@ namespace SearchingMovieMicroservice
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SearchingMovieMicroservice v1"));
             }
+
+            app.UseCors(MyAllowedSpecificOrigins);
 
             app.UseRouting();
 

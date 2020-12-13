@@ -13,76 +13,76 @@ namespace BlazorMovieRecommendationApp.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 1 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 2 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using System.Net.Http.Json;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 3 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 4 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 5 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 6 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 7 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 8 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 9 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using BlazorMovieRecommendationApp;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
+#line 10 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\_Imports.razor"
 using BlazorMovieRecommendationApp.Shared;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/moviesdata")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/movies")]
     public partial class MoviesData : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -91,17 +91,110 @@ using BlazorMovieRecommendationApp.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 57 "C:\Users\User03\OneDrive\INET\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\Pages\MoviesData.razor"
+#line 73 "C:\Users\User03\Desktop\Proiect Netflix\BlazorMovieRecommendationApp\BlazorMovieRecommendationApp\Pages\MoviesData.razor"
        
-    private MovieDetails[] movies;
+    private string TitleToDisplay = "Recommended for You";
+    private List<MovieDetails> moviesToDisplay;
+    private string searchMovieName;
 
     private string apiUrl = "http://localhost:5000/api/Movies/MoviesDetails";
+    private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
+    private string searchMoviesByKeywordApiUrl = "http://localhost:5020/api/v1/search/keyword?keyword=";
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Intentionez sa fac ceva");
-        movies = await Http.GetFromJsonAsync<MovieDetails[]>(apiUrl);
-        Console.WriteLine("Am facut ceva");
+        moviesToDisplay = await Http.GetFromJsonAsync<List<MovieDetails>>(apiUrl);
+    }
+
+
+    private async Task SearchMoviesByName()
+    {
+        IEnumerable<int> moviesIds;
+
+        TitleToDisplay = "Search Result: ";
+        moviesToDisplay = null;
+
+        if (string.IsNullOrWhiteSpace(searchMovieName))
+        {
+            return;
+        }
+
+        var httpResponse = await Http.GetAsync(searchMoviesByKeywordApiUrl + searchMovieName);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE SearchMoviesByName: {httpResponse.ReasonPhrase}");
+            TitleToDisplay = "Sorry, no movies to show 😔";
+            return;
+        }
+
+        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
+
+        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
+
+        searchMovieName = string.Empty;
+    }
+
+
+    private async Task SearchMoviesByCategory(string category)
+    {
+        IEnumerable<int> moviesIds;
+
+        TitleToDisplay = category + " movies:";
+        moviesToDisplay = null;
+
+        Console.WriteLine(searchMoviesByCategoryApiUrl + category);
+        var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE SearchMoviesByCategory: {httpResponse.ReasonPhrase}");
+            TitleToDisplay = $"Sorry, no {category} movies to show 😔";
+            return;
+        }
+
+        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
+
+        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
+
+    }
+
+    private async Task<List<MovieDetails>> GetMovieDetailsFromIdList(IEnumerable<int> moviesIds)
+    {
+        List<MovieDetails> result = new List<MovieDetails>();
+
+        foreach (int id in moviesIds)
+        {
+            Console.WriteLine(id);
+            MovieDetails temp = await GetMovieDetailsById(id);
+            if (temp == null) {  // pentru filmele al caror id inca nu e in MovieManagementService
+                continue;
+            }
+            Console.WriteLine($"{temp.Title} {temp.PosterUrl}");
+            result.Add(temp);
+        }
+
+        return result;
+    }
+
+    private async Task<MovieDetails> GetMovieDetailsById(int id)
+    {
+        string apiUrl = "http://localhost:5000/api/Movies/MoviesDetails/" + id.ToString();
+        MovieDetails movie;
+
+        var httpResponse = await Http.GetAsync(apiUrl);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE GetMovieDetailsById: {httpResponse.ReasonPhrase} pentru id-ul {id}");
+            return null;
+        }
+
+        movie = await httpResponse.Content.ReadFromJsonAsync<MovieDetails>();
+
+        return movie;
     }
 
     public class MovieDetails

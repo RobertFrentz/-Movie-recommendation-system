@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "38cN45wD3b5JSkjuKRrpx8fDpxgkIrLStyuY8FEFcUgrylglhF9CSXP6wWru5q06/mA76bGmzbyC5OQcZCLDxg==",
+  "dgSpecHash": "So1xBQahzlTkqSEJjrNFZJdlEh6YyMZZhYCzjQujOwJ/oa1glopADcGyDOLeJf+u0q+E5X1+6vAZkn5yYquJLA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
+  "projectFilePath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User03\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\User03\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.0\\microsoft.aspnetcore.authentication.jwtbearer.5.0.0.nupkg.sha512",

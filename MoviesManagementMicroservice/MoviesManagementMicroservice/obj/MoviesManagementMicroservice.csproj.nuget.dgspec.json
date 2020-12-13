@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj": {}
+    "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj": {
+    "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
+        "projectUniqueName": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
         "projectName": "MoviesManagementMicroservice",
-        "projectPath": "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
+        "projectPath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\MoviesManagementMicroservice.csproj",
         "packagesPath": "C:\\Users\\User03\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User03\\OneDrive\\INET\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\obj\\",
+        "outputPath": "C:\\Users\\User03\\Desktop\\Proiect Netflix\\MoviesManagementMicroservice\\MoviesManagementMicroservice\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User03\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -109,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

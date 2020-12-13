@@ -1,69 +1,178 @@
-﻿@page "/moviesdata"
+﻿@page "/movies"
 @inject HttpClient Http
 
-<h3>MoviesData</h3>
 
-@if (movies == null)
-{
-    <p><em>Loading Movies Data...</em></p>
-}
-else
-{
-    @*<table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>FirstName</th>
-                <th>Age</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var movie in movies)
-            {
-                <tr>
-                    <td>@movie.Id</td>
-                    <td>@movie.Title</td>
-                    <td>@movie.Genres</td>
-                    <td>@movie.PosterUrl</td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
+<div class="row">
 
-    <div class="container">
+    <div class="container col-10">
 
-        <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Recommended for You</h1>
-
+        <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">@TitleToDisplay</h1>
         <hr class="mt-2 mb-5">
 
+        @if (moviesToDisplay == null)
+        {
+            <p><em>Loading Movies Data...</em></p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var item in moviesToDisplay)
+                {
+                    <div class="container mb-3" style="width: 300px; height: 450px; ">
+                        <a class="text-decoration-none" href="#">
+                            <img src="@item.PosterUrl" alt="" style="width:100%; height:400px">
+                            <p class="text-center mt-2">@item.Title</p>
+                        </a>
+                    </div>
 
-        <div class="row text-center">
-            @foreach (var item in movies)
-            {
-                <div class="col-lg-3 col-md-6 col-12" style="width: 300px; height: 450px; ">
-                    <a href="#">
-                        <img class="img-responsive" src="@item.PosterUrl" alt="" style="width:100%; height:400px">
-                        <p class="text-center">@item.Title</p>
-                    </a>
-                </div>
-
-            }
-        </div>
+                }
+            </div>
+        }
 
     </div>
 
-}
+    <div class="container col-2">
+        <div class="container-fluid mb-4">
+            <h4 class="font-weight-light text-center mb-3">Search for a movie:</h4>
+            <input type="text" class="w-100 mb-2" @bind="searchMovieName" />
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick="SearchMoviesByName">Search</button>
+        </div>
+
+        <div class="container-fluid">
+            <h4 class="font-weight-light text-center mb-3">Or find by category:</h4>
+            <div class="btn-group-vertical w-100">
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Action"))'>Action</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Adventure"))'>Adventure</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Animation"))'>Animation</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Biography"))'>Biography</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Comedy"))'>Comedy</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Crime"))'>Crime</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Documentary"))'>Documentary</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Drama"))'>Drama</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Family"))'>Family</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Fantasy"))'>Fantasy</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Film Noir"))'>Film Noir</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("History"))'>History</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Horror"))'>Horror</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Music"))'>Music</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Mystery"))'>Mystery</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Romance"))'>Romance</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sci-Fi"))'>Sci-Fi</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sport"))'>Sport</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Superhero"))'>Superhero</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Thriller"))'>Thriller</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("War"))'>War</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Western"))'>Western</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 @code {
-    private MovieDetails[] movies;
+    private string TitleToDisplay = "Recommended for You";
+    private List<MovieDetails> moviesToDisplay;
+    private string searchMovieName;
 
     private string apiUrl = "http://localhost:5000/api/Movies/MoviesDetails";
+    private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
+    private string searchMoviesByKeywordApiUrl = "http://localhost:5020/api/v1/search/keyword?keyword=";
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Intentionez sa fac ceva");
-        movies = await Http.GetFromJsonAsync<MovieDetails[]>(apiUrl);
-        Console.WriteLine("Am facut ceva");
+        moviesToDisplay = await Http.GetFromJsonAsync<List<MovieDetails>>(apiUrl);
+    }
+
+
+    private async Task SearchMoviesByName()
+    {
+        IEnumerable<int> moviesIds;
+
+        TitleToDisplay = "Search Result: ";
+        moviesToDisplay = null;
+
+        if (string.IsNullOrWhiteSpace(searchMovieName))
+        {
+            return;
+        }
+
+        var httpResponse = await Http.GetAsync(searchMoviesByKeywordApiUrl + searchMovieName);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE SearchMoviesByName: {httpResponse.ReasonPhrase}");
+            TitleToDisplay = "Sorry, no movies to show 😔";
+            return;
+        }
+
+        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
+
+        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
+
+        searchMovieName = string.Empty;
+    }
+
+
+    private async Task SearchMoviesByCategory(string category)
+    {
+        IEnumerable<int> moviesIds;
+
+        TitleToDisplay = category + " movies:";
+        moviesToDisplay = null;
+
+        Console.WriteLine(searchMoviesByCategoryApiUrl + category);
+        var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE SearchMoviesByCategory: {httpResponse.ReasonPhrase}");
+            TitleToDisplay = $"Sorry, no {category} movies to show 😔";
+            return;
+        }
+
+        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
+
+        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
+
+    }
+
+    private async Task<List<MovieDetails>> GetMovieDetailsFromIdList(IEnumerable<int> moviesIds)
+    {
+        List<MovieDetails> result = new List<MovieDetails>();
+
+        foreach (int id in moviesIds)
+        {
+            Console.WriteLine(id);
+            MovieDetails temp = await GetMovieDetailsById(id);
+            if (temp == null) {  // pentru filmele al caror id inca nu e in MovieManagementService
+                continue;
+            }
+            Console.WriteLine($"{temp.Title} {temp.PosterUrl}");
+            result.Add(temp);
+        }
+
+        return result;
+    }
+
+    private async Task<MovieDetails> GetMovieDetailsById(int id)
+    {
+        string apiUrl = "http://localhost:5000/api/Movies/MoviesDetails/" + id.ToString();
+        MovieDetails movie;
+
+        var httpResponse = await Http.GetAsync(apiUrl);
+
+        if ((int)httpResponse.StatusCode != 200)
+        {
+            Console.WriteLine($"EROARE GetMovieDetailsById: {httpResponse.ReasonPhrase} pentru id-ul {id}");
+            return null;
+        }
+
+        movie = await httpResponse.Content.ReadFromJsonAsync<MovieDetails>();
+
+        return movie;
     }
 
     public class MovieDetails
