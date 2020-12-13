@@ -22,11 +22,11 @@ namespace SearchingMovieMicroservice.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(
-                ImportMovieDataFromCsv().Take(1000)
+                ImportMovieDataFromCsv().Take(10000)
             );
 
             modelBuilder.Entity<MovieWithTag>().HasData(
-                ImportMovieTagsDataFromCsv().Take(1000)
+                ImportMovieTagsDataFromCsv().Take(10000)
             );
 
             base.OnModelCreating(modelBuilder);

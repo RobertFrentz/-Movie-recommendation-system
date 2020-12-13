@@ -21,6 +21,17 @@ namespace ML_TestPredML.ConsoleApp
             SortedList<float, float> predictions = new SortedList<float, float>();
             for (int i = 0; i < 15; i++)
             {
+                if (moviesId.Count == i)
+                {
+                    if(i == 0)
+                    {
+                        return null;
+                    } else
+                    {
+                        break;
+                    }
+                    
+                }
                 ModelInput data = new ModelInput()
                 {
                     UserId = userId,

@@ -23,7 +23,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "SearchingMovieMicroservice/1.0.0": {
+      "SearchingMovieMicroService/1.0.0": {
         "dependencies": {
           "EntityFramework": "6.4.4",
           "ML-TestPredML.ConsoleApp": "1.0.0",
@@ -321,10 +321,10 @@
           "WindowsBase": "4.0.0.0"
         },
         "runtime": {
-          "SearchingMovieMicroservice.dll": {}
+          "SearchingMovieMicroService.dll": {}
         },
         "compile": {
-          "SearchingMovieMicroservice.dll": {}
+          "SearchingMovieMicroService.dll": {}
         }
       },
       "EntityFramework/6.4.4": {
@@ -3501,7 +3501,7 @@
     }
   },
   "libraries": {
-    "SearchingMovieMicroservice/1.0.0": {
+    "SearchingMovieMicroService/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

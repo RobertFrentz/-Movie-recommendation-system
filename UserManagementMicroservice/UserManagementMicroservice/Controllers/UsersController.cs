@@ -10,8 +10,6 @@ using System;
 using JWT;
 using JWT.Serializers;
 using JWT.Exceptions;
-using System.Collections.Specialized;
-using Newtonsoft.Json.Linq;
 using System.Data;
 
 namespace UserManagementMicroservice.Controllers
@@ -32,9 +30,9 @@ namespace UserManagementMicroservice.Controllers
         public ActionResult<List<User>> GetUsers([FromHeader] string jwt)
         {
             string auth = CheckJWT(jwt);
-            if(auth=="Token has expired" || auth=="Token has invalid signature")
+            if(auth=="Token has expired" || auth == "Token has invalid signature")
             {
-                return BadRequest();
+                return Unauthorized();
             }
             else
             {
@@ -43,7 +41,7 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id== Convert.ToInt32(el))).ToList();
                 if(userApproved.Count==0)
                 {
-                    return BadRequest();  
+                    return Forbid();  
                 }
                 else
                 {
@@ -59,7 +57,7 @@ namespace UserManagementMicroservice.Controllers
             List<User> user=new List<User>();
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return BadRequest();
+                return Unauthorized();
             }
             else
             {
@@ -68,7 +66,7 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
                 {
-                    return BadRequest();
+                    return Forbid();
                 }
                 else
                 {
@@ -85,21 +83,20 @@ namespace UserManagementMicroservice.Controllers
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult PutUser([FromBody]User user,[FromHeader] string jwt)
         {
             string auth = CheckJWT(jwt);
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return BadRequest();
+                return Unauthorized();
             }
             else
             {
                 if (!UserExists(user.Id))
-                {
+                { 
                     return NotFound();
                 }
-
                 _context.Update(user);
                 _context.SaveChanges();
             }
@@ -139,7 +136,7 @@ namespace UserManagementMicroservice.Controllers
             List<User> user = new List<User>();
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return BadRequest();
+                return Unauthorized();
             }
             else
             {
@@ -148,7 +145,7 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
                 {
-                    return BadRequest();
+                    return Forbid();
                 }
                 else
                 {
