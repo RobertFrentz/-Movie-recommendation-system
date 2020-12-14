@@ -19,19 +19,8 @@ namespace ML_TestPredML.ConsoleApp
         public static List<int> RecommendedMoviesIdByCategory(float userId, List<int> moviesId)
         {
             SortedList<float, float> predictions = new SortedList<float, float>();
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < moviesId.Count; i++)
             {
-                if (moviesId.Count == i)
-                {
-                    if(i == 0)
-                    {
-                        return null;
-                    } else
-                    {
-                        break;
-                    }
-                    
-                }
                 ModelInput data = new ModelInput()
                 {
                     UserId = userId,
@@ -57,41 +46,19 @@ namespace ML_TestPredML.ConsoleApp
             List<int> moviesIdRecommendedUsingTag = RecommendedMoviesIdByTag(userId, moviesIdTag);
             List<int> moviesIdRecommendedUsingTitle = RecommendedMoviesIdByTitle(userId,  moviesIdTitle);
             List<int> finalMoviesId = new List<int>();
-            Random random = new Random();
-            for(int i = 0; i < 15; i++)
+            int k = 0;
+            for(int i = 0; i < moviesIdRecommendedUsingTag.Count + moviesIdRecommendedUsingTitle.Count; i++)
             {
-                int randomNumber = random.Next(2);
-                if(randomNumber == 0)
-                {
-                    if(moviesIdRecommendedUsingTag != null && moviesIdRecommendedUsingTag.Count > i)
-                    {
-                        finalMoviesId.Add(moviesIdRecommendedUsingTag[i]);
-                    }
-                    else
-                    {
-                        if(moviesIdRecommendedUsingTitle != null && moviesIdRecommendedUsingTitle.Count > i)
-                        {
-                            finalMoviesId.Add(moviesIdRecommendedUsingTitle[i]);
-                        }
-            
-                    }
-                    
-                } else
-                {
-                    if(moviesIdRecommendedUsingTitle != null && moviesIdRecommendedUsingTitle.Count > i)
-                    {
-                        finalMoviesId.Add(moviesIdRecommendedUsingTitle[i]);
-                    }
-                    else
-                    {
-                        if(moviesIdRecommendedUsingTag != null && moviesIdRecommendedUsingTag.Count > i)
-                        {
-                            finalMoviesId.Add(moviesIdRecommendedUsingTag[i]);
-                        }
-                        
-                    }
 
+                if(i < moviesIdRecommendedUsingTitle.Count)
+                {
+                    finalMoviesId.Add(moviesIdRecommendedUsingTitle[i]);
                 }
+                else
+                {
+                    finalMoviesId.Add(moviesIdRecommendedUsingTag[k++]);
+                }
+
             }
             return finalMoviesId;
         }
@@ -100,7 +67,7 @@ namespace ML_TestPredML.ConsoleApp
         {
 
             SortedList<float, float> predictions = new SortedList<float, float>();
-            for (int i = 0; i < moviesId.Count/2; i++)
+            for (int i = 0; i < moviesId.Count; i++)
             {
                 ModelInput data = new ModelInput()
                 {
@@ -126,7 +93,7 @@ namespace ML_TestPredML.ConsoleApp
         {
 
             SortedList<float, float> predictions = new SortedList<float, float>();
-            for (int i = 0; i < moviesId.Count/2; i++)
+            for (int i = 0; i < moviesId.Count; i++)
             {
                 ModelInput data = new ModelInput()
                 {
@@ -139,7 +106,7 @@ namespace ML_TestPredML.ConsoleApp
                     predictions.Add(moviesId[i], predict);
                 }
             }
-            var sortedPredictions = predictions.OrderBy(r => r.Value);
+            var sortedPredictions = predictions.OrderByDescending(r => r.Value);
             moviesId.Clear();
             foreach (KeyValuePair<float, float> prediction in sortedPredictions)
             {

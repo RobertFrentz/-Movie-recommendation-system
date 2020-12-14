@@ -40,12 +40,14 @@ namespace SearchingMovieMicroservice.Controllers
 
         [Route("keyword")]
         [HttpGet]
-        public ActionResult<IEnumerable<int>> RecommendMoviesIdByKeyword(float userId, string keyword)
+        public ActionResult<List<int>> RecommendMoviesIdByKeyword(float userId, string keyword)
         {
-            List<int> moviesIdTag = _context.MovieWithTags.Where(x => x.Tag.ToLower().Contains(keyword) || keyword.Contains(x.Tag))
+            string filteredKeyword = FilteringOperations.FilterKeyword(keyword);
+            Console.WriteLine("Filtered Keyword: " + filteredKeyword);
+            List<int> moviesIdTag = _context.MovieWithTags.Where(x => x.Tag.Replace(" ", "").ToLower().Contains(filteredKeyword) || filteredKeyword.Contains(x.Tag.Replace(" ", "").ToLower()))
                                                           .Select(x => x.MovieId)
                                                           .ToList();
-            List<int> moviesIdTitle = _context.Movies.Where(x => x.Title.ToLower().Contains(keyword)).Select(x => x.Id).ToList();
+            List<int> moviesIdTitle = _context.Movies.Where(x => x.Title.Replace(" ", "").ToLower().Contains(filteredKeyword)).Select(x => x.Id).ToList();
             Console.WriteLine("moviesTag count : " + moviesIdTag.Count + " moviesTitle count : " + moviesIdTitle.Count);
             List<int> recommendations = SearchOperations.RecommendMoviesIdByKeyword(userId, moviesIdTag, moviesIdTitle);
             if(recommendations.Count == 0)
@@ -53,7 +55,7 @@ namespace SearchingMovieMicroservice.Controllers
                 return NoContent();
             } else
             {
-                return recommendations.ToArray();
+                return recommendations;
             }
         }
     }
