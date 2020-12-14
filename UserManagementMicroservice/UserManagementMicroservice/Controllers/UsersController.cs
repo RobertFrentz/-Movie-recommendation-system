@@ -14,6 +14,9 @@ using System.Data;
 
 namespace UserManagementMicroservice.Controllers
 {
+
+    //TOKEN ADMINISTRATOR FOR TESTING eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA
+
     [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -21,43 +24,47 @@ namespace UserManagementMicroservice.Controllers
 
         private readonly DataContext _context;
 
+        private class Error
+        {
+            public Error(string _error_info)
+            {
+                error_info = _error_info;
+            }
+            public string error_info { get; set; }
+        }
+
+        public class Credentials
+        {
+            public string Email { get; set; }
+
+            public string Password { get; set; }
+
+        }
+
+        public class UserRegister
+        {
+            public string UserName { get; set; }
+
+            public string Email { get; set; }
+
+            public string Password { get; set; }
+
+            public string ConfirmPassword { get; set; }
+
+        }
+
         public UsersController(DataContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetUsers([FromHeader] string jwt)
+        public ActionResult<List<User>> GetUsers([FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(jwt);
-            if(auth=="Token has expired" || auth == "Token has invalid signature")
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
-                string el = elements.Remove(elements.Length - 1);
-                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id== Convert.ToInt32(el))).ToList();
-                if(userApproved.Count==0)
-                {
-                    return Forbid();  
-                }
-                else
-                {
-                    return _context.Users.ToList();
-                }
-            }
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult<User> GetUser(int id, [FromHeader] string jwt)
-        {
-            string auth = CheckJWT(jwt);
-            List<User> user=new List<User>();
+            string auth = CheckJWT(Authentification_Token);
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return Unauthorized();
+                return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
@@ -70,10 +77,35 @@ namespace UserManagementMicroservice.Controllers
                 }
                 else
                 {
-                    user = _context.Users.Where(u => u.Id == id).ToList();
-                    if (user == null)
+                    return _context.Users.ToList();
+                }
+            }
+        }
+
+        [HttpGet("{email}")]
+        public ActionResult<User> GetUser(string email, [FromHeader] string Authentification_Token)
+        {
+            string auth = CheckJWT(Authentification_Token);
+            List<User> user = new List<User>();
+            if (auth == "Token has expired" || auth == "Token has invalid signature")
+            {
+                return Unauthorized(new Error("Token has invalid signature or expired"));
+            }
+            else
+            {
+                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string el = elements.Remove(elements.Length - 1);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                if (userApproved.Count == 0)
+                {
+                    return Forbid();
+                }
+                else
+                {
+                    user = _context.Users.Where(u => u.Email == email).ToList();
+                    if (user.Count == 0)
                     {
-                        return NotFound();
+                        return NotFound(new Error("User doesn't exists"));
                     }
 
                     return user[0];
@@ -84,18 +116,18 @@ namespace UserManagementMicroservice.Controllers
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public IActionResult PutUser([FromBody]User user,[FromHeader] string jwt)
+        public IActionResult PutUser([FromBody] User user, [FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(jwt);
+            string auth = CheckJWT(Authentification_Token);
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return Unauthorized();
+                return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
-                if (!UserExists(user.Id))
-                { 
-                    return NotFound();
+                if (!UserExists(user.Email))
+                {
+                    return NotFound(new Error("User doesn't exists"));
                 }
                 _context.Update(user);
                 _context.SaveChanges();
@@ -103,21 +135,58 @@ namespace UserManagementMicroservice.Controllers
             return NoContent();
         }
 
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("login")]
         [HttpPost]
-        public ActionResult<string> PostUser([FromBody]User user)
+        public ActionResult<List<string>> LoginUser([FromBody] Credentials userCredentials)
         {
-            if (!UserExists(user.Id))
+            string hashedMail = Cryptography.HashString(userCredentials.Email);
+            string hashedPassword = Cryptography.HashString(userCredentials.Password);
+            Console.WriteLine("Email: " + hashedMail + " password: " + hashedPassword);
+            List<User> user = _context.Users.Where(u => u.Email == Cryptography.HashString(userCredentials.Email) && u.Password == Cryptography.HashString(userCredentials.Password)).ToList();
+            if (user.Count != 0)
             {
-                _context.Add(user);
-                _context.SaveChanges();
-                return CreateJWT(user);
-            } 
+                List<string> response = new List<string>();
+                response.Add(CreateJWT(user[0]));
+                response.Add(user[0].UserName);
+                return response;
+            }
             else
             {
-                return Conflict();
+                return BadRequest(new Error("Email or password invalid"));
             }
-            
+
+        }
+
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("register")]
+        [HttpPost]
+        public ActionResult<List<string>> PostUser([FromBody] UserRegister user)
+        {
+
+            if (user.Password != user.ConfirmPassword)
+            {
+                return BadRequest(new Error("Passwords don't match"));
+            }
+            if (!UserExists(Cryptography.HashString(user.Email)))
+            {
+                User newUser = new User();
+                newUser.UserName = user.UserName;
+                newUser.Email = user.Email;
+                newUser.Password = user.Password;
+                newUser.Administrator = true;
+                newUser = Cryptography.HashUserData(newUser);
+                _context.Add(newUser);
+                _context.SaveChanges();
+                List<string> jsonResponse = new List<string>();
+                jsonResponse.Add(CreateJWT(newUser));
+                jsonResponse.Add(user.UserName);
+                return jsonResponse;
+            }
+            else
+            {
+                return Conflict(new Error("Email already exists"));
+            }
+
         }
 
 
@@ -129,14 +198,14 @@ namespace UserManagementMicroservice.Controllers
             return CheckJWT(jwtToken);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id,[FromHeader] string jwt)
+        [HttpDelete("{email}")]
+        public IActionResult DeleteUser(string email, [FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(jwt);
+            string auth = CheckJWT(Authentification_Token);
             List<User> user = new List<User>();
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
-                return Unauthorized();
+                return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
@@ -149,10 +218,10 @@ namespace UserManagementMicroservice.Controllers
                 }
                 else
                 {
-                    user = _context.Users.Where(u => u.Id == id).ToList();
-                    if (user == null)
+                    user = _context.Users.Where(u => u.Email == email).ToList();
+                    if (user.Count == 0)
                     {
-                        return NotFound();
+                        return NotFound(new Error("User doesn't exists"));
                     }
 
                     _context.Users.Remove(user[0]);
@@ -161,9 +230,9 @@ namespace UserManagementMicroservice.Controllers
             }
             return NoContent();
         }
-        private bool UserExists(int id)
+        private bool UserExists(string email)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Email == email);
         }
 
         private string CreateJWT(User user)
@@ -171,7 +240,7 @@ namespace UserManagementMicroservice.Controllers
             var token = new JwtBuilder()
                            .WithAlgorithm(new HMACSHA256Algorithm())
                            .WithSecret("GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk")
-                           .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
+                           .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(200).ToUnixTimeSeconds())
                            .AddClaim("userId", user.Id)
                            .Encode();
             return token;

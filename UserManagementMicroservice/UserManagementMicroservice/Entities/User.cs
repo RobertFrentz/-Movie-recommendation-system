@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace UserManagementMicroservice.Entities
 {
     public class User
