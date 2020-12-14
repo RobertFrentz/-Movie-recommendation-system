@@ -1,0 +1,36 @@
+﻿@page "/register"
+@inject HttpClient Http
+
+
+
+<div class="container" style="max-width:650px;">
+
+    <h2 class="font-weight-light text-center mt-4">Sign up</h2>
+    <p>Create an account to receive personalised movies suggestions.</p>
+    @*<hr class="mt-2 mb-5">*@
+
+    <form class="mb-4">
+        <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter username" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" required>
+        </div>
+        <div class="form-group">
+            <label for="rpt-pwd">Repeat password:</label>
+            <input type="password" class="form-control" id="rpt-pwd" placeholder="Enter password"  name="rpt-pwd" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+</div>
+
+
+@code {
+
+}
