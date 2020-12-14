@@ -4,9 +4,6 @@
 @inject NavigationManager NavManager
 
 
-<h2>TEST  | @username | @email | @password | @confirmPassword </h2>
-
-
 @if (isUserLoggedIn)
 {
     <h2>Welcome back, @username</h2>
@@ -75,6 +72,12 @@ else
     private async Task SendRegisterData()
     {
         string apiUrl = "http://localhost:5050/api/v1/users/register";
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
+        {
+            return;
+        }
 
         RegisterCredentials loginCredentials = new RegisterCredentials { userName = username, email = email, password = password, confirmPassword = confirmPassword };
 

@@ -11,6 +11,8 @@ namespace UserManagementMicroservice
 {
     public class Startup
     {
+        readonly string MyAllowedSpecificOrigins = "_AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +29,17 @@ namespace UserManagementMicroservice
             {
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowedSpecificOrigins, builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+                });
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserManagementMicroservice", Version = "v1" });
@@ -42,6 +55,8 @@ namespace UserManagementMicroservice
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserManagementMicroservice v1"));
             }
+
+            app.UseCors(MyAllowedSpecificOrigins);
 
             app.UseRouting();
 
