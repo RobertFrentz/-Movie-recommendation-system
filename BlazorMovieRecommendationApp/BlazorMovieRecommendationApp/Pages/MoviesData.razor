@@ -11,7 +11,11 @@
 
         @if (moviesToDisplay == null)
         {
-            <p><em>Loading Movies Data...</em></p>
+            if (searchResultIsEmpty == false)
+            {
+                <p><em>Loading Movies Data...</em></p>
+
+            }
         }
         else
         {
@@ -74,6 +78,7 @@
     private string TitleToDisplay = "Recommended for You";
     private List<MovieDetails> moviesToDisplay;
     private string searchMovieName;
+    private bool searchResultIsEmpty;
 
     private string apiUrl = "http://localhost:5000/api/Movies/MoviesDetails";
     private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
@@ -91,6 +96,7 @@
 
         TitleToDisplay = "Search Result: ";
         moviesToDisplay = null;
+        searchResultIsEmpty = false;
 
         if (string.IsNullOrWhiteSpace(searchMovieName))
         {
@@ -103,6 +109,7 @@
         {
             Console.WriteLine($"EROARE SearchMoviesByName: {httpResponse.ReasonPhrase}");
             TitleToDisplay = "Sorry, no movies to show 😔";
+            searchResultIsEmpty = true;
             return;
         }
 
@@ -121,6 +128,7 @@
 
         TitleToDisplay = category + " movies:";
         moviesToDisplay = null;
+        searchResultIsEmpty = false;
 
         Console.WriteLine(searchMoviesByCategoryApiUrl + category);
         var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
@@ -129,6 +137,7 @@
         {
             Console.WriteLine($"EROARE SearchMoviesByCategory: {httpResponse.ReasonPhrase}");
             TitleToDisplay = $"Sorry, no {category} movies to show 😔";
+            searchResultIsEmpty = true;
             return;
         }
 
@@ -147,7 +156,8 @@
         {
             Console.WriteLine(id);
             MovieDetails temp = await GetMovieDetailsById(id);
-            if (temp == null) {  // pentru filmele al caror id inca nu e in MovieManagementService
+            if (temp == null)
+            {  // pentru filmele al caror id inca nu e in MovieManagementService
                 continue;
             }
             Console.WriteLine($"{temp.Title} {temp.PosterUrl}");
