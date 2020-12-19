@@ -4,13 +4,9 @@ using UserManagementMicroservice.Data;
 using UserManagementMicroservice.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using JWT.Builder;
-using JWT.Algorithms;
 using System;
-using JWT;
-using JWT.Serializers;
-using JWT.Exceptions;
 using System.Data;
+using JWT;
 
 namespace UserManagementMicroservice.Controllers
 {
@@ -61,7 +57,7 @@ namespace UserManagementMicroservice.Controllers
         [HttpGet]
         public ActionResult<List<User>> GetUsers([FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(Authentification_Token);
+            string auth = JWT.CheckJWT(Authentification_Token);
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
@@ -85,7 +81,7 @@ namespace UserManagementMicroservice.Controllers
         [HttpGet("{email}")]
         public ActionResult<User> GetUser(string email, [FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(Authentification_Token);
+            string auth = JWT.CheckJWT(Authentification_Token);
             List<User> user = new List<User>();
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
@@ -118,7 +114,7 @@ namespace UserManagementMicroservice.Controllers
         [HttpPut]
         public IActionResult PutUser([FromBody] User user, [FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(Authentification_Token);
+            string auth = JWT.CheckJWT(Authentification_Token);
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
@@ -146,7 +142,7 @@ namespace UserManagementMicroservice.Controllers
             if (user.Count != 0)
             {
                 List<string> response = new List<string>();
-                response.Add(CreateJWT(user[0]));
+                response.Add(JWT.CreateJWT(user[0]));
                 response.Add(user[0].UserName);
                 return response;
             }
@@ -162,8 +158,7 @@ namespace UserManagementMicroservice.Controllers
         [HttpPost]
         public ActionResult<List<string>> PostUser([FromBody] UserRegister user)
         {
-
-            if (user.Password != user.ConfirmPassword)
+            if (!InputValidationOperations.ArePasswordsEqual(user.Password, user.ConfirmPassword))
             {
                 return BadRequest(new Error("Passwords don't match"));
             }
@@ -178,7 +173,7 @@ namespace UserManagementMicroservice.Controllers
                 _context.Add(newUser);
                 _context.SaveChanges();
                 List<string> jsonResponse = new List<string>();
-                jsonResponse.Add(CreateJWT(newUser));
+                jsonResponse.Add(JWT.CreateJWT(newUser));
                 jsonResponse.Add(user.UserName);
                 return jsonResponse;
             }
@@ -195,13 +190,13 @@ namespace UserManagementMicroservice.Controllers
         [HttpGet]
         public ActionResult<string> CheckUser(string jwtToken)
         {
-            return CheckJWT(jwtToken);
+            return JWT.CheckJWT(jwtToken);
         }
 
         [HttpDelete("{email}")]
         public IActionResult DeleteUser(string email, [FromHeader] string Authentification_Token)
         {
-            string auth = CheckJWT(Authentification_Token);
+            string auth = JWT.CheckJWT(Authentification_Token);
             List<User> user = new List<User>();
             if (auth == "Token has expired" || auth == "Token has invalid signature")
             {
@@ -235,40 +230,5 @@ namespace UserManagementMicroservice.Controllers
             return _context.Users.Any(e => e.Email == email);
         }
 
-        private string CreateJWT(User user)
-        {
-            var token = new JwtBuilder()
-                           .WithAlgorithm(new HMACSHA256Algorithm())
-                           .WithSecret("GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk")
-                           .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(200).ToUnixTimeSeconds())
-                           .AddClaim("userId", user.Id)
-                           .Encode();
-            return token;
-        }
-
-        private string CheckJWT(string jwtToken)
-        {
-            string json;
-            try
-            {
-                IJsonSerializer serializer = new JsonNetSerializer();
-                var provider = new UtcDateTimeProvider();
-                IJwtValidator validator = new JwtValidator(serializer, provider);
-                IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-                IJwtAlgorithm algorithm = new HMACSHA256Algorithm(); // symmetric
-                IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, algorithm);
-
-                json = decoder.Decode(jwtToken, "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk", verify: true);
-            }
-            catch (TokenExpiredException)
-            {
-                return "Token has expired";
-            }
-            catch (SignatureVerificationException)
-            {
-                return "Token has invalid signature";
-            }
-            return json;
-        }
     }
 }
