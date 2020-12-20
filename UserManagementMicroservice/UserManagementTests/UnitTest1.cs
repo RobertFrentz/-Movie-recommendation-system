@@ -1,6 +1,10 @@
 using System;
 using Xunit;
 using UserManagementMicroservice;
+using UserManagementMicroservice.Entities;
+using System.Text;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace UserManagementTests
 {
@@ -50,19 +54,50 @@ namespace UserManagementTests
         [Fact]
         public void GenerateJWTWithExpiredClaim_CheckIfValid_ReturnFalse()
         {
-
+            //aici nu prea am inteles, daca poti face tu si eventual adaugi alte teste pe care sa le fac :)
         }
 
-        [Fact]
-        public void GenerateJWTAndModifyOneChar_CheckIfValid_ReturnFalse()
+        //trebuie modificat la final, unde e signatura, ca altfel da eroare la json parser :)
+        [Theory]
+        [MemberData(nameof(GetUserDataTest))]
+        public void GenerateJWTAndModifyOneChar_CheckIfValid_ReturnFalse(User user)
         {
-
+                string jwt = UserManagementMicroservice.JWT.CreateJWT(user);
+                Console.WriteLine(jwt);
+                StringBuilder stringBuilder = new StringBuilder(jwt);
+                stringBuilder[stringBuilder.Length-1] = '/';
+                string changedJWT = stringBuilder.ToString();
+                Console.WriteLine(changedJWT);
+                Assert.Equal("Token has invalid signature", UserManagementMicroservice.JWT.CheckJWT(changedJWT));
         }
 
-        [Fact]
-        public void GenerateJWT_CheckIfValid_ReturnTrue()
+        public static IEnumerable<object[]> GetUserDataTest()
         {
+            //yield e ca sa returneze un iterabal object
+            yield return new object[]
+            {
+                    new User() {Id = 1, UserName = "costel", Password = "lala", Email = "costel@gmail.com", Administrator = false}
+            };
+            yield return new object[]
+            {
+                    new User() {Id = 5, UserName = "gigel", Password = "lulu", Email = "gigel@gmail.com", Administrator = false}
+            };
+            yield return new object[]
+            {
+                    new User() {Id = 10, UserName = "sorinel", Password = "lele", Email = "sorinel@gmail.com", Administrator = true}
+            };
+        }
+        
 
+        [Theory]
+        [MemberData(nameof(GetUserDataTest))]
+        public void GenerateJWT_CheckIfValid_ReturnTrue(User user)
+        {
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(user);
+            Console.WriteLine(jwt);
+            string output = UserManagementMicroservice.JWT.CheckJWT(jwt);
+            Assert.NotEqual("Token has invalid signature", output);
+            Assert.NotEqual("Token has expired", output);
         }
     }
 }
