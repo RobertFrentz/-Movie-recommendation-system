@@ -18,8 +18,7 @@ else
         <p>Create an account to receive personalised movies suggestions.</p>
         @*<hr class="mt-2 mb-5">*@
 
-        @*<form class="mb-4">*@
-        <div class="mb-4">
+        <form class="mb-4" onsubmit="return false">
             <div class="form-group">
                 <label for="name">Username</label>
                 <input type="text" class="form-control" id="name" placeholder="Enter username" name="name" required @bind="username">
@@ -46,7 +45,7 @@ else
                     <strong>Attention!</strong> @registerErrorMessage.
                 </div>
             }
-        </div>
+        </form>
     </div>
 }
 
@@ -100,7 +99,7 @@ else
         await sessionStorage.SetItemAsync("jwt", temp[0]);
         await sessionStorage.SetItemAsync("username", temp[1]);
 
-        NavManager.NavigateTo("/movies");
+        NavManager.NavigateTo("/movies", true);
     }
 
     public async Task<bool> IsLoggedIn()

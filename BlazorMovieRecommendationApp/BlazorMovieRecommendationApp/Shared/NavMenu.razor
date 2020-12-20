@@ -1,4 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager NavManager
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">NETflix</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -7,36 +10,48 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
+        @*<li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>*@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="movies">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Movies
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Login
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="register">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Register
-            </NavLink>
-        </li>
+        @if (!isUserLoggedIn)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Login
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="register">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Register
+                </NavLink>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" style="cursor: pointer" @onclick='(() => LogOut())'>
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Log out
+                </NavLink>
+            </li>
+        }
+
     </ul>
 </div>
 
@@ -45,8 +60,29 @@
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    bool isUserLoggedIn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isUserLoggedIn = await IsLoggedIn();
+    }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    public async Task<bool> IsLoggedIn()
+    {
+        var token = await sessionStorage.GetItemAsync<string>("jwt");
+        return !string.IsNullOrWhiteSpace(token);
+    }
+
+    public async void LogOut()
+    {
+        //this will clear the session data
+        await sessionStorage.ClearAsync();
+        NavManager.NavigateTo("/login", true);
+    }
+
 }

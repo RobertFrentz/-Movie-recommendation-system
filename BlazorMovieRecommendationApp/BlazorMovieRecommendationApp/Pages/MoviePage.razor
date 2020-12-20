@@ -1,0 +1,93 @@
+﻿@page "/movies/{movieId:int}"
+@inject HttpClient Http
+@using Newtonsoft.Json
+
+
+@if (finishedLoading)
+{
+    <div class="container">
+
+        <h2 class="font-weight-light text-center text-lg-left mt-4 mb-0">@jsonObject.Title</h2>
+        <hr class="mt-2 mb-5">
+
+        <div class="container-fluid border p-3">
+
+            <div class="media">
+
+                <img src="@jsonObject.Poster" class="mr-4" style="width:300px">
+
+
+                <div class="media-body">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td><h4>Title</h4></td>
+                                <td>@jsonObject.Title</td>
+                            </tr>
+                            <tr>
+                                <td><h4>Released</h4></td>
+                                <td>@jsonObject.Released</td>
+                            </tr>
+                            <tr>
+                                <td><h4>Runtime</h4></td>
+                                <td>@jsonObject.Runtime</td>
+                            </tr>
+                            <tr>
+                                <td><h4>Genre</h4></td>
+                                <td>@jsonObject.Genre</td>
+                            </tr>
+                            <tr>
+                                <td><h4>Ratings</h4></td>
+                                <td>
+                                    <ul>
+                                        @foreach (var item in jsonObject.Ratings)
+                                        {
+                                            <li>@item.Source: @item.Value</li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><h4>IMDb Rating</h4></td>
+                                <td>@jsonObject.imdbRating</td>
+                            </tr>
+                            <tr>
+                                <td><h4>Production</h4></td>
+                                <td>@jsonObject.Production</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="container-fluid">
+                <h3 class="font-weight-light text-center text-lg-left mt-0 mb-0">Plot</h3>
+                <hr class="mt-2 mb-3">
+                <p>@jsonObject.Plot</p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public int movieId { get; set; }
+    private bool finishedLoading = false;
+    private string jsonString;
+    private dynamic jsonObject = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        string URL = "http://localhost:5000/api/Movies/MoviesData/" + movieId;
+        jsonString = await Http.GetStringAsync(URL);
+        jsonObject = JsonConvert.DeserializeObject(jsonString);
+        finishedLoading = true;
+    }
+}

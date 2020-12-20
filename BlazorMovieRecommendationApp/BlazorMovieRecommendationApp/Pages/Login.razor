@@ -16,8 +16,8 @@ else
         <h2 class="font-weight-light text-center mt-4">Sign in</h2>
         <p>Login to receive personalised movies suggestions.</p>
 
-        @*<form class="mb-4">*@
-        <div class="mb-4">
+        <form class="mb-4" onsubmit="return false">
+            @*<div class="mb-4">*@
             <div class="form-group">
                 <label for="email">Email address:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required @bind="email">
@@ -35,7 +35,8 @@ else
                     <strong>Attention!</strong> Invalid email or password.
                 </div>
             }
-        </div>
+            @*</div>*@
+        </form>
 
     </div>
 }
@@ -88,7 +89,7 @@ else
         await sessionStorage.SetItemAsync("jwt", temp[0]);
         await sessionStorage.SetItemAsync("username", temp[1]);
 
-        NavManager.NavigateTo("/movies");
+        NavManager.NavigateTo("/movies", true);
     }
 
     public async Task<bool> IsLoggedIn()

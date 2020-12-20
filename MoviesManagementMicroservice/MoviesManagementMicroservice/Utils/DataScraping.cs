@@ -32,5 +32,26 @@ namespace MoviesManagementMicroservice.Utils
             return posterAddress;
         }
 
+        public static async Task<string> GetImdbMovieData(int id)
+        {
+            string idString = id.ToString().PadLeft(7, '0');
+
+            string URL = "http://www.omdbapi.com/?i=tt" + idString + "&plot=full&apikey=762854f2";
+
+            HttpClient client = new HttpClient();
+
+            string jsonString = "";
+
+            using (var httpClient = new HttpClient())
+            {
+                var json = await httpClient.GetStringAsync(URL);
+
+                jsonString = json;
+            }
+
+            //Console.WriteLine("URL Link: " + URL);
+            //Console.WriteLine("JSON is: " + jsonString);
+            return jsonString;
+        }
     }
 }

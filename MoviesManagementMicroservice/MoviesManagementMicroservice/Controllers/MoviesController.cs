@@ -31,9 +31,9 @@ namespace MoviesManagementMicroservice.Controllers
         }
 
         // GET: api/MoviesDetails
-        [Route("MoviesDetails")]
+        [Route("HomeMoviesData")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetMoviesDetailsAsync()
+        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetHomeMoviesData()
         {
             List<Movie> movies = _context.Movies.Take(20).ToList();
             List<MovieDetails> moviesDetails = new List<MovieDetails>();
@@ -58,9 +58,9 @@ namespace MoviesManagementMicroservice.Controllers
             return Ok(moviesDetails);
         }
 
-        [Route("MoviesDetails/{movieId}")]
+        [Route("HomeMoviesData/{movieId}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetMovieDetailsById(int movieId)
+        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetHomeMovieDataById(int movieId)
         {
             Movie movie = movie = await _context.Movies.FindAsync(movieId);
             if (movie == null)
@@ -88,6 +88,27 @@ namespace MoviesManagementMicroservice.Controllers
             await _context.SaveChangesAsync(); // pentru salvarea link-urilor in database
 
             return Ok(movieDetails);
+        }
+
+        [Route("MoviesData/{movieId}")]
+        [HttpGet]
+        public async Task<ActionResult<string>> GetMovieDataById(int movieId)
+        {
+            Movie movie = movie = await _context.Movies.FindAsync(movieId);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            Link link = await _context.Links.FindAsync(movieId);
+            if (link == null)
+            {
+                Console.WriteLine("Link NOT FOUND");
+                return NotFound();
+            }
+
+            string json = await DataScraping.GetImdbMovieData(link.ImdbId);
+            return Ok(json);
         }
 
         // GET: api/Movies/5
