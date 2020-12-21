@@ -25,6 +25,12 @@
                                 <td>@jsonObject.Title</td>
                             </tr>
                             <tr>
+                                <td><h4>Rating</h4></td>
+                                <td>
+                                        <RadzenRating Change=@(args => OnChange(args, "Rating with 5 stars")) />
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><h4>Released</h4></td>
                                 <td>@jsonObject.Released</td>
                             </tr>
@@ -46,10 +52,6 @@
                                         }
                                     </ul>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td><h4>IMDb Rating</h4></td>
-                                <td>@jsonObject.imdbRating</td>
                             </tr>
                             <tr>
                                 <td><h4>Production</h4></td>
@@ -89,5 +91,10 @@
         jsonString = await Http.GetStringAsync(URL);
         jsonObject = JsonConvert.DeserializeObject(jsonString);
         finishedLoading = true;
+    }
+
+    void OnChange(int value, string name)
+    {
+        Console.WriteLine($"{name} value changed to {value}");
     }
 }
