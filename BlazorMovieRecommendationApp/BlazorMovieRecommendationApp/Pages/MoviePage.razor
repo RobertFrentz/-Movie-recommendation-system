@@ -1,6 +1,7 @@
 ﻿@page "/movies/{movieId:int}"
 @inject HttpClient Http
 @using Newtonsoft.Json
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
 @if (finishedLoading)
@@ -27,7 +28,7 @@
                             <tr>
                                 <td><h4>Rating</h4></td>
                                 <td>
-                                        <RadzenRating Change=@(args => OnChange(args, "Rating with 5 stars")) />
+                                    <RadzenRating Change=@(args => OnChange(args, "Rating with 5 stars")) />
                                 </td>
                             </tr>
                             <tr>
@@ -83,7 +84,8 @@
     private bool finishedLoading = false;
     private string jsonString;
     private dynamic jsonObject = null;
-
+    private string token;
+    private int starsRating;
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,10 +93,40 @@
         jsonString = await Http.GetStringAsync(URL);
         jsonObject = JsonConvert.DeserializeObject(jsonString);
         finishedLoading = true;
+        token = await sessionStorage.GetItemAsync<string>("jwt");
     }
 
-    void OnChange(int value, string name)
+    private async Task GetRating()
+    {
+        string urlGet = "http://localhost:5050/api/v1/ratings?movieId=" + movieId;
+        var httpResponse = await Http.GetAsync(urlGet);
+        starsRating = await httpResponse.Content.ReadFromJsonAsync<int>();
+
+    }
+
+    private async Task OnChange(int value, string name)
     {
         Console.WriteLine($"{name} value changed to {value}");
+        string url = "http://localhost:5050/api/v1/ratings";
+        if (value == 0)
+        {
+            string urlDelete = "http://localhost:5050/api/v1/ratings/" + movieId;
+            Http.DefaultRequestHeaders.Add("Authentification_Token", token);
+            var httpResponse = await Http.DeleteAsync(url);
+        }
+        else
+        {
+            MovieRating movieRating = new MovieRating { movieId = movieId, rating = value};
+            Console.WriteLine(movieRating.rating);
+            Http.DefaultRequestHeaders.Add("Authentification_Token", token);
+            var httpResponse = await Http.PostAsJsonAsync(url, movieRating);
+        }
+
+    }
+
+    public class MovieRating
+    {
+        public int movieId { get; set; }
+        public int rating { get; set; }
     }
 }
