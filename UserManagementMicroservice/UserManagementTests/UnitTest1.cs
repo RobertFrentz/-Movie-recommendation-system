@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UserManagementMicroservice.Data;
 using Microsoft.EntityFrameworkCore;
 using UserManagementMicroservice.Controllers;
-using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace UserManagementTests
 {
@@ -45,11 +45,11 @@ namespace UserManagementTests
         public void ValidAdministrator_GetUsers_ReturnAListOfRegisteredUsers()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                              .UseInMemoryDatabase(databaseName: "UserDataBase")
+                              .UseInMemoryDatabase(databaseName: "GetUsersDataBase")
                               .Options;
             var context = new DataContext(options);
-            context.Users.Add(GetTestUser(1));
-            context.Users.Add(GetTestUser(2));
+            context.Add(GetTestUser(1));
+            context.Add(GetTestUser(2));
             context.SaveChanges();
             UsersController usersController = new UsersController(context);
             var result = usersController.GetUsers("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
@@ -64,6 +64,114 @@ namespace UserManagementTests
             Assert.Equal("mist@gmail.com", result[1].Email);
             Assert.False(result[1].Administrator);
 
+        }
+
+        [Fact]
+        public void ValidAdministrator_GetUser_ReturnASpecifiedUserByEmail()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "GetUserSpecifiedDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            context.Users.Add(GetTestUser(1));
+            context.Users.Add(GetTestUser(2));
+            context.SaveChanges();
+            UsersController usersController = new UsersController(context);
+            var user1 = usersController.GetUser("has@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
+            var user2 = usersController.GetUser("mist@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
+            Assert.Equal(1, user1.Id);
+            Assert.Equal("Test One", user1.UserName);
+            Assert.Equal("123", user1.Password);
+            Assert.Equal("has@gmail.com", user1.Email);
+            Assert.False(user1.Administrator);
+            Assert.Equal(2, user2.Id);
+            Assert.Equal("Test Two", user2.UserName);
+            Assert.Equal("123", user2.Password);
+            Assert.Equal("mist@gmail.com", user2.Email);
+            Assert.False(user2.Administrator);
+        }
+
+        [Fact]
+        public void UpdatingAnExistingUser_PutUser_ReturnNoContent()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "PutUserSpecifiedDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            UsersController usersController = new UsersController(context);
+            UsersController.UserRegister addUser1 = new UsersController.UserRegister() { UserName = "Test One", Password = "123", Email = "has@gmail.com", ConfirmPassword = "123" };
+            UsersController.UserRegister addUser2 = new UsersController.UserRegister() { UserName = "Test Two", Password = "123", Email = "mist@gmail.com", ConfirmPassword = "123" };
+            usersController.PostUser(addUser1);
+            usersController.PostUser(addUser2);
+            User user1 = new User() { UserName = "Mirel", Password = "123", Email = "has@gmail.com", Administrator = false };
+            User user2 = new User() { UserName = "Sandel", Password = "123456", Email = "mist@gmail.com", Administrator = false };
+            var requestForUser1 = usersController.PutUser(user1, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
+            var requestForUser2 = usersController.PutUser(user2, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
+            Assert.IsType<NoContentResult>(requestForUser1);
+            Assert.IsType<NoContentResult>(requestForUser2);
+
+        }
+
+        [Fact]
+        public void RegisterNotExistingUser_WithMatchingPasswords_ReturnListWithJWTAndUsername()
+        {
+            string expected = "Marian";
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "PostUsersDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            UsersController usersController = new UsersController(context);
+            var result = usersController.PostUser(new UsersController.UserRegister()
+            {
+                UserName = "Marian",
+                Email = "mist@gmail.com",
+                Password = "123",
+                ConfirmPassword = "123"
+            }).Value;
+            Assert.Equal(expected, result[1]);
+        }
+
+        [Fact]
+        public void LoginExistingUser_WithMatchinCredentials_ReturnListWithJWTAndUsername()
+        {
+            string expected = "Dexter";
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "LoginUsersDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            UsersController usersController = new UsersController(context);
+            var resultRegister = usersController.PostUser(new UsersController.UserRegister()
+            {
+                UserName = "Dexter",
+                Email = "dexter@gmail.com",
+                Password = "123",
+                ConfirmPassword = "123"
+            });
+            var resultLogin = usersController.LoginUser(new UsersController.Credentials()
+            {
+                Email = "dexter@gmail.com",
+                Password = "123",
+            }).Value;
+            Assert.Equal(expected, resultLogin[1]);
+        }
+
+        [Fact]
+        public void DeleteExistingUser_ReturnOk()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "DeleteUsersDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            UsersController usersController = new UsersController(context);
+            var resultRegister = usersController.PostUser(new UsersController.UserRegister()
+            {
+                UserName = "Mitica",
+                Email = "mitica@gmail.com",
+                Password = "123",
+                ConfirmPassword = "123"
+            });
+            var resultDelete = usersController.DeleteUser("mitica@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
+            Assert.IsType<NoContentResult>(resultDelete);
         }
     }
     public class UnitTest1

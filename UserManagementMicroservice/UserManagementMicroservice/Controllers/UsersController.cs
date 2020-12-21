@@ -87,7 +87,6 @@ namespace UserManagementMicroservice.Controllers
         public ActionResult<User> GetUser(string email, [FromHeader] string Authentification_Token)
         {
             string jwtDecoded = JWT.CheckJWT(Authentification_Token);
-            List<User> user = new List<User>();
             if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
@@ -97,23 +96,23 @@ namespace UserManagementMicroservice.Controllers
                 string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
                 string el = elements.Remove(elements.Length - 1);
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
                 if (userApproved.Count == 0)
                 {
                     if (Authentification_Token == AdminJWT)
                     {
-                        return user[0];
+                        return user;
                     }
                     return Forbid();
                 }
                 else
                 {
-                    user = _context.Users.Where(u => u.Email == email).ToList();
-                    if (user.Count == 0)
+                    if (user == null)
                     {
                         return NotFound(new Error("User doesn't exists"));
                     }
 
-                    return user[0];
+                    return user;
                 }
             }
 
@@ -130,7 +129,7 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                if (!UserExists(user.Email))
+                if (!UserExists(Cryptography.HashString(user.Email)))
                 {
                     return NotFound(new Error("User doesn't exists"));
                 }
@@ -146,7 +145,6 @@ namespace UserManagementMicroservice.Controllers
         {
             string hashedMail = Cryptography.HashString(userCredentials.Email);
             string hashedPassword = Cryptography.HashString(userCredentials.Password);
-            Console.WriteLine("Email: " + hashedMail + " password: " + hashedPassword);
             List<User> user = _context.Users.Where(u => u.Email == Cryptography.HashString(userCredentials.Email) && u.Password == Cryptography.HashString(userCredentials.Password)).ToList();
             if (user.Count != 0)
             {
@@ -220,7 +218,7 @@ namespace UserManagementMicroservice.Controllers
                 {
                     if(Authentification_Token == AdminJWT)
                     {
-                        user = _context.Users.Where(u => u.Email == email).ToList();
+                        user = _context.Users.Where(u => u.Email == Cryptography.HashString(email)).ToList();
                         if (user.Count == 0)
                         {
                             return NotFound(new Error("User doesn't exists"));
@@ -228,12 +226,13 @@ namespace UserManagementMicroservice.Controllers
 
                         _context.Users.Remove(user[0]);
                         _context.SaveChanges();
+                        return NoContent();
                     }
                     return Forbid();
                 }
                 else
                 {
-                    user = _context.Users.Where(u => u.Email == email).ToList();
+                    user = _context.Users.Where(u => u.Email == Cryptography.HashString(email)).ToList();
                     if (user.Count == 0)
                     {
                         return NotFound(new Error("User doesn't exists"));
