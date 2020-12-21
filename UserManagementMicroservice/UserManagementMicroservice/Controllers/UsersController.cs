@@ -141,7 +141,7 @@ namespace UserManagementMicroservice.Controllers
             if (user.Count != 0)
             {
                 List<string> response = new List<string>();
-                response.Add(JWT.CreateJWT(user[0]));
+                response.Add(JWT.CreateJWT(user[0].Id, 1));
                 response.Add(user[0].UserName);
                 return response;
             }
@@ -172,7 +172,7 @@ namespace UserManagementMicroservice.Controllers
                 _context.Add(newUser);
                 _context.SaveChanges();
                 List<string> jsonResponse = new List<string>();
-                jsonResponse.Add(JWT.CreateJWT(newUser));
+                jsonResponse.Add(JWT.CreateJWT(newUser.Id, 1));
                 jsonResponse.Add(user.UserName);
                 return jsonResponse;
             }

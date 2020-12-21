@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagementMicroservice"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagementTests", "UserManagementTests\UserManagementTests.csproj", "{4FEBBAE6-E751-4330-9BA7-6EFAC2AA6E26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTestProject1", "NUnitTestProject1\NUnitTestProject1.csproj", "{CAFD5CE1-21DD-4786-AA49-EFE39CB58797}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{4FEBBAE6-E751-4330-9BA7-6EFAC2AA6E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FEBBAE6-E751-4330-9BA7-6EFAC2AA6E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FEBBAE6-E751-4330-9BA7-6EFAC2AA6E26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAFD5CE1-21DD-4786-AA49-EFE39CB58797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAFD5CE1-21DD-4786-AA49-EFE39CB58797}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAFD5CE1-21DD-4786-AA49-EFE39CB58797}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAFD5CE1-21DD-4786-AA49-EFE39CB58797}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

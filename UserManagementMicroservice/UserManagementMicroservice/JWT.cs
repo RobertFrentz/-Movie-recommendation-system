@@ -4,19 +4,18 @@ using JWT.Builder;
 using JWT.Exceptions;
 using JWT.Serializers;
 using System;
-using UserManagementMicroservice.Entities;
 
 namespace UserManagementMicroservice
 {
     public class JWT
     {
-        public static string CreateJWT(User user)
+        public static string CreateJWT(int userId, int time)
         {
             var token = new JwtBuilder()
                            .WithAlgorithm(new HMACSHA256Algorithm())
                            .WithSecret("GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk")
-                           .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
-                           .AddClaim("userId", user.Id)
+                           .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(time).ToUnixTimeSeconds())
+                           .AddClaim("userId", userId)
                            .Encode();
             return token;
         }

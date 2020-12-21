@@ -1,7 +1,4 @@
 ﻿
-
-using System;
-
 namespace UserManagementMicroservice.Entities
 {
     public class User
@@ -18,4 +15,6 @@ namespace UserManagementMicroservice.Entities
         public bool Administrator { get; set; }
 
     }
+
+    
 }
