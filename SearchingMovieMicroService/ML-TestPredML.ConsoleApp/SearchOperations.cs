@@ -8,8 +8,6 @@ namespace ML_TestPredML.ConsoleApp
     public class SearchOperations
     {
 
-      
-
         public static float Prediction(ModelInput data)
         {
             var predictionResult = ConsumeModel.Predict(data);

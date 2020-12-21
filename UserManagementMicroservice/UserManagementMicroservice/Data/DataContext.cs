@@ -11,5 +11,6 @@ namespace UserManagementMicroservice.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
     }
 }

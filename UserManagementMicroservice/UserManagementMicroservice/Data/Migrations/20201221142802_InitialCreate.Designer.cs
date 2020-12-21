@@ -8,7 +8,7 @@ using UserManagementMicroservice.Data;
 namespace UserManagementMicroservice.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201212163524_InitialCreate")]
+    [Migration("20201221142802_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -16,6 +16,26 @@ namespace UserManagementMicroservice.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("UserManagementMicroservice.Entities.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ratings");
+                });
 
             modelBuilder.Entity("UserManagementMicroservice.Entities.User", b =>
                 {

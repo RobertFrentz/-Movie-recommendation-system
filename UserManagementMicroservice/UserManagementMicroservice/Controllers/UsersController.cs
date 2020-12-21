@@ -56,14 +56,14 @@ namespace UserManagementMicroservice.Controllers
         [HttpGet]
         public ActionResult<List<User>> GetUsers([FromHeader] string Authentification_Token)
         {
-            string auth = JWT.CheckJWT(Authentification_Token);
-            if (auth == "Token has expired" || auth == "Token has invalid signature")
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
-                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
                 string el = elements.Remove(elements.Length - 1);
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
@@ -80,15 +80,15 @@ namespace UserManagementMicroservice.Controllers
         [HttpGet("{email}")]
         public ActionResult<User> GetUser(string email, [FromHeader] string Authentification_Token)
         {
-            string auth = JWT.CheckJWT(Authentification_Token);
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
             List<User> user = new List<User>();
-            if (auth == "Token has expired" || auth == "Token has invalid signature")
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
-                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
                 string el = elements.Remove(elements.Length - 1);
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
@@ -113,8 +113,8 @@ namespace UserManagementMicroservice.Controllers
         [HttpPut]
         public IActionResult PutUser([FromBody] User user, [FromHeader] string Authentification_Token)
         {
-            string auth = JWT.CheckJWT(Authentification_Token);
-            if (auth == "Token has expired" || auth == "Token has invalid signature")
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
@@ -195,15 +195,15 @@ namespace UserManagementMicroservice.Controllers
         [HttpDelete("{email}")]
         public IActionResult DeleteUser(string email, [FromHeader] string Authentification_Token)
         {
-            string auth = JWT.CheckJWT(Authentification_Token);
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
             List<User> user = new List<User>();
-            if (auth == "Token has expired" || auth == "Token has invalid signature")
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
             else
             {
-                string elements = auth.Split(',').ToList()[1].Split(':').ToList()[1];
+                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
                 string el = elements.Remove(elements.Length - 1);
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
