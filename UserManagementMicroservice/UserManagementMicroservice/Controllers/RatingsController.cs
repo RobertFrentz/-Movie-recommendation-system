@@ -75,6 +75,10 @@ namespace UserManagementMicroservice.Controllers
                 {
                     return NotFound(new Error("Rating doesn't exist"));
                 }
+                if (requestRating.Score >= 1 && requestRating.Score <= 5)
+                {
+                    return BadRequest(new Error("Score must be between 1 and 5"));
+                }
                 else
                 {
                     rating.Score = requestRating.Score;
@@ -100,6 +104,10 @@ namespace UserManagementMicroservice.Controllers
                 if(_context.Ratings.Any(u => u.Id == Convert.ToInt32(jwtUserId) && u.MovieId == requestRating.MovieId))
                 {
                     return Conflict(new Error("Rating already exists"));
+                }
+                if(requestRating.Score >= 1 && requestRating.Score <= 5)
+                {
+                    return BadRequest(new Error("Score must be between 1 and 5"));
                 }
                 else
                 {
