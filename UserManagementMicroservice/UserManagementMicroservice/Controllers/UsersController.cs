@@ -16,6 +16,8 @@ namespace UserManagementMicroservice.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        public const string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA";
+
 
         private readonly DataContext _context;
 
@@ -68,6 +70,10 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
                 {
+                    if(Authentification_Token == AdminJWT)
+                    {
+                        return _context.Users.ToList();
+                    }
                     return Forbid();
                 }
                 else
@@ -93,6 +99,10 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
                 {
+                    if (Authentification_Token == AdminJWT)
+                    {
+                        return user[0];
+                    }
                     return Forbid();
                 }
                 else
@@ -208,6 +218,17 @@ namespace UserManagementMicroservice.Controllers
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
                 if (userApproved.Count == 0)
                 {
+                    if(Authentification_Token == AdminJWT)
+                    {
+                        user = _context.Users.Where(u => u.Email == email).ToList();
+                        if (user.Count == 0)
+                        {
+                            return NotFound(new Error("User doesn't exists"));
+                        }
+
+                        _context.Users.Remove(user[0]);
+                        _context.SaveChanges();
+                    }
                     return Forbid();
                 }
                 else
@@ -224,6 +245,7 @@ namespace UserManagementMicroservice.Controllers
             }
             return NoContent();
         }
+
         private bool UserExists(string email)
         {
             return _context.Users.Any(e => e.Email == email);

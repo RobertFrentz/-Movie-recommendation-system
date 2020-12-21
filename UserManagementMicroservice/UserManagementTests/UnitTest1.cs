@@ -4,9 +4,68 @@ using UserManagementMicroservice;
 using UserManagementMicroservice.Entities;
 using System.Text;
 using System.Collections.Generic;
+using UserManagementMicroservice.Data;
+using Microsoft.EntityFrameworkCore;
+using UserManagementMicroservice.Controllers;
+using System;
 
 namespace UserManagementTests
 {
+
+    public class UserControllerTests
+    {
+
+        private User GetTestUser(int i)
+        {
+            if (i == 1)
+            {
+                return new User()
+                {
+                    Id = 1,
+                    UserName = "Test One",
+                    Password = "123",
+                    Email = "has@gmail.com",
+                    Administrator = false
+                };
+            }
+            else
+            {
+                return new User()
+                {
+                    Id = 2,
+                    UserName = "Test Two",
+                    Password = "123",
+                    Email = "mist@gmail.com",
+                    Administrator = false
+                };
+            }
+        }
+
+        [Fact]
+        public void ValidAdministrator_GetUsers_ReturnAListOfRegisteredUsers()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                              .UseInMemoryDatabase(databaseName: "UserDataBase")
+                              .Options;
+            var context = new DataContext(options);
+            context.Users.Add(GetTestUser(1));
+            context.Users.Add(GetTestUser(2));
+            context.SaveChanges();
+            UsersController usersController = new UsersController(context);
+            var result = usersController.GetUsers("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
+            Assert.Equal(1, result[0].Id);
+            Assert.Equal("Test One", result[0].UserName);
+            Assert.Equal("123", result[0].Password);
+            Assert.Equal("has@gmail.com", result[0].Email);
+            Assert.False(result[0].Administrator);
+            Assert.Equal(2, result[1].Id);
+            Assert.Equal("Test Two", result[1].UserName);
+            Assert.Equal("123", result[1].Password);
+            Assert.Equal("mist@gmail.com", result[1].Email);
+            Assert.False(result[1].Administrator);
+
+        }
+    }
     public class UnitTest1
     {
         public static IEnumerable<object[]> GetUserDataTestNotEqualUsers()
@@ -149,5 +208,9 @@ namespace UserManagementTests
             Assert.NotEqual("Token has invalid signature", output);
             Assert.NotEqual("Token has expired", output);
         }
+
+        
+
     }
+
 }

@@ -24,3 +24,6 @@ SearchingMovieMicroservice/.vs/
 SearchingMovieMicroservice/ML-TestPredML.Model/bin/
 SearchingMovieMicroservice/ML-TestPredML.Model/obj/
 UserManagementMicroservice/UserManagementTests/obj
+SearchingMovieMicroService/SeachingMovieMicroserviceTests/bin
+SearchingMovieMicroService/SeachingMovieMicroserviceTests/obj
+UserManagementMicroservice/UserManagementTests/bin
