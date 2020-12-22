@@ -12,7 +12,7 @@ namespace UserManagementMicroservice.Controllers
 
     //TOKEN ADMINISTRATOR FOR TESTING eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA
 
-    [Route("api/v1/users")]
+    [Route("api/v2/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -96,7 +96,7 @@ namespace UserManagementMicroservice.Controllers
                 string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
                 string el = elements.Remove(elements.Length - 1);
                 var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
-                var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+                var user = _context.Users.Where(u => u.Email == Cryptography.HashString(email)).FirstOrDefault();
                 if (userApproved.Count == 0)
                 {
                     if (Authentification_Token == AdminJWT)

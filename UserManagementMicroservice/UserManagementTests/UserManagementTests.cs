@@ -8,13 +8,15 @@ using UserManagementMicroservice.Data;
 using Microsoft.EntityFrameworkCore;
 using UserManagementMicroservice.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using static UserManagementMicroservice.Controllers.RatingsController;
 
 namespace UserManagementTests
 {
 
-    public class UserControllerTests
+    public class UsersControllerUnitTest
     {
-
+        readonly string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA";
         private User GetTestUser(int i)
         {
             if (i == 1)
@@ -23,8 +25,8 @@ namespace UserManagementTests
                 {
                     Id = 1,
                     UserName = "Test One",
-                    Password = "123",
-                    Email = "has@gmail.com",
+                    Password = Cryptography.HashString("123"),
+                    Email = Cryptography.HashString("has@gmail.com"),
                     Administrator = false
                 };
             }
@@ -34,8 +36,8 @@ namespace UserManagementTests
                 {
                     Id = 2,
                     UserName = "Test Two",
-                    Password = "123",
-                    Email = "mist@gmail.com",
+                    Password = Cryptography.HashString("123"),
+                    Email = Cryptography.HashString("mist@gmail.com"),
                     Administrator = false
                 };
             }
@@ -52,16 +54,16 @@ namespace UserManagementTests
             context.Add(GetTestUser(2));
             context.SaveChanges();
             UsersController usersController = new UsersController(context);
-            var result = usersController.GetUsers("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
+            var result = usersController.GetUsers(AdminJWT).Value;
             Assert.Equal(1, result[0].Id);
             Assert.Equal("Test One", result[0].UserName);
-            Assert.Equal("123", result[0].Password);
-            Assert.Equal("has@gmail.com", result[0].Email);
+            Assert.Equal(Cryptography.HashString("123"), result[0].Password);
+            Assert.Equal(Cryptography.HashString("has@gmail.com"), result[0].Email);
             Assert.False(result[0].Administrator);
             Assert.Equal(2, result[1].Id);
             Assert.Equal("Test Two", result[1].UserName);
-            Assert.Equal("123", result[1].Password);
-            Assert.Equal("mist@gmail.com", result[1].Email);
+            Assert.Equal(Cryptography.HashString("123"), result[1].Password);
+            Assert.Equal(Cryptography.HashString("mist@gmail.com"), result[1].Email);
             Assert.False(result[1].Administrator);
 
         }
@@ -73,40 +75,49 @@ namespace UserManagementTests
                               .UseInMemoryDatabase(databaseName: "GetUserSpecifiedDataBase")
                               .Options;
             var context = new DataContext(options);
-            context.Users.Add(GetTestUser(1));
-            context.Users.Add(GetTestUser(2));
+            context.Add(GetTestUser(1));
+            context.Add(GetTestUser(2));
             context.SaveChanges();
             UsersController usersController = new UsersController(context);
-            var user1 = usersController.GetUser("has@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
-            var user2 = usersController.GetUser("mist@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA").Value;
-            Assert.Equal(1, user1.Id);
+            var user1 = usersController.GetUser("has@gmail.com", AdminJWT).Value;
+            var user2 = usersController.GetUser("mist@gmail.com", AdminJWT).Value;
             Assert.Equal("Test One", user1.UserName);
-            Assert.Equal("123", user1.Password);
-            Assert.Equal("has@gmail.com", user1.Email);
+            Assert.Equal(Cryptography.HashString("123"), user1.Password);
+            Assert.Equal(Cryptography.HashString("has@gmail.com"), user1.Email);
             Assert.False(user1.Administrator);
-            Assert.Equal(2, user2.Id);
             Assert.Equal("Test Two", user2.UserName);
-            Assert.Equal("123", user2.Password);
-            Assert.Equal("mist@gmail.com", user2.Email);
+            Assert.Equal(Cryptography.HashString("123"), user2.Password);
+            Assert.Equal(Cryptography.HashString("mist@gmail.com"), user2.Email);
             Assert.False(user2.Administrator);
         }
 
         [Fact]
-        public void UpdatingAnExistingUser_PutUser_ReturnNoContent()
+        public void UpdatingAnExistingUser_ReturnNoContent()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
                               .UseInMemoryDatabase(databaseName: "PutUserSpecifiedDataBase")
                               .Options;
             var context = new DataContext(options);
             UsersController usersController = new UsersController(context);
-            UsersController.UserRegister addUser1 = new UsersController.UserRegister() { UserName = "Test One", Password = "123", Email = "has@gmail.com", ConfirmPassword = "123" };
-            UsersController.UserRegister addUser2 = new UsersController.UserRegister() { UserName = "Test Two", Password = "123", Email = "mist@gmail.com", ConfirmPassword = "123" };
-            usersController.PostUser(addUser1);
-            usersController.PostUser(addUser2);
-            User user1 = new User() { UserName = "Mirel", Password = "123", Email = "has@gmail.com", Administrator = false };
-            User user2 = new User() { UserName = "Sandel", Password = "123456", Email = "mist@gmail.com", Administrator = false };
-            var requestForUser1 = usersController.PutUser(user1, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
-            var requestForUser2 = usersController.PutUser(user2, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
+            context.Add(new User()
+            {
+                UserName = "Mirel",
+                Password = Cryptography.HashString("123"),
+                Email = Cryptography.HashString("has@gmail.com"),
+                Administrator = false
+            });
+            context.Add(new User()
+            {
+                UserName = "Sandel",
+                Password = Cryptography.HashString("123456"),
+                Email = Cryptography.HashString("mist@gmail.com"),
+                Administrator = false
+            });
+            context.SaveChanges();
+            User user1 = new User() { UserName = "Dorel", Password = "123", Email = "has@gmail.com", Administrator = false };
+            User user2 = new User() { UserName = "Giugel", Password = "123456", Email = "mist@gmail.com", Administrator = false };
+            var requestForUser1 = usersController.PutUser(user1, AdminJWT);
+            var requestForUser2 = usersController.PutUser(user2, AdminJWT);
             Assert.IsType<NoContentResult>(requestForUser1);
             Assert.IsType<NoContentResult>(requestForUser2);
 
@@ -132,7 +143,7 @@ namespace UserManagementTests
         }
 
         [Fact]
-        public void LoginExistingUser_WithMatchinCredentials_ReturnListWithJWTAndUsername()
+        public void LoginExistingUser_WithCorrectCredentials_ReturnListWithJWTAndUsername()
         {
             string expected = "Dexter";
             var options = new DbContextOptionsBuilder<DataContext>()
@@ -140,41 +151,124 @@ namespace UserManagementTests
                               .Options;
             var context = new DataContext(options);
             UsersController usersController = new UsersController(context);
-            var resultRegister = usersController.PostUser(new UsersController.UserRegister()
+            context.Add(new User()
             {
                 UserName = "Dexter",
-                Email = "dexter@gmail.com",
-                Password = "123",
-                ConfirmPassword = "123"
+                Email = Cryptography.HashString("dexter@gmail.com"),
+                Password = Cryptography.HashString("123"),
+                Administrator = false
             });
-            var resultLogin = usersController.LoginUser(new UsersController.Credentials()
+            context.SaveChanges();
+            var result = usersController.LoginUser(new UsersController.Credentials()
             {
                 Email = "dexter@gmail.com",
                 Password = "123",
             }).Value;
-            Assert.Equal(expected, resultLogin[1]);
+            Assert.Equal(expected, result[1]);
         }
 
         [Fact]
-        public void DeleteExistingUser_ReturnOk()
+        public void DeleteExistingUser_ReturnNoContent()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
                               .UseInMemoryDatabase(databaseName: "DeleteUsersDataBase")
                               .Options;
             var context = new DataContext(options);
             UsersController usersController = new UsersController(context);
-            var resultRegister = usersController.PostUser(new UsersController.UserRegister()
+            context.Add(new User()
             {
                 UserName = "Mitica",
-                Email = "mitica@gmail.com",
-                Password = "123",
-                ConfirmPassword = "123"
+                Email = Cryptography.HashString("mitica@gmail.com"),
+                Password = Cryptography.HashString("123"),
+                Administrator = false
             });
-            var resultDelete = usersController.DeleteUser("mitica@gmail.com", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA");
-            Assert.IsType<NoContentResult>(resultDelete);
+            context.SaveChanges();
+            var result = usersController.DeleteUser("mitica@gmail.com", AdminJWT);
+            Assert.IsType<NoContentResult>(result);
         }
     }
-    public class UnitTest1
+
+    public class RatingsControllerUnitTest
+    {
+        [Fact]
+        public void GetExistingRating_ReturnRatingScore()
+        {
+            int expectedScore = 4;
+            var options = new DbContextOptionsBuilder<DataContext>()
+                             .UseInMemoryDatabase(databaseName: "GetRatingsDataBase")
+                             .Options;
+            var context = new DataContext(options);
+            RatingsController ratingsController = new RatingsController(context);
+            context.Add(new Rating()
+            {
+                MovieId = 1,
+                UserId = 1,
+                Score = 4
+            });
+            context.SaveChanges();
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(1, 1);
+            var score = ratingsController.GetRating(1, jwt).Value;
+            Assert.Equal(expectedScore, score);
+        }
+
+        [Fact]
+        public void AddNotExistingRating_ReturnNoContent()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                             .UseInMemoryDatabase(databaseName: "AddRatingsDataBase")
+                             .Options;
+            var context = new DataContext(options);
+            RatingsController ratingsController = new RatingsController(context);
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(2, 1);
+            var result = ratingsController.PostRating(new RequestRating() { MovieId = 1, Score = 4 }, jwt);
+            Assert.IsType<NoContentResult>(result);
+
+        }
+
+        [Fact]
+        public void UpdateExistingRating_ReturnNoContent()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                             .UseInMemoryDatabase(databaseName: "UpdateRatingsDataBase")
+                             .Options;
+            var context = new DataContext(options);
+            RatingsController ratingsController = new RatingsController(context);
+            context.Add(new Rating()
+            {
+                MovieId = 3,
+                UserId = 3,
+                Score = 3
+
+            });
+            context.SaveChanges();
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(3, 1);
+            var result = ratingsController.PutRating(new RequestRating() { MovieId = 3, Score = 4}, jwt);
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public void DeleteExistingRating_ReturnNoContent()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+                            .UseInMemoryDatabase(databaseName: "DeleteRatingsDataBase")
+                            .Options;
+            var context = new DataContext(options);
+            RatingsController ratingsController = new RatingsController(context);
+            context.Add(new Rating()
+            {
+                MovieId = 3,
+                UserId = 3,
+                Score = 3
+
+            });
+            context.SaveChanges();
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(3, 1);
+            var result = ratingsController.DeleteRating(3, jwt);
+            Assert.IsType<NoContentResult>(result);
+        }
+    }
+
+    public class NotControllerUnitTest
     {
         public static IEnumerable<object[]> GetUserDataTestNotEqualUsers()
         {
@@ -298,11 +392,18 @@ namespace UserManagementTests
         [InlineData(3, 1)]
         public void GenerateJWTAndModifyOneChar_CheckIfValid_ReturnFalse(int userId, int time)
         {
-                string jwt = UserManagementMicroservice.JWT.CreateJWT(userId, time);
-                StringBuilder stringBuilder = new StringBuilder(jwt);
-                stringBuilder[stringBuilder.Length-1] = '+';
-                string changedJWT = stringBuilder.ToString();
-                Assert.Equal("Token has invalid signature", UserManagementMicroservice.JWT.CheckJWT(changedJWT));
+            string jwt = UserManagementMicroservice.JWT.CreateJWT(userId, time);
+            StringBuilder stringBuilder = new StringBuilder(jwt);
+            if (stringBuilder[stringBuilder.Length - 1] == 'b')
+            {
+                stringBuilder[stringBuilder.Length - 1] = 'a';
+            }
+            else
+            {
+                stringBuilder[stringBuilder.Length - 1] = 'b';
+            }
+            string changedJWT = stringBuilder.ToString();
+            Assert.Equal("Token has invalid signature", UserManagementMicroservice.JWT.CheckJWT(changedJWT));
         }
 
         [Theory]
