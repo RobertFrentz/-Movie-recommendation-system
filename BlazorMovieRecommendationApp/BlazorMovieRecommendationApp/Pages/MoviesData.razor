@@ -2,9 +2,9 @@
 @inject HttpClient Http
 
 
-<div class="row">
+<div class="row d-flex flex-wrap-reverse">
 
-    <div class="container col-10">
+    <div class="container col-xl-10">
 
         <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">@TitleToDisplay</h1>
         <hr class="mt-2 mb-5">
@@ -22,10 +22,10 @@
             <div class="row">
                 @foreach (var item in moviesToDisplay)
                 {
-                    <div class="container mb-3" style="width: 300px; height: 450px; ">
+                    <div class="container border shadow text-center mb-4" style="width: 300px; min-height: 450px; ">
                         <a class="text-decoration-none" href="movies/@item.Id">
-                            <img src="@item.PosterUrl" alt="" style="width:100%; height:400px">
-                            <p class="text-center mt-2">@item.Title</p>
+                            <img src="@item.PosterUrl" alt="@item.Title Poster" title="@item.Title" style="width:100%; height:400px">
+                            <p class="mt-2">@item.Title</p>
                         </a>
                     </div>
 
@@ -35,7 +35,7 @@
 
     </div>
 
-    <div class="container col-2">
+    <div class="container col-xl-2">
         <div class="container-fluid mb-4">
             <h4 class="font-weight-light text-center mb-3">Search for a movie:</h4>
             <input type="text" class="w-100 mb-2" @bind="searchMovieName" />
@@ -48,22 +48,22 @@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Action"))'>Action</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Adventure"))'>Adventure</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Animation"))'>Animation</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Biography"))'>Biography</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Biography"))'>Biography</button>*@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Comedy"))'>Comedy</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Crime"))'>Crime</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Documentary"))'>Documentary</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Drama"))'>Drama</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Family"))'>Family</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Family"))'>Family</button>*@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Fantasy"))'>Fantasy</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Film Noir"))'>Film Noir</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("History"))'>History</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Film Noir"))'>Film Noir</button>*@
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("History"))'>History</button>*@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Horror"))'>Horror</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Music"))'>Music</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Music"))'>Music</button>*@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Mystery"))'>Mystery</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Romance"))'>Romance</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sci-Fi"))'>Sci-Fi</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sport"))'>Sport</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Superhero"))'>Superhero</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sport"))'>Sport</button>*@
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Superhero"))'>Superhero</button>*@
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Thriller"))'>Thriller</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("War"))'>War</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Western"))'>Western</button>
@@ -73,12 +73,17 @@
 
 </div>
 
+<style>
+
+</style>
+
 
 @code {
     private string TitleToDisplay = "Recommended for You";
     private List<MovieDetails> moviesToDisplay;
     private string searchMovieName;
     private bool searchResultIsEmpty;
+    //private int moviesPerPage = 12;
 
     private string apiUrl = "http://localhost:5000/api/Movies/HomeMoviesData";
     private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
