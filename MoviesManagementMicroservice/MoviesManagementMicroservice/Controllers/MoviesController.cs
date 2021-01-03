@@ -33,29 +33,12 @@ namespace MoviesManagementMicroservice.Controllers
         // GET: api/MoviesDetails
         [Route("HomeMoviesData")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetHomeMoviesData()
+        public async Task<ActionResult<IEnumerable<int>>> GetHomeMoviesData()
         {
-            List<Movie> movies = _context.Movies.Take(20).ToList();
-            List<MovieDetails> moviesDetails = new List<MovieDetails>();
+            List<Movie> movies = _context.Movies.ToList();
+            List<int> moviesIds = movies.Select(m => m.Id).ToList();
 
-            for (int i=0; i<movies.Count; i++)
-            {
-                var link = _context.Links.ToList().Where(l => l.Id == movies[i].Id).FirstOrDefault();
-                if (link.ImdbPosterUrl == null)
-                {
-                    link.ImdbPosterUrl = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
-                } else
-                {
-                    link.ImdbPosterUrl= await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
-                }
-                
-                MovieDetails temp = new MovieDetails { Id = movies[i].Id, Title = movies[i].Title, Genres = movies[i].Genres, PosterUrl = link.ImdbPosterUrl };
-                moviesDetails.Add(temp);
-            }
-
-            await _context.SaveChangesAsync(); // pentru salvarea link-urilor in database
-
-            return Ok(moviesDetails);
+            return Ok(moviesIds);
         }
 
         [Route("HomeMoviesData/{movieId}")]

@@ -1,5 +1,6 @@
 ﻿@page "/movies"
 @inject HttpClient Http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
 <div class="row d-flex flex-wrap-reverse">
@@ -19,6 +20,8 @@
         }
         else
         {
+            <span>TEST  currentPage:@currentPage</span>
+
             <div class="row">
                 @foreach (var item in moviesToDisplay)
                 {
@@ -32,6 +35,88 @@
                 }
             </div>
         }
+
+        <ul class="pagination justify-content-end">
+            <li class="page-item"><button class="page-link" @onclick='(() => SetPreviousPageMovies())'>Previous</button></li>
+            @if (numberOfPages < 10)
+            {
+                @for (int pageN = 1; pageN <= numberOfPages; pageN++)
+                {
+                    var localCopy = pageN;
+                    if (pageN == currentPage)
+                    {
+                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (int pageN = 1; pageN <= 3; pageN++)
+                {
+                    var localCopy = pageN;
+                    if (pageN == currentPage)
+                    {
+                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                }
+                <li class="page-item"><button class="page-link">...</button></li>
+                if ((currentPage < 4) || (currentPage > (numberOfPages - 3)))
+                {
+                    var middleIndex = numberOfPages / 2;
+                    @for (int pageN = middleIndex - 1; pageN <= middleIndex + 1; pageN++)
+                    {
+                        var localCopy = pageN;
+                        if (pageN == currentPage)
+                        {
+                            <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                    }
+                }
+                else
+                {
+                    @for (int pageN = currentPage - 1; pageN <= currentPage + 1; pageN++)
+                    {
+                        var localCopy = pageN;
+                        if (pageN == currentPage)
+                        {
+                            <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                    }
+                }
+                <li class="page-item"><button class="page-link">...</button></li>
+                @for (int pageN = numberOfPages - 2; pageN <= numberOfPages; pageN++)
+                {
+                    var localCopy = pageN;
+                    if (pageN == currentPage)
+                    {
+                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                    }
+                }
+
+            }
+
+            <li class="page-item"><button class="page-link" @onclick='(() => SetNextPageMovies())'>Next</button></li>
+        </ul>
 
     </div>
 
@@ -73,17 +158,15 @@
 
 </div>
 
-<style>
-
-</style>
-
 
 @code {
     private string TitleToDisplay = "Recommended for You";
     private List<MovieDetails> moviesToDisplay;
+    private List<int> receivedMoviesIds;
+    private int numberOfPages, currentPage;
     private string searchMovieName;
     private bool searchResultIsEmpty;
-    //private int moviesPerPage = 12;
+    private int moviesPerPage = 12;
 
     private string apiUrl = "http://localhost:5000/api/Movies/HomeMoviesData";
     private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
@@ -91,7 +174,57 @@
 
     protected override async Task OnInitializedAsync()
     {
-        moviesToDisplay = await Http.GetFromJsonAsync<List<MovieDetails>>(apiUrl);
+        // aparent recomandarile nu merg inca
+        //if (await IsUserLoggedIn())
+        if (1 != 1)
+        {
+            string apiEndpoint = "http://localhost:5020/api/v1/search/ratings";
+            string token = await sessionStorage.GetItemAsync<string>("jwt");
+
+            var request = new HttpRequestMessage(HttpMethod.Get, apiEndpoint);
+            request.Headers.Add("Authentification_Token", token);
+            using var httpResponse = await Http.SendAsync(request);
+            receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        }
+        else
+        {
+            receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+
+        }
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        currentPage = 1;
+        await GetMoviesOnGivenPage(currentPage);
+    }
+
+    private async Task SetNextPageMovies()
+    {
+        if ((currentPage + 1) <= numberOfPages)
+        {
+            currentPage++;
+            await GetMoviesOnGivenPage(currentPage);
+        }
+
+    }
+
+    private async Task SetPreviousPageMovies()
+    {
+        if ((currentPage - 1) >= 1)
+        {
+            currentPage--;
+            await GetMoviesOnGivenPage(currentPage);
+        }
+    }
+
+    private async Task GetMoviesOnGivenPage(int pageN)
+    {
+        int startPos, amount;
+        moviesToDisplay = null;
+        startPos = (pageN - 1) * moviesPerPage;
+        amount = (pageN * moviesPerPage) < receivedMoviesIds.Count ? moviesPerPage : (receivedMoviesIds.Count - startPos);
+        currentPage = pageN;
+        Console.WriteLine($"GetMoviesOnGivenPage: pageN:{pageN} startPos:{startPos} amount:{amount} receivedMoviesIds.Count:{receivedMoviesIds.Count}");
+        moviesToDisplay = await GetMovieDetailsFromIdList(receivedMoviesIds.GetRange(startPos, amount));
+        Console.WriteLine($"GetMoviesOnGivenPage: pageN:{pageN} startPos:{startPos} amount:{amount} moviesToDisplay.Count:{moviesToDisplay.Count}");
     }
 
 
@@ -188,6 +321,12 @@
         movie = await httpResponse.Content.ReadFromJsonAsync<MovieDetails>();
 
         return movie;
+    }
+
+    public async Task<bool> IsUserLoggedIn()
+    {
+        var token = await sessionStorage.GetItemAsync<string>("jwt");
+        return !string.IsNullOrWhiteSpace(token);
     }
 
     public class MovieDetails
