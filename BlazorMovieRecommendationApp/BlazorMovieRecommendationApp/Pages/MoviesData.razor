@@ -20,7 +20,6 @@
         }
         else
         {
-            <span>TEST  currentPage:@currentPage</span>
 
             <div class="row">
                 @foreach (var item in moviesToDisplay)
@@ -34,44 +33,12 @@
 
                 }
             </div>
-        }
 
-        <ul class="pagination justify-content-end">
-            <li class="page-item"><button class="page-link" @onclick='(() => SetPreviousPageMovies())'>Previous</button></li>
-            @if (numberOfPages < 10)
-            {
-                @for (int pageN = 1; pageN <= numberOfPages; pageN++)
+            <ul class="pagination justify-content-end">
+                <li class="page-item"><button class="page-link" @onclick='(() => SetPreviousPageMovies())'>Previous</button></li>
+                @if (numberOfPages < 10)
                 {
-                    var localCopy = pageN;
-                    if (pageN == currentPage)
-                    {
-                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
-                    }
-                    else
-                    {
-                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
-                    }
-                }
-            }
-            else
-            {
-                @for (int pageN = 1; pageN <= 3; pageN++)
-                {
-                    var localCopy = pageN;
-                    if (pageN == currentPage)
-                    {
-                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
-                    }
-                    else
-                    {
-                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
-                    }
-                }
-                <li class="page-item"><button class="page-link">...</button></li>
-                if ((currentPage < 4) || (currentPage > (numberOfPages - 3)))
-                {
-                    var middleIndex = numberOfPages / 2;
-                    @for (int pageN = middleIndex - 1; pageN <= middleIndex + 1; pageN++)
+                    @for (int pageN = 1; pageN <= numberOfPages; pageN++)
                     {
                         var localCopy = pageN;
                         if (pageN == currentPage)
@@ -86,7 +53,7 @@
                 }
                 else
                 {
-                    @for (int pageN = currentPage - 1; pageN <= currentPage + 1; pageN++)
+                    @for (int pageN = 1; pageN <= 3; pageN++)
                     {
                         var localCopy = pageN;
                         if (pageN == currentPage)
@@ -98,25 +65,58 @@
                             <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
                         }
                     }
-                }
-                <li class="page-item"><button class="page-link">...</button></li>
-                @for (int pageN = numberOfPages - 2; pageN <= numberOfPages; pageN++)
-                {
-                    var localCopy = pageN;
-                    if (pageN == currentPage)
+                    <li class="page-item"><button class="page-link">...</button></li>
+                    if ((currentPage < 4) || (currentPage > (numberOfPages - 3)))
                     {
-                        <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        var middleIndex = numberOfPages / 2;
+                        @for (int pageN = middleIndex - 1; pageN <= middleIndex + 1; pageN++)
+                        {
+                            var localCopy = pageN;
+                            if (pageN == currentPage)
+                            {
+                                <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                            }
+                        }
                     }
                     else
                     {
-                        <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        @for (int pageN = currentPage - 1; pageN <= currentPage + 1; pageN++)
+                        {
+                            var localCopy = pageN;
+                            if (pageN == currentPage)
+                            {
+                                <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                            }
+                        }
                     }
+                    <li class="page-item"><button class="page-link">...</button></li>
+                    @for (int pageN = numberOfPages - 2; pageN <= numberOfPages; pageN++)
+                    {
+                        var localCopy = pageN;
+                        if (pageN == currentPage)
+                        {
+                            <li class="page-item active"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><button class="page-link" @onclick='(() => GetMoviesOnGivenPage(localCopy))'>@localCopy</button></li>
+                        }
+                    }
+
                 }
 
-            }
+                <li class="page-item"><button class="page-link" @onclick='(() => SetNextPageMovies())'>Next</button></li>
+            </ul>
+        }
 
-            <li class="page-item"><button class="page-link" @onclick='(() => SetNextPageMovies())'>Next</button></li>
-        </ul>
 
     </div>
 
@@ -124,7 +124,7 @@
         <div class="container-fluid mb-4">
             <h4 class="font-weight-light text-center mb-3">Search for a movie:</h4>
             <input type="text" class="w-100 mb-2" @bind="searchMovieName" />
-            <button type="button" class="btn btn-outline-dark btn-block" @onclick="SearchMoviesByName">Search</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick="SearchMoviesByKeyword">Search</button>
         </div>
 
         <div class="container-fluid">
@@ -160,34 +160,41 @@
 
 
 @code {
-    private string TitleToDisplay = "Recommended for You";
+    private string TitleToDisplay;
     private List<MovieDetails> moviesToDisplay;
     private List<int> receivedMoviesIds;
     private int numberOfPages, currentPage;
     private string searchMovieName;
     private bool searchResultIsEmpty;
     private int moviesPerPage = 12;
+    private string jwtToken;
+    bool isUserLoggedIn;
 
     private string apiUrl = "http://localhost:5000/api/Movies/HomeMoviesData";
     private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
     private string searchMoviesByKeywordApiUrl = "http://localhost:5020/api/v1/search/keyword?keyword=";
+    private string recommendedMoviesApiUrl = "http://localhost:5020/api/v1/search/ratings";
 
     protected override async Task OnInitializedAsync()
     {
-        // aparent recomandarile nu merg inca
-        //if (await IsUserLoggedIn())
-        if (1 != 1)
-        {
-            string apiEndpoint = "http://localhost:5020/api/v1/search/ratings";
-            string token = await sessionStorage.GetItemAsync<string>("jwt");
+        isUserLoggedIn = await IsUserLoggedIn();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, apiEndpoint);
-            request.Headers.Add("Authentification_Token", token);
-            using var httpResponse = await Http.SendAsync(request);
-            receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        if (isUserLoggedIn)
+        {
+            TitleToDisplay = "Recommended for You:";
+            jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
+
+            // aparent recomandarile nu merg inca
+            //var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
+            //request.Headers.Add("Authentification_Token", jwtToken);
+            //using var httpResponse = await Http.SendAsync(request);
+            //receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+
+            receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
         }
         else
         {
+            TitleToDisplay = "Some good movies:";
             receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
 
         }
@@ -228,12 +235,11 @@
     }
 
 
-    private async Task SearchMoviesByName()
+    private async Task SearchMoviesByKeyword()
     {
-        IEnumerable<int> moviesIds;
-
         TitleToDisplay = "Search Result: ";
         moviesToDisplay = null;
+        receivedMoviesIds = null;
         searchResultIsEmpty = false;
 
         if (string.IsNullOrWhiteSpace(searchMovieName))
@@ -241,20 +247,23 @@
             return;
         }
 
-        var httpResponse = await Http.GetAsync(searchMoviesByKeywordApiUrl + searchMovieName);
+        //var httpResponse = await Http.GetAsync(searchMoviesByKeywordApiUrl + searchMovieName);
+        var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByKeywordApiUrl + searchMovieName);
+        request.Headers.Add("Authentification_Token", jwtToken);
+        using var httpResponse = await Http.SendAsync(request);
+        receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
 
         if ((int)httpResponse.StatusCode != 200)
         {
-            Console.WriteLine($"EROARE SearchMoviesByName: {httpResponse.ReasonPhrase}");
+            Console.WriteLine($"EROARE SearchMoviesByKeyword: {httpResponse.ReasonPhrase}");
             TitleToDisplay = "Sorry, no movies to show 😔";
             searchResultIsEmpty = true;
             return;
         }
 
-        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
-        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
-
-        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        currentPage = 1;
+        await GetMoviesOnGivenPage(currentPage);
 
         searchMovieName = string.Empty;
     }
@@ -262,14 +271,15 @@
 
     private async Task SearchMoviesByCategory(string category)
     {
-        IEnumerable<int> moviesIds;
-
         TitleToDisplay = category + " movies:";
         moviesToDisplay = null;
         searchResultIsEmpty = false;
 
-        Console.WriteLine(searchMoviesByCategoryApiUrl + category);
-        var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
+        //var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
+        var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByCategoryApiUrl + category);
+        request.Headers.Add("Authentification_Token", jwtToken);
+        using var httpResponse = await Http.SendAsync(request);
+        receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
 
         if ((int)httpResponse.StatusCode != 200)
         {
@@ -279,11 +289,9 @@
             return;
         }
 
-        moviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
-        moviesIds = moviesIds.Take(20);     // am limitat numarul de intrari afisare in caz ca vor fi prea multe
-
-        moviesToDisplay = await GetMovieDetailsFromIdList(moviesIds);
-
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        currentPage = 1;
+        await GetMoviesOnGivenPage(currentPage);
     }
 
     private async Task<List<MovieDetails>> GetMovieDetailsFromIdList(IEnumerable<int> moviesIds)
@@ -292,13 +300,12 @@
 
         foreach (int id in moviesIds)
         {
-            Console.WriteLine(id);
             MovieDetails temp = await GetMovieDetailsById(id);
             if (temp == null)
             {  // pentru filmele al caror id inca nu e in MovieManagementService
                 continue;
             }
-            Console.WriteLine($"{temp.Title} {temp.PosterUrl}");
+            Console.WriteLine($"{id} {temp.Title} {temp.PosterUrl}");
             result.Add(temp);
         }
 
