@@ -73,6 +73,46 @@ namespace SearchingMovieMicroservice.Controllers
         }
         
 
+        [Route("ratings")]
+        [HttpGet]
+
+        public async Task<ActionResult<List<int>>> RecommendMoviesOnlyByUserRatings([FromHeader] string Authentification_Token)
+        {
+            string response = null;
+            try
+            {
+                client.DefaultRequestHeaders.Add("Authentification_Token", Authentification_Token);
+                response = await client.GetStringAsync("http://localhost:5050/api/v2/users/verify_token");
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            if (response != null)
+            {
+                HttpResponseMessage httpResponseMessage;
+                try
+                {
+                    httpResponseMessage = await client.GetAsync("http://localhost:5050/api/v1/ratings");
+                    httpResponseMessage.EnsureSuccessStatusCode();
+                    var moviesIdWithRatings = httpResponseMessage.Content.ReadAsAsync<Dictionary<int, int>>().Result;
+                    Console.WriteLine("Movies: " + moviesIdWithRatings.Count);
+                 
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized(new Error("Token has invalid signature or expired"));
+            }
+        }
+
         [Route("keyword")]
         [HttpGet]
         public async Task<ActionResult<List<int>>> RecommendMoviesIdByKeyword([FromHeader] string Authentification_Token, string keyword)
