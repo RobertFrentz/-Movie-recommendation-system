@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UserManagementMicroservice.Data;
 using UserManagementMicroservice.Entities;
@@ -11,7 +12,7 @@ namespace UserManagementMicroservice.Controllers
     [ApiController]
     public class RatingsController : ControllerBase
     {
-        public const string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA";
+        public const string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTMxODU0ODQsInVzZXJJZCI6NH0.t2sFnEMWbtKdRxPQDNOE80IJS5PPK9qyPg0mlbrZ4B0";
 
         private readonly DataContext _context;
 
@@ -46,9 +47,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string jwtClaims = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string jwtUserId = jwtClaims.Remove(jwtClaims.Length - 1);
-                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(jwtUserId) && u.MovieId == movieId).FirstOrDefault();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(id) && u.MovieId == movieId).FirstOrDefault();
                 if (rating == null)
                 {
                     return NotFound(new Error("Rating doesn't exist"));
@@ -56,6 +56,30 @@ namespace UserManagementMicroservice.Controllers
                 else
                 {
                     return rating.Score;
+                }
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<Dictionary<int,int>> GetRatings([FromHeader] string Authentification_Token)
+        {
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
+            {
+                return Unauthorized(new Error("Token has invalid signature or expired"));
+            }
+            else
+            {
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var ratings = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(id)).ToDictionary(u => u.MovieId, u => u.Score);
+                if (ratings.Count == 0)
+                {
+                    return NotFound(new Error("User doesn't have ratings"));
+                }
+                else
+                {
+                    Console.WriteLine("Ratings: " + ratings);
+                    return ratings;
                 }
             }
         }
@@ -70,9 +94,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string jwtClaims = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string jwtUserId = jwtClaims.Remove(jwtClaims.Length - 1);
-                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(jwtUserId) && u.MovieId == requestRating.MovieId).FirstOrDefault();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(id) && u.MovieId == requestRating.MovieId).FirstOrDefault();
                 if (rating == null)
                 {
                     return NotFound(new Error("Rating doesn't exist"));
@@ -101,9 +124,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string jwtClaims = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string jwtUserId = jwtClaims.Remove(jwtClaims.Length - 1);
-                if (_context.Ratings.Any(u => u.UserId == Convert.ToInt32(jwtUserId) && u.MovieId == requestRating.MovieId))
+                string id = JWT.ExtractUserId(jwtDecoded);
+                if (_context.Ratings.Any(u => u.UserId == Convert.ToInt32(id) && u.MovieId == requestRating.MovieId))
                 {
                     return Conflict(new Error("Rating already exists"));
                 }
@@ -111,11 +133,12 @@ namespace UserManagementMicroservice.Controllers
                 {
                     return BadRequest(new Error("Score must be between 1 and 5"));
                 }
+                
                 else
                 {
                     Rating newRating = new Rating();
                     newRating.MovieId = requestRating.MovieId;
-                    newRating.UserId = Convert.ToInt32(jwtUserId);
+                    newRating.UserId = Convert.ToInt32(id);
                     newRating.Score = requestRating.Score;
                     _context.Add(newRating);
                     _context.SaveChanges();
@@ -136,9 +159,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string jwtClaims = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string jwtUserId = jwtClaims.Remove(jwtClaims.Length - 1);
-                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(jwtUserId) && u.MovieId == movieId).FirstOrDefault();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var rating = _context.Ratings.Where(u => u.UserId == Convert.ToInt32(id) && u.MovieId == movieId).FirstOrDefault();
                 if (rating == null)
                 {
                     return NotFound(new Error("Rating doesn't exist"));

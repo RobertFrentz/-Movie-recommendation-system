@@ -4,6 +4,7 @@ using JWT.Builder;
 using JWT.Exceptions;
 using JWT.Serializers;
 using System;
+using System.Linq;
 
 namespace UserManagementMicroservice
 {
@@ -20,7 +21,7 @@ namespace UserManagementMicroservice
             return token;
         }
 
-        public static string CheckJWT(string jwtToken)
+        public static string CheckJWT(string jwt)
         {
             string json;
             try
@@ -31,8 +32,7 @@ namespace UserManagementMicroservice
                 IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
                 IJwtAlgorithm algorithm = new HMACSHA256Algorithm(); // symmetric
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, algorithm);
-
-                json = decoder.Decode(jwtToken, "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk", verify: true);
+                json = decoder.Decode(jwt, "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk", verify: true);
             }
             catch (TokenExpiredException)
             {
@@ -43,6 +43,13 @@ namespace UserManagementMicroservice
                 return "Token has invalid signature";
             }
             return json;
+        }
+
+        public static string ExtractUserId(string jwt)
+        {
+            string claims = jwt.Split(',').ToList()[1].Split(':').ToList()[1];
+            string id = claims.Remove(claims.Length - 1);
+            return id;
         }
     }
 }

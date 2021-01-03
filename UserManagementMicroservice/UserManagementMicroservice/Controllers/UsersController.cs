@@ -16,8 +16,7 @@ namespace UserManagementMicroservice.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public const string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg2NzgzOTAsInVzZXJJZCI6MjAzfQ.HoCs9HegYMDogKW-WoTq9LBfXnM1HEg9mdp3QIj38hA";
-
+        private const string AdminJWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTMxODU0ODQsInVzZXJJZCI6NH0.t2sFnEMWbtKdRxPQDNOE80IJS5PPK9qyPg0mlbrZ4B0";
 
         private readonly DataContext _context;
 
@@ -65,9 +64,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string el = elements.Remove(elements.Length - 1);
-                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(id))).ToList();
                 if (userApproved.Count == 0)
                 {
                     if(Authentification_Token == AdminJWT)
@@ -93,9 +91,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string el = elements.Remove(elements.Length - 1);
-                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(id))).ToList();
                 var user = _context.Users.Where(u => u.Email == Cryptography.HashString(email)).FirstOrDefault();
                 if (userApproved.Count == 0)
                 {
@@ -160,7 +157,6 @@ namespace UserManagementMicroservice.Controllers
 
         }
 
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("register")]
         [HttpPost]
         public ActionResult<List<string>> PostUser([FromBody] UserRegister user)
@@ -192,12 +188,19 @@ namespace UserManagementMicroservice.Controllers
         }
 
 
-        //Ruta test
-        [Route("verify")]
+        [Route("verify_token")]
         [HttpGet]
-        public ActionResult<string> CheckUser(string jwtToken)
+        public ActionResult<string> CheckUser([FromHeader] string Authentification_Token)
         {
-            return JWT.CheckJWT(jwtToken);
+            string jwtDecoded = JWT.CheckJWT(Authentification_Token);
+            if (jwtDecoded == "Token has expired" || jwtDecoded == "Token has invalid signature")
+            {
+                return Unauthorized(new Error("Token has invalid signature or expired"));
+            }
+            else
+            {
+                return JWT.ExtractUserId(jwtDecoded);
+            }
         }
 
         [HttpDelete("{email}")]
@@ -211,9 +214,8 @@ namespace UserManagementMicroservice.Controllers
             }
             else
             {
-                string elements = jwtDecoded.Split(',').ToList()[1].Split(':').ToList()[1];
-                string el = elements.Remove(elements.Length - 1);
-                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(el))).ToList();
+                string id = JWT.ExtractUserId(jwtDecoded);
+                var userApproved = _context.Users.Where(u => (u.Administrator == true) && (u.Id == Convert.ToInt32(id))).ToList();
                 if (userApproved.Count == 0)
                 {
                     if(Authentification_Token == AdminJWT)
