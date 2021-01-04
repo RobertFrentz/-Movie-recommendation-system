@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @using Newtonsoft.Json
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager NavManager
 
 
 @if (finishedLoading)
@@ -25,16 +26,12 @@
                                 <td><h4>Title</h4></td>
                                 <td>@jsonObject.Title</td>
                             </tr>
-                            @if (token != null)
-                            {
                             <tr>
                                 <td><h4>Rating</h4></td>
                                 <td>
-                                    <RadzenRating Value= "@starsRating"
-                                                  Change=@(args => OnChange(args, "Rating with 5 stars")) />
+                                    <RadzenRating Value="@starsRating" Change=@(args => OnChange(args, "Rating with 5 stars")) />
                                 </td>
                             </tr>
-                            }
                             <tr>
                                 <td><h4>Released</h4></td>
                                 <td>@jsonObject.Released</td>
@@ -83,6 +80,7 @@
 }
 
 @code {
+
     [Parameter]
     public int movieId { get; set; }
     private bool finishedLoading = false;
@@ -90,92 +88,94 @@
     private dynamic jsonObject = null;
     private string token;
     private int starsRating;
+    private bool ratingExists;
+    private bool isUserLoggedIn;
+    private string ratingsApiEndpoint = "http://localhost:5050/api/v1/ratings/";
+    private string movieDataApiEndpoint = "http://localhost:5000/api/Movies/MoviesData/";
+
 
     protected override async Task OnInitializedAsync()
     {
-        string URL = "http://localhost:5000/api/Movies/MoviesData/" + movieId;
-        jsonString = await Http.GetStringAsync(URL);
+        isUserLoggedIn = await IsUserLoggedIn();
+
+        if (!isUserLoggedIn)
+        {
+            NavManager.NavigateTo("/login", true);
+
+        }
+
+        jsonString = await Http.GetStringAsync(movieDataApiEndpoint + movieId);
         jsonObject = JsonConvert.DeserializeObject(jsonString);
         finishedLoading = true;
         token = await sessionStorage.GetItemAsync<string>("jwt");
         await GetRating();
     }
 
+
     private async Task GetRating()
     {
-        string urlGet = "http://localhost:5050/api/v1/ratings/" + movieId;
+        string urlGet = ratingsApiEndpoint + movieId;
         var getRequest = new HttpRequestMessage(HttpMethod.Get, urlGet);
-
-        // add custom http header
         getRequest.Headers.Add("Authentification_token", token);
-
-        // send request
         using var httpResponse = await Http.SendAsync(getRequest);
+
         if (!httpResponse.IsSuccessStatusCode)
         {
-            // set error message for display, log to console and return
             starsRating = 0;
             Console.WriteLine("Rating not found");
+            ratingExists = false;
             return;
         }
-        starsRating = await httpResponse.Content.ReadFromJsonAsync<int>();
 
+        ratingExists = true;
+        starsRating = await httpResponse.Content.ReadFromJsonAsync<int>();
     }
+
 
     private async Task OnChange(int value, string name)
     {
         Console.WriteLine($"{name} value changed to {value}");
-        string url = "http://localhost:5050/api/v1/ratings";
-        if (value == 0)
+
+        if (value == 0 && ratingExists)  // DELETE
         {
-            string urlDelete = "http://localhost:5050/api/v1/ratings/" + movieId;
-            /*Http.DefaultRequestHeaders.Add("Authentification_Token", token);
-            var httpResponse = await Http.DeleteAsync(url);*/
+            string urlDelete = ratingsApiEndpoint + movieId;
             var deleteRequest = new HttpRequestMessage(HttpMethod.Delete, urlDelete);
-
-            // add custom http header
             deleteRequest.Headers.Add("Authentification_Token", token);
-
-            // send request
             using var response = await Http.SendAsync(deleteRequest);
-            starsRating = value;
-
-
-        }
-        else if(starsRating == 0)
-        {
-
-            //Console.WriteLine(movieRating.rating);
-            //Http.DefaultRequestHeaders.Add("Authentification_Token", token);
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-            var postBody = new { movieId = movieId, score = value };
-            Console.WriteLine($"I-a fost dat filmului cu id-ul {postBody.movieId} rating-ul cu valoarea {postBody.score}");
-            request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(postBody), System.Text.Encoding.UTF8, "application/json");
-
-            // add custom http header
-            request.Headers.Add("Authentification_Token", token);
-
-            // send request
-            using var response = await Http.SendAsync(request);
-            starsRating = value;
-
+            starsRating = 0;
         }
         else
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
-            var putBody = new { movieId = movieId, score = value };
-            Console.WriteLine($"I-a fost dat filmului cu id-ul {putBody.movieId} rating-ul cu valoarea {putBody.score}");
-            request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(putBody), System.Text.Encoding.UTF8, "application/json");
-
-            // add custom http header
-            request.Headers.Add("Authentification_Token", token);
-
-            // send request
-            using var response = await Http.SendAsync(request);
-            starsRating = value;
+            if (ratingExists)  // PUT
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, ratingsApiEndpoint);
+                var putBody = new { movieId = movieId, score = value };
+                request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(putBody), System.Text.Encoding.UTF8, "application/json");
+                request.Headers.Add("Authentification_Token", token);
+                using var response = await Http.SendAsync(request);
+                starsRating = value;
+            }
+            else // POST
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, ratingsApiEndpoint);
+                var postBody = new { movieId = movieId, score = value };
+                request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(postBody), System.Text.Encoding.UTF8, "application/json");
+                request.Headers.Add("Authentification_Token", token);
+                using var response = await Http.SendAsync(request);
+                starsRating = value;
+                ratingExists = true;
+            }
         }
 
     }
+
+
+    public async Task<bool> IsUserLoggedIn()
+    {
+        var token = await sessionStorage.GetItemAsync<string>("jwt");
+        return !string.IsNullOrWhiteSpace(token);
+    }
+
 
     public class MovieRating
     {
