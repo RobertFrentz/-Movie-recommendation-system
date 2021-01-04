@@ -15,21 +15,6 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        @*<li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>*@
-        @*<li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>*@
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="movies">
-                <span class="oi oi-video" aria-hidden="true"></span> Movies
-            </NavLink>
-        </li>
         @if (!isUserLoggedIn)
         {
             <li class="nav-item px-3">
@@ -45,6 +30,11 @@
         }
         else
         {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="movies">
+                    <span class="oi oi-video" aria-hidden="true"></span> Movies
+                </NavLink>
+            </li>
             <li class="nav-item px-3">
                 <NavLink class="nav-link" style="cursor: pointer" @onclick='(() => LogOut())'>
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Log out

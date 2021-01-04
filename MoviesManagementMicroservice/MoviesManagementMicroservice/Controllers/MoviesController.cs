@@ -36,7 +36,7 @@ namespace MoviesManagementMicroservice.Controllers
         public async Task<ActionResult<IEnumerable<int>>> GetHomeMoviesData()
         {
             List<Movie> movies = _context.Movies.ToList();
-            List<int> moviesIds = movies.Select(m => m.Id).ToList();
+            List<int> moviesIds = movies.Select(m => m.Id).OrderBy(i => Guid.NewGuid()).ToList();
 
             return Ok(moviesIds);
         }

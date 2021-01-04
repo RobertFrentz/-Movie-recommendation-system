@@ -1,6 +1,7 @@
 ﻿@page "/movies"
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager NavManager
 
 
 <div class="row d-flex flex-wrap-reverse">
@@ -122,13 +123,19 @@
 
     <div class="container col-xl-2">
         <div class="container-fluid mb-4">
-            <h4 class="font-weight-light text-center mb-3">Search for a movie:</h4>
+            <h4 class="font-weight-light text-center mb-3">Search:</h4>
             <input type="text" class="w-100 mb-2" @bind="searchMovieName" />
             <button type="button" class="btn btn-outline-dark btn-block" @onclick="SearchMoviesByKeyword">Search</button>
         </div>
 
+        <div class="container-fluid mb-4">
+            <h4 class="font-weight-light text-center mb-3">Browse:</h4>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRecommendedMovies">Browse Recommended</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRandomMovies">Browse Random</button>
+        </div>
+
         <div class="container-fluid">
-            <h4 class="font-weight-light text-center mb-3">Or find by category:</h4>
+            <h4 class="font-weight-light text-center mb-3">Find by category:</h4>
             <div class="btn-group-vertical w-100">
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Action"))'>Action</button>
                 <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Adventure"))'>Adventure</button>
@@ -179,25 +186,44 @@
     {
         isUserLoggedIn = await IsUserLoggedIn();
 
-        if (isUserLoggedIn)
+        if (!isUserLoggedIn)
         {
-            TitleToDisplay = "Recommended for You:";
-            jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
-
-            // aparent recomandarile nu merg inca
-            //var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
-            //request.Headers.Add("Authentification_Token", jwtToken);
-            //using var httpResponse = await Http.SendAsync(request);
-            //receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
-
-            receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
-        }
-        else
-        {
-            TitleToDisplay = "Some good movies:";
-            receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+            NavManager.NavigateTo("/login", true);
 
         }
+
+        jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
+
+        await BrowseRecommendedMovies();
+    }
+
+    private async Task BrowseRecommendedMovies()
+    {
+        TitleToDisplay = "Recommended for You:";
+        moviesToDisplay = null;
+        receivedMoviesIds = null;
+
+        // aparent recomandarile nu merg inca
+        //var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
+        //request.Headers.Add("Authentification_Token", jwtToken);
+        //using var httpResponse = await Http.SendAsync(request);
+        //receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+
+        receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        currentPage = 1;
+        await GetMoviesOnGivenPage(currentPage);
+    }
+
+    private async Task BrowseRandomMovies()
+    {
+        TitleToDisplay = "Some good movies:";
+        moviesToDisplay = null;
+        receivedMoviesIds = null;
+
+        receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+
         numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
         currentPage = 1;
         await GetMoviesOnGivenPage(currentPage);
