@@ -15,10 +15,6 @@ namespace MoviesManagementMicroservice
     {
         public static async Task Main(string[] args)
         {
-            // await DataScraping.GetImdbMoviePosterUrlAsync(114709);
-
-            //DataContext.ImportLinkDataFromCsv();
-
             CreateHostBuilder(args).Build().Run();
         }
 

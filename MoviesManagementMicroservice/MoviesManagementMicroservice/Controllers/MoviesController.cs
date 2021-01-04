@@ -60,7 +60,8 @@ namespace MoviesManagementMicroservice.Controllers
 
             if (link.ImdbPosterUrl == null)
             {
-                link.ImdbPosterUrl = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
+                string temp = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
+                link.ImdbPosterUrl = (temp != null) ? temp : null;
             }
             else
             {
