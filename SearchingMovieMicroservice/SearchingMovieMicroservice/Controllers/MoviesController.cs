@@ -53,7 +53,7 @@ namespace SearchingMovieMicroservice.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            if(response != null)
+            if (response != null)
             {
                 List<int> moviesId = _context.Movies.Where(x => x.Genres == category || x.Genres.Contains(category)).Select(x => x.Id).ToList();
                 List<int> recommendations = SearchOperations.RecommendedMoviesIdByCategory(Convert.ToInt32(response), moviesId);
@@ -71,7 +71,8 @@ namespace SearchingMovieMicroservice.Controllers
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
         }
-        
+
+
 
         [Route("ratings")]
         [HttpGet]
@@ -97,8 +98,12 @@ namespace SearchingMovieMicroservice.Controllers
                     httpResponseMessage = await client.GetAsync("http://localhost:5050/api/v1/ratings");
                     httpResponseMessage.EnsureSuccessStatusCode();
                     var moviesIdWithRatings = httpResponseMessage.Content.ReadAsAsync<Dictionary<int, int>>().Result;
-                    Console.WriteLine("Movies: " + moviesIdWithRatings.Count);
-                 
+                    string category = GetMostRatedCategory(moviesIdWithRatings);
+                    string tag = GetMostRatedTag(moviesIdWithRatings);
+                    /*foreach(KeyValuePair<int, int> movie in moviesIdWithRatings)
+                    {
+                        Console.WriteLine("MovieId: " + movie.Key + " Rating: " + movie.Value);
+                    }*/
                 }
                 catch (HttpRequestException e)
                 {
@@ -151,6 +156,68 @@ namespace SearchingMovieMicroservice.Controllers
             {
                 return Unauthorized(new Error("Token has invalid signature or expired"));
             }
+        }
+
+        private string GetMostRatedTag(Dictionary<int, int> movies)
+        {
+            List<int> moviesId = new List<int>();
+            foreach (KeyValuePair<int, int> movie in movies)
+            {
+                moviesId.Add(movie.Key);
+            }
+            return _context.MovieWithTags
+                        .Where(m => moviesId.Contains(m.MovieId))
+                        .AsEnumerable()
+                        .GroupBy(m => m.Tag)
+                        .OrderByDescending(m => m.Count())
+                        .Select(m => m.Key)
+                        .FirstOrDefault();
+        }
+
+        private string GetMostRatedCategory(Dictionary<int, int> movies)
+        {
+            Dictionary<string, int> categories = new Dictionary<string, int>();
+            List<int> moviesId = new List<int>();
+            foreach (KeyValuePair<int, int> movie in movies)
+            {
+                moviesId.Add(movie.Key);
+            }
+            var recentMovies = _context.Movies
+                                  .Where(m => moviesId.Contains(m.Id))
+                                  .Select(m => m.Genres)
+                                  .ToList();
+
+            foreach (string movie in recentMovies)
+            {
+                int lastPosition = 0;
+                string category;
+                for (int i = 0; i < movie.Length; i++)
+                {
+                    if (movie[i] == '|')
+                    {
+                        category = movie.Substring(lastPosition, i - lastPosition);
+                        if (categories.ContainsKey(category))
+                        {
+                            categories[category] += 1;
+                        }
+                        else
+                        {
+                            categories.Add(category, 1);
+                        }
+                        lastPosition += i - lastPosition + 1;
+                    }
+                }
+                category = movie.Substring(lastPosition, movie.Length - lastPosition);
+                if (categories.ContainsKey(category))
+                {
+                    categories[category] += 1;
+                }
+                else
+                {
+                    categories.Add(category, 1);
+                }
+            }
+            return categories.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
         }
     }
 }
