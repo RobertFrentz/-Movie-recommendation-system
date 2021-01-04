@@ -25,12 +25,16 @@
                                 <td><h4>Title</h4></td>
                                 <td>@jsonObject.Title</td>
                             </tr>
+                            @if (token != null)
+                            {
                             <tr>
                                 <td><h4>Rating</h4></td>
                                 <td>
-                                    <RadzenRating Change=@(args => OnChange(args, "Rating with 5 stars")) />
+                                    <RadzenRating Value= "@starsRating"
+                                                  Change=@(args => OnChange(args, "Rating with 5 stars")) />
                                 </td>
                             </tr>
+                            }
                             <tr>
                                 <td><h4>Released</h4></td>
                                 <td>@jsonObject.Released</td>
@@ -94,12 +98,26 @@
         jsonObject = JsonConvert.DeserializeObject(jsonString);
         finishedLoading = true;
         token = await sessionStorage.GetItemAsync<string>("jwt");
+        await GetRating();
     }
 
     private async Task GetRating()
     {
-        string urlGet = "http://localhost:5050/api/v1/ratings?movieId=" + movieId;
-        var httpResponse = await Http.GetAsync(urlGet);
+        string urlGet = "http://localhost:5050/api/v1/ratings/" + movieId;
+        var getRequest = new HttpRequestMessage(HttpMethod.Get, urlGet);
+
+        // add custom http header
+        getRequest.Headers.Add("Authentification_token", token);
+
+        // send request
+        using var httpResponse = await Http.SendAsync(getRequest);
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            // set error message for display, log to console and return
+            starsRating = 0;
+            Console.WriteLine("Rating not found");
+            return;
+        }
         starsRating = await httpResponse.Content.ReadFromJsonAsync<int>();
 
     }
@@ -120,8 +138,11 @@
 
             // send request
             using var response = await Http.SendAsync(deleteRequest);
+            starsRating = value;
+
+
         }
-        else
+        else if(starsRating == 0)
         {
 
             //Console.WriteLine(movieRating.rating);
@@ -136,7 +157,22 @@
 
             // send request
             using var response = await Http.SendAsync(request);
+            starsRating = value;
 
+        }
+        else
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            var putBody = new { movieId = movieId, score = value };
+            Console.WriteLine($"I-a fost dat filmului cu id-ul {putBody.movieId} rating-ul cu valoarea {putBody.score}");
+            request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(putBody), System.Text.Encoding.UTF8, "application/json");
+
+            // add custom http header
+            request.Headers.Add("Authentification_Token", token);
+
+            // send request
+            using var response = await Http.SendAsync(request);
+            starsRating = value;
         }
 
     }
