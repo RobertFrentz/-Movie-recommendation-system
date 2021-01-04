@@ -209,12 +209,13 @@
         receivedMoviesIds = null;
 
         // aparent recomandarile nu merg inca
-        //var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
-        //request.Headers.Add("Authentification_Token", jwtToken);
-        //using var httpResponse = await Http.SendAsync(request);
-        //receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
+        var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
+        request.Headers.Add("Authentification_Token", jwtToken);
+        using var httpResponse = await Http.SendAsync(request);
+        receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
 
-        receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+        
+        //receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
 
         numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
         currentPage = 1;

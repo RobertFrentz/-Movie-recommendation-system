@@ -8,7 +8,6 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace SearchingMovieMicroservice.Controllers
 {
@@ -98,9 +97,13 @@ namespace SearchingMovieMicroservice.Controllers
                     httpResponseMessage = await client.GetAsync("http://localhost:5050/api/v1/ratings");
                     httpResponseMessage.EnsureSuccessStatusCode();
                     var moviesIdWithRatings = httpResponseMessage.Content.ReadAsAsync<Dictionary<int, int>>().Result;
-                    string category = GetMostRatedCategory(moviesIdWithRatings);
-                    string tag = GetMostRatedTag(moviesIdWithRatings);
-                    /*foreach(KeyValuePair<int, int> movie in moviesIdWithRatings)
+                    List<int> movies = _context.Movies.Select(m => m.Id).ToList();
+                    List<int> topCategoryMoviesId = GetMostRatedCategory(moviesIdWithRatings);
+                    List<int> topTagMoviesId = GetMostRatedTag(moviesIdWithRatings);
+                    List<int> topRatedMoviesId = GetTopRatedMovies(moviesIdWithRatings);
+                    List<int> recentRatedMoviesId = GetRecentRatedMovies(moviesIdWithRatings);
+                    return SearchOperations.RecommendedMoviesByUserRatings(Convert.ToInt32(response), topCategoryMoviesId, topTagMoviesId, topRatedMoviesId, recentRatedMoviesId, movies);
+                    /*foreach (KeyValuePair<int, int> movie in moviesIdWithRatings)
                     {
                         Console.WriteLine("MovieId: " + movie.Key + " Rating: " + movie.Value);
                     }*/
@@ -158,23 +161,28 @@ namespace SearchingMovieMicroservice.Controllers
             }
         }
 
-        private string GetMostRatedTag(Dictionary<int, int> movies)
+        private List<int> GetMostRatedTag(Dictionary<int, int> movies)
         {
             List<int> moviesId = new List<int>();
             foreach (KeyValuePair<int, int> movie in movies)
             {
                 moviesId.Add(movie.Key);
             }
-            return _context.MovieWithTags
+            string mostRatedTag = _context.MovieWithTags
                         .Where(m => moviesId.Contains(m.MovieId))
                         .AsEnumerable()
                         .GroupBy(m => m.Tag)
                         .OrderByDescending(m => m.Count())
                         .Select(m => m.Key)
                         .FirstOrDefault();
+            return _context.MovieWithTags
+                   .Where(m => m.Tag.Contains(mostRatedTag) || mostRatedTag.Contains(m.Tag))
+                   .Select(m => m.MovieId)
+                   .ToList();
+
         }
 
-        private string GetMostRatedCategory(Dictionary<int, int> movies)
+        private List<int> GetMostRatedCategory(Dictionary<int, int> movies)
         {
             Dictionary<string, int> categories = new Dictionary<string, int>();
             List<int> moviesId = new List<int>();
@@ -217,7 +225,53 @@ namespace SearchingMovieMicroservice.Controllers
                     categories.Add(category, 1);
                 }
             }
-            return categories.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            string mostRatedCategory = categories.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            return _context.Movies
+                   .Where(m => m.Genres == mostRatedCategory)
+                   .Select(m => m.Id)
+                   .ToList();
+
+        }
+
+        private List<int> GetRecentRatedMovies(Dictionary<int, int> moviesIdWithRatings)
+        {
+            List<int> recentMoviesId = new List<int>();
+            for(int i = moviesIdWithRatings.Count - 1, j = 0; i > 0 && j < 5; i--, j++)
+            {
+                recentMoviesId.Add(moviesIdWithRatings.ElementAt(i).Key);
+            }
+            List<Movie> recentRatedMovies =  _context.Movies.Where(m => recentMoviesId.Contains(m.Id))
+                                                            .ToList();
+            string LastRatedMovieCategory = recentRatedMovies[0].Genres;
+            string SecondLastRatedMovieCategory = null;
+            if (recentMoviesId.Count > 1)
+            {
+                 SecondLastRatedMovieCategory = recentRatedMovies[1].Genres;
+            }
+            return _context.Movies.Where(m => m.Genres == LastRatedMovieCategory || m.Genres == SecondLastRatedMovieCategory)
+                                  .Select(m => m.Id)
+                                  .ToList();
+        }
+
+        private List<int> GetTopRatedMovies(Dictionary<int, int> moviesIdWithRatings)
+        {
+            List<int> topRatedMoviesId = new List<int>();
+            moviesIdWithRatings.OrderByDescending(key => key.Value);
+            for (int i = 0; i < 5; i++)
+            {
+                if(moviesIdWithRatings.Count() == i)
+                {
+                    break;
+                }
+                topRatedMoviesId.Add(moviesIdWithRatings.ElementAt(i).Key);
+            }
+            List<Movie> topRatedMovies = _context.Movies.Where(m => topRatedMoviesId.Contains(m.Id))
+                                                        .ToList();
+            string TopOneRatedMovieCategory = topRatedMovies[0].Genres;
+            string TopTwoLastRatedMovieCategory = topRatedMovies[1].Genres;
+            return _context.Movies.Where(m => m.Genres == TopOneRatedMovieCategory || m.Genres == TopTwoLastRatedMovieCategory)
+                                  .Select(m => m.Id)
+                                  .ToList();
         }
     }
 }

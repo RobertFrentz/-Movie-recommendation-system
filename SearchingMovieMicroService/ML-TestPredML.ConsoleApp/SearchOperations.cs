@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ML_TestPredML.Model;
@@ -111,6 +112,23 @@ namespace ML_TestPredML.ConsoleApp
                 moviesId.Add((int)prediction.Key);
             }
             return moviesId;
+        }
+
+        public static List<int> RecommendedMoviesByUserRatings(int userId, List<int> topCategoryMoviesId, List<int> topTagMoviesId, List<int> topRatedMoviesId, List<int> recentRatedMoviesId, List<int> allMovies)
+        {
+            Console.WriteLine("TopCategory: " + topCategoryMoviesId.Count() + "TopTagMoviesId: " + topRatedMoviesId.Count() + "recentRatedMoviesId: " + recentRatedMoviesId.Count() + " TopTagMovies: " + topTagMoviesId.Count() + "All Movies: " + allMovies.Count());
+            List<int> moviesIdRecommendedByMostRatedCategory = RecommendedMoviesIdByCategory(userId, topCategoryMoviesId);
+            List<int> moviesIdRecommendedByMostRatedTag = RecommendedMoviesIdByTag(userId, topTagMoviesId);
+            List<int> moviesIdRecommendedByTopRatedCategories = RecommendedMoviesIdByCategory(userId, topRatedMoviesId);
+            List<int> moviesIdRecommendedByRecentRatedCategories = RecommendedMoviesIdByCategory(userId, recentRatedMoviesId);
+            List<int> moviesIdRecommendedBasedOnUserId = RecommendedMoviesIdByTitle(userId, allMovies);
+            List<int> moviesIdRecommendedByUserRatings = new List<int>();
+            moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedByRecentRatedCategories.Take(5));
+            moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedByTopRatedCategories.Take(5));
+            moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedByMostRatedTag.Take(5));
+            moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedByMostRatedCategory.Take(5));
+            moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedBasedOnUserId.Take(60));
+            return moviesIdRecommendedByUserRatings.Distinct().ToList();
         }
     }
 }
