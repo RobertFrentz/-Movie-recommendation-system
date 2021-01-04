@@ -14,18 +14,24 @@ namespace MoviesManagementMicroservice.Utils
         {
             string idString = id.ToString().PadLeft(7, '0');
 
-            string URL = "http://www.omdbapi.com/?i=tt" + idString + "&apikey=762854f2";
+            string URL = "http://www.omdbapi.com/?i=tt" + idString + "&apikey=36671c0b";
             string posterAddress = "";
 
-            HttpClient client = new HttpClient();
+            HttpClient httpClient = new HttpClient();
 
-            using (var httpClient = new HttpClient())
+
+            var request = new HttpRequestMessage(HttpMethod.Get, URL);
+            using var httpResponse = await httpClient.SendAsync(request);
+
+            if ((int)httpResponse.StatusCode != 200)
             {
-                var json = await httpClient.GetStringAsync(URL);
-
-                dynamic jsonObject = JObject.Parse(json);
-                posterAddress = jsonObject.Poster;
+                Console.WriteLine($"EROARE GetImdbMoviePosterUrlAsync: {httpResponse.ReasonPhrase}, a expirat token-ul?");
+                return "";
             }
+
+            var json = await httpClient.GetStringAsync(URL);
+            dynamic jsonObject = JObject.Parse(json);
+            posterAddress = jsonObject.Poster;
 
             //Console.WriteLine("URL Link: " + URL);
             //Console.WriteLine("Movie Poster Link: " + posterAddress);
@@ -36,18 +42,21 @@ namespace MoviesManagementMicroservice.Utils
         {
             string idString = id.ToString().PadLeft(7, '0');
 
-            string URL = "http://www.omdbapi.com/?i=tt" + idString + "&plot=full&apikey=762854f2";
-
-            HttpClient client = new HttpClient();
+            string URL = "http://www.omdbapi.com/?i=tt" + idString + "&plot=full&apikey=36671c0b";
 
             string jsonString = "";
 
-            using (var httpClient = new HttpClient())
-            {
-                var json = await httpClient.GetStringAsync(URL);
+            HttpClient httpClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, URL);
+            using var httpResponse = await httpClient.SendAsync(request);
 
-                jsonString = json;
+            if ((int)httpResponse.StatusCode != 200)
+            {
+                Console.WriteLine($"EROARE GetImdbMovieData: {httpResponse.ReasonPhrase}, a expirat token-ul?");
+                return "";
             }
+
+            jsonString = await httpClient.GetStringAsync(URL);
 
             //Console.WriteLine("URL Link: " + URL);
             //Console.WriteLine("JSON is: " + jsonString);
