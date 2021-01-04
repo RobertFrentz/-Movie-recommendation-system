@@ -111,15 +111,32 @@
         if (value == 0)
         {
             string urlDelete = "http://localhost:5050/api/v1/ratings/" + movieId;
-            Http.DefaultRequestHeaders.Add("Authentification_Token", token);
-            var httpResponse = await Http.DeleteAsync(url);
+            /*Http.DefaultRequestHeaders.Add("Authentification_Token", token);
+            var httpResponse = await Http.DeleteAsync(url);*/
+            var deleteRequest = new HttpRequestMessage(HttpMethod.Delete, urlDelete);
+
+            // add custom http header
+            deleteRequest.Headers.Add("Authentification_Token", token);
+
+            // send request
+            using var response = await Http.SendAsync(deleteRequest);
         }
         else
         {
-            MovieRating movieRating = new MovieRating { movieId = movieId, rating = value};
-            Console.WriteLine(movieRating.rating);
-            Http.DefaultRequestHeaders.Add("Authentification_Token", token);
-            var httpResponse = await Http.PostAsJsonAsync(url, movieRating);
+
+            //Console.WriteLine(movieRating.rating);
+            //Http.DefaultRequestHeaders.Add("Authentification_Token", token);
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            var postBody = new { movieId = movieId, score = value };
+            Console.WriteLine($"I-a fost dat filmului cu id-ul {postBody.movieId} rating-ul cu valoarea {postBody.score}");
+            request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(postBody), System.Text.Encoding.UTF8, "application/json");
+
+            // add custom http header
+            request.Headers.Add("Authentification_Token", token);
+
+            // send request
+            using var response = await Http.SendAsync(request);
+
         }
 
     }
