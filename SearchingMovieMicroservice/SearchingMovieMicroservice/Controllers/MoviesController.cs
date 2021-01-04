@@ -102,11 +102,12 @@ namespace SearchingMovieMicroservice.Controllers
                     List<int> topTagMoviesId = GetMostRatedTag(moviesIdWithRatings);
                     List<int> topRatedMoviesId = GetTopRatedMovies(moviesIdWithRatings);
                     List<int> recentRatedMoviesId = GetRecentRatedMovies(moviesIdWithRatings);
-                    return SearchOperations.RecommendedMoviesByUserRatings(Convert.ToInt32(response), topCategoryMoviesId, topTagMoviesId, topRatedMoviesId, recentRatedMoviesId, movies);
-                    /*foreach (KeyValuePair<int, int> movie in moviesIdWithRatings)
+                    List<int> returnMoviesId=SearchOperations.RecommendedMoviesByUserRatings(Convert.ToInt32(response), topCategoryMoviesId, topTagMoviesId, topRatedMoviesId, recentRatedMoviesId, movies);
+                    foreach (KeyValuePair<int, int> movie in moviesIdWithRatings)
                     {
-                        Console.WriteLine("MovieId: " + movie.Key + " Rating: " + movie.Value);
-                    }*/
+                        if (returnMoviesId.Contains(movie.Key)) returnMoviesId.Remove(movie.Key);
+                    }
+                    return returnMoviesId;
                 }
                 catch (HttpRequestException e)
                 {
