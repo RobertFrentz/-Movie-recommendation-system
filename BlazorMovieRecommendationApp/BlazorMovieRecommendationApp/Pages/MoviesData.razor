@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject NavigationManager NavManager
+@using Newtonsoft.Json
 
 
 <div class="row d-flex flex-wrap-reverse">
@@ -132,6 +133,7 @@
             <h4 class="font-weight-light text-center mb-3">Browse:</h4>
             <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRecommendedMovies">Browse Recommended</button>
             <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRandomMovies">Browse Random</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRatedMovies">Browse Rated</button>
         </div>
 
         <div class="container-fluid">
@@ -181,6 +183,8 @@
     private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
     private string searchMoviesByKeywordApiUrl = "http://localhost:5020/api/v1/search/keyword?keyword=";
     private string recommendedMoviesApiUrl = "http://localhost:5020/api/v1/search/ratings";
+    private string ratedMoviesApiUrl = "http://localhost:5050/api/v1/ratings";
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -196,6 +200,7 @@
 
         await BrowseRecommendedMovies();
     }
+
 
     private async Task BrowseRecommendedMovies()
     {
@@ -216,6 +221,7 @@
         await GetMoviesOnGivenPage(currentPage);
     }
 
+
     private async Task BrowseRandomMovies()
     {
         TitleToDisplay = "Some good movies:";
@@ -228,6 +234,34 @@
         currentPage = 1;
         await GetMoviesOnGivenPage(currentPage);
     }
+
+
+    private async Task BrowseRatedMovies()
+    {
+        TitleToDisplay = "Rated movies:";
+        moviesToDisplay = null;
+        receivedMoviesIds = null;
+
+
+        var getRequest = new HttpRequestMessage(HttpMethod.Get, ratedMoviesApiUrl);
+        getRequest.Headers.Add("Authentification_token", jwtToken);
+        using var httpResponse = await Http.SendAsync(getRequest);
+
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            Console.WriteLine("No ratings found ?");
+            TitleToDisplay = "Sorry, no rated movies yet 😔";
+            return;
+        }
+
+        Dictionary<int, int> ratingsDictionary = await httpResponse.Content.ReadFromJsonAsync<Dictionary<int, int>>();
+        receivedMoviesIds = ratingsDictionary.Keys.ToList();
+
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        currentPage = 1;
+        await GetMoviesOnGivenPage(currentPage);
+    }
+
 
     private async Task SetNextPageMovies()
     {
