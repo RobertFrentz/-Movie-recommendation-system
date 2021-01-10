@@ -90,8 +90,8 @@
     private int starsRating;
     private bool ratingExists;
     private bool isUserLoggedIn;
-    private string ratingsApiEndpoint = "http://localhost:5050/api/v1/ratings/";
-    private string movieDataApiEndpoint = "http://localhost:5000/api/Movies/MoviesData/";
+    private string ratingsApiEndpoint = "http://localhost:5000/api/v1/ratings";
+    private string movieDataApiEndpoint = "http://localhost:5000/api/v1/movies/moviedata/complete/";
 
 
     protected override async Task OnInitializedAsync()
@@ -114,7 +114,7 @@
 
     private async Task GetRating()
     {
-        string urlGet = ratingsApiEndpoint + movieId;
+        string urlGet = ratingsApiEndpoint + "/" + movieId;
         var getRequest = new HttpRequestMessage(HttpMethod.Get, urlGet);
         getRequest.Headers.Add("Authentification_token", token);
         using var httpResponse = await Http.SendAsync(getRequest);
@@ -138,7 +138,7 @@
 
         if (value == 0 && ratingExists)  // DELETE
         {
-            string urlDelete = ratingsApiEndpoint + movieId;
+            string urlDelete = ratingsApiEndpoint + "/" + movieId;
             var deleteRequest = new HttpRequestMessage(HttpMethod.Delete, urlDelete);
             deleteRequest.Headers.Add("Authentification_Token", token);
             using var response = await Http.SendAsync(deleteRequest);

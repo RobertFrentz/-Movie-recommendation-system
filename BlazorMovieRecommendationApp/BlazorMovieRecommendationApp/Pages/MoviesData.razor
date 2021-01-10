@@ -179,11 +179,11 @@
     private string jwtToken;
     bool isUserLoggedIn;
 
-    private string apiUrl = "http://localhost:5000/api/Movies/HomeMoviesData";
-    private string searchMoviesByCategoryApiUrl = "http://localhost:5020/api/v1/search/category?category=";
-    private string searchMoviesByKeywordApiUrl = "http://localhost:5020/api/v1/search/keyword?keyword=";
-    private string recommendedMoviesApiUrl = "http://localhost:5020/api/v1/search/ratings";
-    private string ratedMoviesApiUrl = "http://localhost:5050/api/v1/ratings";
+    private string apiUrl = "http://localhost:5000/api/v1/movies/random";
+    private string searchMoviesByCategoryApiUrl = "http://localhost:5000/api/v1/search/category?category=";
+    private string searchMoviesByKeywordApiUrl = "http://localhost:5000/api/v1/search/keyword?keyword=";
+    private string recommendedMoviesApiUrl = "http://localhost:5000/api/v1/search/ratings";
+    private string ratedMoviesApiUrl = "http://localhost:5000/api/v1/ratings";
 
 
     protected override async Task OnInitializedAsync()
@@ -375,7 +375,7 @@
 
     private async Task<MovieDetails> GetMovieDetailsById(int id)
     {
-        string apiUrl = "http://localhost:5000/api/Movies/HomeMoviesData/" + id.ToString();
+        string apiUrl = "http://localhost:5000/api/v1/movies/moviedata/summary/" + id.ToString();
         MovieDetails movie;
 
         var httpResponse = await Http.GetAsync(apiUrl);

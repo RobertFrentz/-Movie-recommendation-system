@@ -37,7 +37,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/{version}/ratings",
+      "DownstreamPathTemplate": "/api/{version}/ratings/{movieId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -45,7 +45,7 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "/api/{version}/ratings/{movideId}",
+      "UpstreamPathTemplate": "/api/{version}/ratings/{movieId}",
       "UpstreamHttpMethod": [ "Get", "Delete" ]
     },
     {

@@ -70,7 +70,7 @@ else
 
     private async Task SendRegisterData()
     {
-        string apiUrl = "http://localhost:5050/api/v2/users/register";
+        string apiUrl = "http://localhost:5000/api/v2/users/register";
 
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) ||
             string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
