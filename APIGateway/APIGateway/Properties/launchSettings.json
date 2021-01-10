@@ -22,7 +22,7 @@
         "ASPNETCORE_ENVIRONMENT": "dev"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:5031"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

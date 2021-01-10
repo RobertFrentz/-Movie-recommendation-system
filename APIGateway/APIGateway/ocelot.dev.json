@@ -37,18 +37,6 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/{version}/search/keyword",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5020
-        }
-      ],
-      "UpstreamPathTemplate": "/api/{version}/search/keyword",
-      "UpstreamHttpMethod": [ "Get" ]
-    },
-    {
       "DownstreamPathTemplate": "/api/{version}/ratings",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -73,7 +61,7 @@
       "UpstreamHttpMethod": [ "Get", "Put", "Post" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/users",
+      "DownstreamPathTemplate": "/api/{version}/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -81,11 +69,11 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/users/{email}",
+      "UpstreamPathTemplate": "/api/{version}/users/{email}",
       "UpstreamHttpMethod": [ "Get", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/users",
+      "DownstreamPathTemplate": "/api/{version}/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -93,11 +81,11 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/users",
+      "UpstreamPathTemplate": "/api/{version}/users",
       "UpstreamHttpMethod": [ "Get", "Put" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/users/login",
+      "DownstreamPathTemplate": "/api/{version}/users/login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -105,11 +93,11 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/users/login",
+      "UpstreamPathTemplate": "/api/{version}/users/login",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/users/register",
+      "DownstreamPathTemplate": "/api/{version}/users/register",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -117,11 +105,11 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/users/register",
+      "UpstreamPathTemplate": "/api/{version}/users/register",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/users/verify_token",
+      "DownstreamPathTemplate": "/api/{version}/users/verify_token",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -129,43 +117,43 @@
           "Port": 5050
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/users/verify_token",
+      "UpstreamPathTemplate": "/api/{version}/users/verify_token",
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/movies/random",
+      "DownstreamPathTemplate": "/api/{version}/movies/random",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5060
+          "Port": 5070
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/movies/random",
+      "UpstreamPathTemplate": "/api/{version}/movies/random",
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/movies/moviedata/summary/{movieId}",
+      "DownstreamPathTemplate": "/api/{version}/movies/moviedata/summary/{movieId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5060
+          "Port": 5070
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/movies/moviedata/summary/{movieId}",
+      "UpstreamPathTemplate": "/api/{version}/movies/moviedata/summary/{movieId}",
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "api/{version}/movies/moviedata/complete/{movieId}",
+      "DownstreamPathTemplate": "/api/{version}/movies/moviedata/complete/{movieId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5060
+          "Port": 5070
         }
       ],
-      "UpstreamPathTemplate": "api/{version}/movies/moviedata/complete/{movieId}",
+      "UpstreamPathTemplate": "/api/{version}/movies/moviedata/complete/{movieId}",
       "UpstreamHttpMethod": [ "Get" ]
     }
 
