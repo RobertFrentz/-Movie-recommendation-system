@@ -27,3 +27,5 @@ UserManagementMicroservice/UserManagementTests/obj
 SearchingMovieMicroService/SeachingMovieMicroserviceTests/bin
 SearchingMovieMicroService/SeachingMovieMicroserviceTests/obj
 UserManagementMicroservice/UserManagementTests/bin
+APIGateway/APIGateway/bin
+APIGateway/APIGateway/obj
