@@ -130,5 +130,30 @@ namespace ML_TestPredML.ConsoleApp
             moviesIdRecommendedByUserRatings.AddRange(moviesIdRecommendedBasedOnUserId.Take(60));
             return moviesIdRecommendedByUserRatings.Distinct().ToList();
         }
+
+        public static List<int> RecommendedMoviesWithoutUserRatings(int userId, List<int> moviesId)
+        {
+            SortedList<float, float> predictions = new SortedList<float, float>();
+            for (int i = 0; i < moviesId.Count; i++)
+            {
+                ModelInput data = new ModelInput()
+                {
+                    UserId = userId,
+                    MovieId = moviesId[i],
+                };
+                float predict = Prediction(data);
+                if (!predictions.ContainsKey(moviesId[i]))
+                {
+                    predictions.Add(moviesId[i], predict);
+                }
+            }
+            var sortedPredictions = predictions.OrderByDescending(r => r.Value);
+            moviesId.Clear();
+            foreach (KeyValuePair<float, float> prediction in sortedPredictions)
+            {
+                moviesId.Add((int)prediction.Key);
+            }
+            return moviesId;
+        }
     }
 }

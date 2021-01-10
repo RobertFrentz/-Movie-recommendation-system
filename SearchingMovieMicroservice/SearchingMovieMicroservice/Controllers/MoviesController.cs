@@ -95,19 +95,29 @@ namespace SearchingMovieMicroservice.Controllers
                 try
                 {
                     httpResponseMessage = await client.GetAsync("http://localhost:5050/api/v1/ratings");
-                    httpResponseMessage.EnsureSuccessStatusCode();
-                    var moviesIdWithRatings = httpResponseMessage.Content.ReadAsAsync<Dictionary<int, int>>().Result;
-                    List<int> movies = _context.Movies.Select(m => m.Id).ToList();
-                    List<int> topCategoryMoviesId = GetMostRatedCategory(moviesIdWithRatings);
-                    List<int> topTagMoviesId = GetMostRatedTag(moviesIdWithRatings);
-                    List<int> topRatedMoviesId = GetTopRatedMovies(moviesIdWithRatings);
-                    List<int> recentRatedMoviesId = GetRecentRatedMovies(moviesIdWithRatings);
-                    List<int> returnMoviesId=SearchOperations.RecommendedMoviesByUserRatings(Convert.ToInt32(response), topCategoryMoviesId, topTagMoviesId, topRatedMoviesId, recentRatedMoviesId, movies);
-                    foreach (KeyValuePair<int, int> movie in moviesIdWithRatings)
+                    if (httpResponseMessage.IsSuccessStatusCode)
                     {
-                        if (returnMoviesId.Contains(movie.Key)) returnMoviesId.Remove(movie.Key);
+                        var moviesIdWithRatings = httpResponseMessage.Content.ReadAsAsync<Dictionary<int, int>>().Result;
+                        List<int> movies = _context.Movies.Select(m => m.Id).ToList();
+                        List<int> topCategoryMoviesId = GetMostRatedCategory(moviesIdWithRatings);
+                        List<int> topTagMoviesId = GetMostRatedTag(moviesIdWithRatings);
+                        List<int> topRatedMoviesId = GetTopRatedMovies(moviesIdWithRatings);
+                        List<int> recentRatedMoviesId = GetRecentRatedMovies(moviesIdWithRatings);
+                        List<int> returnMoviesId = SearchOperations.RecommendedMoviesByUserRatings(Convert.ToInt32(response), topCategoryMoviesId, topTagMoviesId, topRatedMoviesId, recentRatedMoviesId, movies);
+                        foreach (KeyValuePair<int, int> movie in moviesIdWithRatings)
+                        {
+                            if (returnMoviesId.Contains(movie.Key)) returnMoviesId.Remove(movie.Key);
+                        }
+                        return returnMoviesId;
                     }
-                    return returnMoviesId;
+                    else if(httpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        List<int> moviesId = _context.Movies.Select(m => m.Id).ToList();
+                        List<int> recommendedMoviesId = SearchOperations.RecommendedMoviesWithoutUserRatings(Convert.ToInt32(response), moviesId);
+                        return recommendedMoviesId;
+                    }
+                    
+                   
                 }
                 catch (HttpRequestException e)
                 {
