@@ -1,8 +1,9 @@
-﻿@page "/movies"
+﻿@page "/movies/{movieCategory?}"
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject NavigationManager NavManager
 @using Newtonsoft.Json
+@using Microsoft.AspNetCore.WebUtilities
 
 
 <div class="row d-flex flex-wrap-reverse">
@@ -126,41 +127,41 @@
         <div class="container-fluid mb-4">
             <h4 class="font-weight-light text-center mb-3">Search:</h4>
             <input type="text" class="w-100 mb-2" @bind="searchMovieName" />
-            <button type="button" class="btn btn-outline-dark btn-block" @onclick="SearchMoviesByKeyword">Search</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToSearch(searchMovieName))'>Search</button>
         </div>
 
         <div class="container-fluid mb-4">
             <h4 class="font-weight-light text-center mb-3">Browse:</h4>
-            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRecommendedMovies">Browse Recommended</button>
-            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRandomMovies">Browse Random</button>
-            <button type="button" class="btn btn-outline-dark btn-block" @onclick="BrowseRatedMovies">Browse Rated</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("recommended"))'>Browse Recommended</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("random"))'>Browse Random</button>
+            <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("rated"))'>Browse Rated</button>
         </div>
 
         <div class="container-fluid">
             <h4 class="font-weight-light text-center mb-3">Find by category:</h4>
             <div class="btn-group-vertical w-100">
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Action"))'>Action</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Adventure"))'>Adventure</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Animation"))'>Animation</button>
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Biography"))'>Biography</button>*@
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Comedy"))'>Comedy</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Crime"))'>Crime</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Documentary"))'>Documentary</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Drama"))'>Drama</button>
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Family"))'>Family</button>*@
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Fantasy"))'>Fantasy</button>
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Film Noir"))'>Film Noir</button>*@
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("History"))'>History</button>*@
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Horror"))'>Horror</button>
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Music"))'>Music</button>*@
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Mystery"))'>Mystery</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Romance"))'>Romance</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sci-Fi"))'>Sci-Fi</button>
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Sport"))'>Sport</button>*@
-                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Superhero"))'>Superhero</button>*@
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Thriller"))'>Thriller</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("War"))'>War</button>
-                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => SearchMoviesByCategory("Western"))'>Western</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("action"))'>Action</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("adventure"))'>Adventure</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("animation"))'>Animation</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Biography"))'>Biography</button>*@
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Comedy"))'>Comedy</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Crime"))'>Crime</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Documentary"))'>Documentary</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Drama"))'>Drama</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Family"))'>Family</button>*@
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Fantasy"))'>Fantasy</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Film Noir"))'>Film Noir</button>*@
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("History"))'>History</button>*@
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Horror"))'>Horror</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Music"))'>Music</button>*@
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Mystery"))'>Mystery</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Romance"))'>Romance</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Sci-Fi"))'>Sci-Fi</button>
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Sport"))'>Sport</button>*@
+                @*<button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Superhero"))'>Superhero</button>*@
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Thriller"))'>Thriller</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("War"))'>War</button>
+                <button type="button" class="btn btn-outline-dark btn-block" @onclick='(() => NavigateToCategory("Western"))'>Western</button>
             </div>
         </div>
     </div>
@@ -169,6 +170,11 @@
 
 
 @code {
+    [Parameter]
+    public string movieCategory { get; set; }
+    public List<string> movieGenres = new List<string> { "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy",
+        "Film Noir", "History", "Horror", "Music", "Mystery", "Romance", "Sci-Fi", "Sport", "Superhero", "Superhero", "Thriller", "War", "Western"};
+    public List<string> movieBrowseTypes = new List<string> { "recommended", "random", "rated" };
     private string TitleToDisplay;
     private List<MovieDetails> moviesToDisplay;
     private List<int> receivedMoviesIds;
@@ -188,9 +194,107 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if(!await VerifyAuthorization()) return;
+        if (!await VerifyAuthorization()) { return; }
 
-        await BrowseRecommendedMovies();
+        Console.WriteLine($"----------------{movieCategory}--------------");
+
+        await SetCategoryAndPage();
+    }
+
+
+    private async Task SetCategoryAndPage()
+    {
+        var query = new Uri(NavManager.Uri).Query;
+
+        if (movieCategory != null)
+        {
+            if (movieGenres.Any(g => g.Equals(movieCategory, StringComparison.OrdinalIgnoreCase)))
+            {
+                await SearchMoviesByCategory(char.ToUpper(movieCategory[0]) + movieCategory.Substring(1)); // "Drama"
+            }
+            else if (movieBrowseTypes.Any(t => t.Equals(movieCategory, StringComparison.OrdinalIgnoreCase)))
+            {
+                switch (movieCategory)
+                {
+                    case "recommended":
+                        await BrowseRecommendedMovies(); break;
+                    case "rated":
+                        await BrowseRatedMovies(); break;
+                    default:
+                        await BrowseRandomMovies(); break;
+                }
+            }
+            else // invalid category
+            {
+                NavigateToCategory("recommended");
+                return;
+            }
+        }
+        else if (QueryHelpers.ParseQuery(query).TryGetValue("search", out var keywords))
+        {
+            await SearchMoviesByKeyword(keywords);
+        }
+        else // no search and no category
+        {
+            NavigateToCategory("recommended");
+            return;
+        }
+
+        if (QueryHelpers.ParseQuery(query).TryGetValue("page", out var value))
+        {
+            Console.WriteLine($"----------------PAGE: {value}--------------");
+            await SetCurrentPageData(Convert.ToInt32(value));
+        }
+        else
+        {
+            await SetCurrentPageData(1);
+        }
+    }
+
+
+    private void NavigateToCategory(string category)
+    {
+        NavManager.NavigateTo($"/movies/{category}", true);
+    }
+
+
+    private void NavigateToSearch(string keyword)
+    {
+        var uri = new Uri(NavManager.BaseUri);
+        var newQueryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        newQueryString.Remove("page");
+        string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+        NavManager.NavigateTo(QueryHelpers.AddQueryString($"{NavManager.BaseUri}movies", new Dictionary<string, string> { { "search", keyword } }), true);
+    }
+
+
+    private void SetQueryPage(int pageN)
+    {
+        currentPage = pageN;
+        var uri = new Uri(NavManager.Uri);
+        var newQueryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        newQueryString.Remove("page");
+        string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+        if (newQueryString.Count > 0)
+            NavManager.NavigateTo(QueryHelpers.AddQueryString($"{pagePathWithoutQueryString}?{newQueryString}", new Dictionary<string, string> { { "page", pageN.ToString() } }));
+        else
+            NavManager.NavigateTo($"{pagePathWithoutQueryString}?page={pageN}");
+    }
+
+
+    private async Task SetCurrentPageData(int pageN)
+    {
+        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
+        if (pageN > numberOfPages)
+        {
+            SetQueryPage(1);
+        }
+        else
+        {
+            SetQueryPage(pageN);
+        }
+
+        await GetMoviesOnGivenPage(currentPage);
     }
 
 
@@ -204,10 +308,6 @@
         request.Headers.Add("Authentification_Token", jwtToken);
         using var httpResponse = await Http.SendAsync(request);
         receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
-
-        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
-        currentPage = 1;
-        await GetMoviesOnGivenPage(currentPage);
     }
 
 
@@ -218,10 +318,6 @@
         receivedMoviesIds = null;
 
         receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(randomMoviesApiUrl);
-
-        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
-        currentPage = 1;
-        await GetMoviesOnGivenPage(currentPage);
     }
 
 
@@ -240,15 +336,12 @@
         {
             Console.WriteLine("No ratings found ?");
             TitleToDisplay = "Sorry, no rated movies yet 😔";
+            receivedMoviesIds = new List<int>();
             return;
         }
 
         Dictionary<int, int> ratingsDictionary = await httpResponse.Content.ReadFromJsonAsync<Dictionary<int, int>>();
         receivedMoviesIds = ratingsDictionary.Keys.ToList();
-
-        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
-        currentPage = 1;
-        await GetMoviesOnGivenPage(currentPage);
     }
 
 
@@ -273,30 +366,32 @@
 
     private async Task GetMoviesOnGivenPage(int pageN)
     {
+        SetQueryPage(pageN);
+
         int startPos, amount;
         moviesToDisplay = null;
         startPos = (pageN - 1) * moviesPerPage;
         amount = (pageN * moviesPerPage) < receivedMoviesIds.Count ? moviesPerPage : (receivedMoviesIds.Count - startPos);
         currentPage = pageN;
-        Console.WriteLine($"GetMoviesOnGivenPage: pageN:{pageN} startPos:{startPos} amount:{amount} receivedMoviesIds.Count:{receivedMoviesIds.Count}");
         moviesToDisplay = await GetMovieDetailsFromIdList(receivedMoviesIds.GetRange(startPos, amount));
-        Console.WriteLine($"GetMoviesOnGivenPage: pageN:{pageN} startPos:{startPos} amount:{amount} moviesToDisplay.Count:{moviesToDisplay.Count}");
+        Console.WriteLine($"GetMoviesOnGivenPage: pageN:{pageN} startPos:{startPos} amount:{amount}" +
+            $"receivedMoviesIds.Count:{receivedMoviesIds.Count} moviesToDisplay.Count:{moviesToDisplay.Count}");
     }
 
 
-    private async Task SearchMoviesByKeyword()
+    private async Task SearchMoviesByKeyword(string keywords)
     {
         TitleToDisplay = "Search Result: ";
         moviesToDisplay = null;
         receivedMoviesIds = null;
         searchResultIsEmpty = false;
 
-        if (string.IsNullOrWhiteSpace(searchMovieName))
+        if (string.IsNullOrWhiteSpace(keywords))
         {
             return;
         }
 
-        var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByKeywordApiUrl + searchMovieName);
+        var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByKeywordApiUrl + keywords);
         request.Headers.Add("Authentification_Token", jwtToken);
         using var httpResponse = await Http.SendAsync(request);
         receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
@@ -308,10 +403,6 @@
             searchResultIsEmpty = true;
             return;
         }
-
-        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
-        currentPage = 1;
-        await GetMoviesOnGivenPage(currentPage);
 
         searchMovieName = string.Empty;
     }
@@ -336,9 +427,6 @@
             return;
         }
 
-        numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
-        currentPage = 1;
-        await GetMoviesOnGivenPage(currentPage);
     }
 
     private async Task<List<MovieDetails>> GetMovieDetailsFromIdList(IEnumerable<int> moviesIds)

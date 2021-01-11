@@ -8,7 +8,7 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <span style="cursor: pointer" onclick="history.go(-1); return false;">
+            <span style="cursor: pointer" onclick="history.go(-1); setTimeout(function(){ window.location.reload(); }, 10);">
                 <span class="oi oi-arrow-thick-left" style="font-size: 1.8em;vertical-align:middle;"></span>
                 <span style="margin-left: 10px; font-size:1.3em; vertical-align:middle;">Go Back</span>
             </span>

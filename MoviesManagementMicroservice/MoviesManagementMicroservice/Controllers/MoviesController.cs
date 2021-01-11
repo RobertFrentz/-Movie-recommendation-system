@@ -67,7 +67,7 @@ namespace MoviesManagementMicroservice.Controllers
         // GET: /api/v1/movies/moviedata/complete/{movieId}
         [Route("moviedata/complete/{movieId}")]
         [HttpGet]
-        public async Task<ActionResult<string>> GetMovieDataById(int movieId)
+        public async Task<ActionResult<string>> GetCompleteMovieDataById(int movieId)
         {
             Movie movie = await _context.Movies.FindAsync(movieId);
             if (movie == null)

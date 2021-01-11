@@ -89,7 +89,7 @@ else
         await sessionStorage.SetItemAsync("jwt", temp[0]);
         await sessionStorage.SetItemAsync("username", temp[1]);
 
-        NavManager.NavigateTo("/movies", true);
+        NavManager.NavigateTo("/movies/recommended", true);
     }
 
     public async Task<bool> IsLoggedIn()
