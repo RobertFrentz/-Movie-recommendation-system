@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace MoviesManagementMicroservice.Utils
@@ -26,7 +23,7 @@ namespace MoviesManagementMicroservice.Utils
             if ((int)httpResponse.StatusCode != 200)
             {
                 Console.WriteLine($"EROARE GetImdbMoviePosterUrlAsync: {httpResponse.ReasonPhrase}, a expirat token-ul?");
-                return "";
+                return null;
             }
 
             var json = await httpClient.GetStringAsync(URL);
@@ -53,7 +50,7 @@ namespace MoviesManagementMicroservice.Utils
             if ((int)httpResponse.StatusCode != 200)
             {
                 Console.WriteLine($"EROARE GetImdbMovieData: {httpResponse.ReasonPhrase}, a expirat token-ul?");
-                return "";
+                return null;
             }
 
             jsonString = await httpClient.GetStringAsync(URL);

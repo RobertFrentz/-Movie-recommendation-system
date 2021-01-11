@@ -86,28 +86,20 @@
     private bool finishedLoading = false;
     private string jsonString;
     private dynamic jsonObject = null;
-    private string token;
+    private string jwtToken;
     private int starsRating;
     private bool ratingExists;
-    private bool isUserLoggedIn;
     private string ratingsApiEndpoint = "http://localhost:5000/api/v1/ratings";
     private string movieDataApiEndpoint = "http://localhost:5000/api/v1/movies/moviedata/complete/";
 
 
     protected override async Task OnInitializedAsync()
     {
-        isUserLoggedIn = await IsUserLoggedIn();
-
-        if (!isUserLoggedIn)
-        {
-            NavManager.NavigateTo("/login", true);
-
-        }
+        if (!await VerifyAuthorization()) return;
 
         jsonString = await Http.GetStringAsync(movieDataApiEndpoint + movieId);
         jsonObject = JsonConvert.DeserializeObject(jsonString);
         finishedLoading = true;
-        token = await sessionStorage.GetItemAsync<string>("jwt");
         await GetRating();
     }
 
@@ -116,7 +108,7 @@
     {
         string urlGet = ratingsApiEndpoint + "/" + movieId;
         var getRequest = new HttpRequestMessage(HttpMethod.Get, urlGet);
-        getRequest.Headers.Add("Authentification_token", token);
+        getRequest.Headers.Add("Authentification_token", jwtToken);
         using var httpResponse = await Http.SendAsync(getRequest);
 
         if (!httpResponse.IsSuccessStatusCode)
@@ -140,7 +132,7 @@
         {
             string urlDelete = ratingsApiEndpoint + "/" + movieId;
             var deleteRequest = new HttpRequestMessage(HttpMethod.Delete, urlDelete);
-            deleteRequest.Headers.Add("Authentification_Token", token);
+            deleteRequest.Headers.Add("Authentification_Token", jwtToken);
             using var response = await Http.SendAsync(deleteRequest);
             starsRating = 0;
         }
@@ -151,7 +143,7 @@
                 var request = new HttpRequestMessage(HttpMethod.Put, ratingsApiEndpoint);
                 var putBody = new { movieId = movieId, score = value };
                 request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(putBody), System.Text.Encoding.UTF8, "application/json");
-                request.Headers.Add("Authentification_Token", token);
+                request.Headers.Add("Authentification_Token", jwtToken);
                 using var response = await Http.SendAsync(request);
                 starsRating = value;
             }
@@ -160,7 +152,7 @@
                 var request = new HttpRequestMessage(HttpMethod.Post, ratingsApiEndpoint);
                 var postBody = new { movieId = movieId, score = value };
                 request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(postBody), System.Text.Encoding.UTF8, "application/json");
-                request.Headers.Add("Authentification_Token", token);
+                request.Headers.Add("Authentification_Token", jwtToken);
                 using var response = await Http.SendAsync(request);
                 starsRating = value;
                 ratingExists = true;
@@ -170,10 +162,15 @@
     }
 
 
-    public async Task<bool> IsUserLoggedIn()
+    public async Task<bool> VerifyAuthorization()
     {
-        var token = await sessionStorage.GetItemAsync<string>("jwt");
-        return !string.IsNullOrWhiteSpace(token);
+        jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
+        if (string.IsNullOrWhiteSpace(jwtToken))
+        {
+            NavManager.NavigateTo("/login", true);
+            return false;
+        }
+        return true;
     }
 
 

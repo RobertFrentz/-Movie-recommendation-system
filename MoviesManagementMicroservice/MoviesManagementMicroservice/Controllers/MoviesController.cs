@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesManagementMicroservice.Data;
@@ -22,21 +21,13 @@ namespace MoviesManagementMicroservice.Controllers
             _context = context;
         }
 
-        // GET: /api/v1/movies/test
-        [Route("test")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
-        {
-            var movies = await _context.Movies.Take(15).ToListAsync();
-            return await _context.Movies.Take(15).ToListAsync();
-        }
 
         // GET: /api/v1/movies/random
         [Route("random")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<int>>> GetHomeMoviesData()
+        public async Task<ActionResult<IEnumerable<int>>> GetRandomMoviesIds()
         {
-            List<Movie> movies = _context.Movies.ToList();
+            List<Movie> movies = await _context.Movies.ToListAsync();
             List<int> moviesIds = movies.Select(m => m.Id).OrderBy(i => Guid.NewGuid()).ToList();
 
             return Ok(moviesIds);
@@ -45,9 +36,9 @@ namespace MoviesManagementMicroservice.Controllers
         // GET: /api/v1/movies/moviedata/summary/{movieId}
         [Route("moviedata/summary/{movieId}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetHomeMovieDataById(int movieId)
+        public async Task<ActionResult<IEnumerable<MovieDetails>>> GetSummaryMovieDataById(int movieId)
         {
-            Movie movie = movie = await _context.Movies.FindAsync(movieId);
+            Movie movie = await _context.Movies.FindAsync(movieId);
             if (movie == null)
             {
                 return NotFound();
@@ -56,7 +47,6 @@ namespace MoviesManagementMicroservice.Controllers
 
             if (link == null)
             {
-                Console.WriteLine("Link NOT FOUND");
                 return NotFound();
             }
 
@@ -65,13 +55,11 @@ namespace MoviesManagementMicroservice.Controllers
                 string temp = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
                 link.ImdbPosterUrl = (temp != null) ? temp : null;
             }
-            else
-            {
-                link.ImdbPosterUrl = await DataScraping.GetImdbMoviePosterUrlAsync(link.ImdbId);
-            }
+
             MovieDetails movieDetails = new MovieDetails { Id = movie.Id, Title = movie.Title, Genres = movie.Genres, PosterUrl = link.ImdbPosterUrl };
 
-            await _context.SaveChangesAsync(); // pentru salvarea link-urilor in database
+            _context.Update(link);
+            _context.SaveChanges(); // pentru salvarea link-uri postere
 
             return Ok(movieDetails);
         }
@@ -81,7 +69,7 @@ namespace MoviesManagementMicroservice.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetMovieDataById(int movieId)
         {
-            Movie movie = movie = await _context.Movies.FindAsync(movieId);
+            Movie movie = await _context.Movies.FindAsync(movieId);
             if (movie == null)
             {
                 return NotFound();
@@ -90,7 +78,6 @@ namespace MoviesManagementMicroservice.Controllers
             Link link = await _context.Links.FindAsync(movieId);
             if (link == null)
             {
-                Console.WriteLine("Link NOT FOUND");
                 return NotFound();
             }
 
@@ -98,9 +85,5 @@ namespace MoviesManagementMicroservice.Controllers
             return Ok(json);
         }
 
-        private bool MovieExists(int id)
-        {
-            return _context.Movies.Any(e => e.Id == id);
-        }
     }
 }

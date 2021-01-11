@@ -177,26 +177,18 @@
     private bool searchResultIsEmpty;
     private int moviesPerPage = 12;
     private string jwtToken;
-    bool isUserLoggedIn;
 
-    private string apiUrl = "http://localhost:5000/api/v1/movies/random";
+    private string summaryMovieDataApiUrl = "http://localhost:5000/api/v1/movies/moviedata/summary/";
+    private string recommendedMoviesApiUrl = "http://localhost:5000/api/v1/search/ratings";
+    private string randomMoviesApiUrl = "http://localhost:5000/api/v1/movies/random";
+    private string ratedMoviesApiUrl = "http://localhost:5000/api/v1/ratings";
     private string searchMoviesByCategoryApiUrl = "http://localhost:5000/api/v1/search/category?category=";
     private string searchMoviesByKeywordApiUrl = "http://localhost:5000/api/v1/search/keyword?keyword=";
-    private string recommendedMoviesApiUrl = "http://localhost:5000/api/v1/search/ratings";
-    private string ratedMoviesApiUrl = "http://localhost:5000/api/v1/ratings";
 
 
     protected override async Task OnInitializedAsync()
     {
-        isUserLoggedIn = await IsUserLoggedIn();
-
-        if (!isUserLoggedIn)
-        {
-            NavManager.NavigateTo("/login", true);
-
-        }
-
-        jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
+        if(!await VerifyAuthorization()) return;
 
         await BrowseRecommendedMovies();
     }
@@ -208,14 +200,10 @@
         moviesToDisplay = null;
         receivedMoviesIds = null;
 
-        // aparent recomandarile nu merg inca
         var request = new HttpRequestMessage(HttpMethod.Get, recommendedMoviesApiUrl);
         request.Headers.Add("Authentification_Token", jwtToken);
         using var httpResponse = await Http.SendAsync(request);
         receivedMoviesIds = await httpResponse.Content.ReadFromJsonAsync<List<int>>();
-
-        
-        //receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
 
         numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
         currentPage = 1;
@@ -229,7 +217,7 @@
         moviesToDisplay = null;
         receivedMoviesIds = null;
 
-        receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(apiUrl);
+        receivedMoviesIds = await Http.GetFromJsonAsync<List<int>>(randomMoviesApiUrl);
 
         numberOfPages = receivedMoviesIds.Count / moviesPerPage + 1;
         currentPage = 1;
@@ -308,7 +296,6 @@
             return;
         }
 
-        //var httpResponse = await Http.GetAsync(searchMoviesByKeywordApiUrl + searchMovieName);
         var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByKeywordApiUrl + searchMovieName);
         request.Headers.Add("Authentification_Token", jwtToken);
         using var httpResponse = await Http.SendAsync(request);
@@ -336,7 +323,6 @@
         moviesToDisplay = null;
         searchResultIsEmpty = false;
 
-        //var httpResponse = await Http.GetAsync(searchMoviesByCategoryApiUrl + category);
         var request = new HttpRequestMessage(HttpMethod.Get, searchMoviesByCategoryApiUrl + category);
         request.Headers.Add("Authentification_Token", jwtToken);
         using var httpResponse = await Http.SendAsync(request);
@@ -375,10 +361,10 @@
 
     private async Task<MovieDetails> GetMovieDetailsById(int id)
     {
-        string apiUrl = "http://localhost:5000/api/v1/movies/moviedata/summary/" + id.ToString();
+
         MovieDetails movie;
 
-        var httpResponse = await Http.GetAsync(apiUrl);
+        var httpResponse = await Http.GetAsync(summaryMovieDataApiUrl + id.ToString());
 
         if ((int)httpResponse.StatusCode != 200)
         {
@@ -391,10 +377,15 @@
         return movie;
     }
 
-    public async Task<bool> IsUserLoggedIn()
+    public async Task<bool> VerifyAuthorization()
     {
-        var token = await sessionStorage.GetItemAsync<string>("jwt");
-        return !string.IsNullOrWhiteSpace(token);
+        jwtToken = await sessionStorage.GetItemAsync<string>("jwt");
+        if (string.IsNullOrWhiteSpace(jwtToken))
+        {
+            NavManager.NavigateTo("/login", true);
+            return false;
+        }
+        return true;
     }
 
     public class MovieDetails
