@@ -110,14 +110,14 @@ namespace SearchingMovieMicroservice.Controllers
                         }
                         return returnMoviesId;
                     }
-                    else if(httpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    else if (httpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
                         List<int> moviesId = _context.Movies.Select(m => m.Id).ToList();
                         List<int> recommendedMoviesId = SearchOperations.RecommendedMoviesWithoutUserRatings(Convert.ToInt32(response), moviesId);
                         return recommendedMoviesId;
                     }
-                    
-                   
+
+
                 }
                 catch (HttpRequestException e)
                 {
@@ -247,17 +247,17 @@ namespace SearchingMovieMicroservice.Controllers
         private List<int> GetRecentRatedMovies(Dictionary<int, int> moviesIdWithRatings)
         {
             List<int> recentMoviesId = new List<int>();
-            for(int i = moviesIdWithRatings.Count - 1, j = 0; i > 0 && j < 5; i--, j++)
+            for (int i = moviesIdWithRatings.Count - 1, j = 0; i >= 0 && j < 5; i--, j++)
             {
                 recentMoviesId.Add(moviesIdWithRatings.ElementAt(i).Key);
             }
-            List<Movie> recentRatedMovies =  _context.Movies.Where(m => recentMoviesId.Contains(m.Id))
+            List<Movie> recentRatedMovies = _context.Movies.Where(m => recentMoviesId.Contains(m.Id))
                                                             .ToList();
             string LastRatedMovieCategory = recentRatedMovies[0].Genres;
             string SecondLastRatedMovieCategory = null;
             if (recentMoviesId.Count > 1)
             {
-                 SecondLastRatedMovieCategory = recentRatedMovies[1].Genres;
+                SecondLastRatedMovieCategory = recentRatedMovies[1].Genres;
             }
             return _context.Movies.Where(m => m.Genres == LastRatedMovieCategory || m.Genres == SecondLastRatedMovieCategory)
                                   .Select(m => m.Id)
@@ -270,7 +270,7 @@ namespace SearchingMovieMicroservice.Controllers
             moviesIdWithRatings.OrderByDescending(key => key.Value);
             for (int i = 0; i < 5; i++)
             {
-                if(moviesIdWithRatings.Count() == i)
+                if (moviesIdWithRatings.Count() == i)
                 {
                     break;
                 }
@@ -278,11 +278,18 @@ namespace SearchingMovieMicroservice.Controllers
             }
             List<Movie> topRatedMovies = _context.Movies.Where(m => topRatedMoviesId.Contains(m.Id))
                                                         .ToList();
+
             string TopOneRatedMovieCategory = topRatedMovies[0].Genres;
-            string TopTwoLastRatedMovieCategory = topRatedMovies[1].Genres;
-            return _context.Movies.Where(m => m.Genres == TopOneRatedMovieCategory || m.Genres == TopTwoLastRatedMovieCategory)
-                                  .Select(m => m.Id)
-                                  .ToList();
+            if (topRatedMovies.Count >= 2)
+            {
+                string TopTwoLastRatedMovieCategory = topRatedMovies[1].Genres;
+                return _context.Movies.Where(m => m.Genres == TopOneRatedMovieCategory || m.Genres == TopTwoLastRatedMovieCategory)
+                                      .Select(m => m.Id)
+                                      .ToList();
+            }
+            return _context.Movies.Where(m => m.Genres == TopOneRatedMovieCategory)
+                                      .Select(m => m.Id)
+                                      .ToList();
         }
     }
 }
